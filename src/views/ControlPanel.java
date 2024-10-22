@@ -1,5 +1,8 @@
 package views;
 import javax.swing.*;
+
+import views.ActionPanel.ActionPanel;
+
 import java.awt.*;
 
 public class ControlPanel extends JPanel {
@@ -9,12 +12,8 @@ public class ControlPanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 5));
-        for (int i = 1; i <= 5; i++) {
-            buttonPanel.add(new JButton("Button " + i));
-        }
-        add(buttonPanel, BorderLayout.NORTH);
+        JPanel actionPanel = new ActionPanel();
+        add(actionPanel, BorderLayout.NORTH);
 
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(0, 3)); // 3 columns, rows will be determined by the number of items

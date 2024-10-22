@@ -1,38 +1,32 @@
 package views;
 import javax.swing.*;
-
 import java.awt.*;
 
 public class SplitPane extends JFrame {
 
     public SplitPane() {
         // Set the title of the window
-        setTitle("Split UI Example");
-        // Prevent the split pane from reloading its components when resized
-        setIgnoreRepaint(true);
-        setTitle("Split UI Example");
+        setTitle("Fixed UI Example");
         setSize(800, 600); // Initial size of the window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the window
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Make the window full screen
 
-        // Create the two panels to be added to the split pane
+        // Create the two panels with fixed sizes
         JPanel controlPanel = new ControlPanel();
-        
+        controlPanel.setPreferredSize(new Dimension(450, getHeight())); // 1/4th width (200px)
+        controlPanel.setBackground(Color.LIGHT_GRAY);
 
         JPanel rightPanel = new JPanel();
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Make the window take the full screen size
-        rightPanel.setBackground(Color.WHITE); // Set background color to differentiate
+        rightPanel.setBackground(Color.WHITE); // Set background color
         rightPanel.add(new JLabel("Right Panel - 3/4th"));
 
-        // Create a split pane with a 1/4 and 3/4 ratio
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, rightPanel);
-        splitPane.setDividerLocation(400); // Set divider location at 1/4th (200px for 800px width)
+        // Use BorderLayout to position the panels
+        setLayout(new BorderLayout());
 
-        // Allow the divider to be adjusted and give the right panel more flexibility
-        splitPane.setResizeWeight(0.25); // Ratio of 1/4 on the left, 3/4 on the right
-
-        // Add the split pane to the frame
-        add(splitPane);
+        // Add the control panel on the left (WEST) and the right panel on the center (CENTER)
+        add(controlPanel, BorderLayout.WEST);
+        add(rightPanel, BorderLayout.CENTER);
 
         // Make the window visible
         setVisible(true);

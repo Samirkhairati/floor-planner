@@ -12,10 +12,9 @@ public class Main {
     }
 
     private static void createAndShowGUI() {
-        
-        // Create an instance of the SplitPaneExample class
-        JFrame frame = new SplitPane();
 
+        // Create an instance of the SplitPaneExample class
+        new SplitPane();
 
     }
 }
