@@ -6,6 +6,7 @@ public enum Config {
     public static final int DEFAULT_ROOM_HEIGHT = 100;
 
     public static final int SNAP = 50;
+    public static final int DOT_SIZE = 4;
 
     // public static final int DEFAULT_DOOR_WIDTH = 50;
     // public static final int DEFAULT_DOOR_HEIGHT = 10;

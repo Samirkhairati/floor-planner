@@ -21,6 +21,8 @@ public class Floor extends JPanel {
 
     private final int DEFAULT_ROOM_WIDTH = 50;
     private final int DEFAULT_ROOM_HEIGHT = 50;
+    private final int GRID_SIZE = Config.SNAP;
+    private final int DOT_SIZE = Config.DOT_SIZE;
 
     public Floor() {
         setBackground(Color.WHITE); // Set background color to differentiate
@@ -65,19 +67,8 @@ public class Floor extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
-                int snappedX = (e.getX() / Config.SNAP) * Config.SNAP;
-                int snappedY = (e.getY() / Config.SNAP) * Config.SNAP;
                 if (isPlacingRoom) {
-                    // Add the room to the list when clicked and stop placing
-                    rooms.add(new Rectangle(
-                            snappedX - DEFAULT_ROOM_WIDTH / 2,
-                            snappedY - DEFAULT_ROOM_HEIGHT / 2,
-                            DEFAULT_ROOM_WIDTH,
-                            DEFAULT_ROOM_HEIGHT)); // Center the room on click
-                    isPlacingRoom = false; // Stop placing the room
-                    mousePoint = null; // Reset mouse point
-                    repaint(); // Repaint to show the placed room
+                    placeRoom(e.getX(), e.getY());
                 }
             }
         });
@@ -102,25 +93,84 @@ public class Floor extends JPanel {
         // Implement window addition logic here
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    private void placeRoom(int x, int y) {
+        // Snap the coordinates to the nearest 50x50 grid when placing the room
+        int snappedX = (x / GRID_SIZE) * GRID_SIZE;
+        int snappedY = (y / GRID_SIZE) * GRID_SIZE;
 
-        // Draw all placed rooms
+        // Add the room to the list with snapped coordinates and stop placing
+        rooms.add(new Rectangle(
+                snappedX, snappedY,
+                DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT)); // Center the room on the snapped point
+
+        isPlacingRoom = false; // Stop placing the room
+        mousePoint = null; // Reset mouse point
+        repaint(); // Repaint to show the placed room
+    }
+
+    private void drawLineGrid(Graphics g, boolean enable) {
+
+        if (!enable)
+            return;
+
+        g.setColor(Color.LIGHT_GRAY); // Set a light gray color for the grid
+
+        // Draw vertical lines
+        for (int x = 0; x < getWidth(); x += GRID_SIZE) {
+            g.drawLine(x, 0, x, getHeight());
+        }
+
+        // Draw horizontal lines
+        for (int y = 0; y < getHeight(); y += GRID_SIZE) {
+            g.drawLine(0, y, getWidth(), y);
+        }
+    }
+
+    private void drawDotGrid(Graphics g, boolean enable) {
+
+        if (!enable)
+            return;
+
+        g.setColor(Color.LIGHT_GRAY); // Set a light gray color for the grid
+
+        // Draw dots at each grid intersection
+        for (int x = 0; x < getWidth(); x += GRID_SIZE) {
+            for (int y = 0; y < getHeight(); y += GRID_SIZE) {
+                g.fillOval(x - DOT_SIZE / 2, y - DOT_SIZE / 2, DOT_SIZE, DOT_SIZE); // Draw dot centered at the
+                                                                                    // intersection
+            }
+        }
+    }
+
+    private void drawRooms(Graphics g) {
         g.setColor(Color.BLUE); // Set room color
         for (Rectangle room : rooms) {
             g.fillRect(room.x, room.y, room.width, room.height);
         }
+    }
 
-        // If we're placing a room, draw the preview room following the mouse
+    private void drawPreviewRoom(Graphics g) {
         if (isPlacingRoom && mousePoint != null) {
-            // Snap the mouse point to the nearest Config.SNAPxConfig.SNAP grid
-            int snappedX = (mousePoint.x / Config.SNAP) * Config.SNAP;
-            int snappedY = (mousePoint.y / Config.SNAP) * Config.SNAP;
-            
             g.setColor(Color.RED); // Set color for the moving room
-            g.fillRect(snappedX - DEFAULT_ROOM_WIDTH / 2, snappedY - DEFAULT_ROOM_HEIGHT / 2,
-                    DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT); // Draw the 10x10 rectangle
+
+            // Snap the mouse point to the nearest 50x50 grid
+            int snappedX = (mousePoint.x / GRID_SIZE) * GRID_SIZE;
+            int snappedY = (mousePoint.y / GRID_SIZE) * GRID_SIZE;
+
+            // Draw the snapped room (centered)
+            g.fillRect(
+                    snappedX, snappedY,
+                    DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT);
         }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        drawLineGrid(g, true);
+        drawDotGrid(g, true);
+        drawRooms(g);
+        drawPreviewRoom(g);
     }
 }
