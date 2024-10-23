@@ -9,6 +9,9 @@ public class StateManager {
 
     public State<Integer> keyCode = new State<>(); // Use generic State for int type
 
+    public State<Boolean> showLineGrid = new State<>(false); // Use generic State for boolean type
+    public State<Boolean> showDotGrid = new State<>(false); // Use generic State for boolean type
+
     private StateManager() {
         // private constructor to prevent instantiation
     }
@@ -21,9 +24,16 @@ public class StateManager {
     }
 
     // Generic State class
-    public class State<T> {
+    public static class State<T> {
         private T state;
         private List<Observer<T>> observers = new ArrayList<>();
+
+        public State() {
+            // Default constructor
+        }
+        public State(T state) {
+            this.state = state;
+        }
 
         public T getState() {
             return state;

@@ -23,6 +23,8 @@ public class Floor extends JPanel {
     private final int DEFAULT_ROOM_HEIGHT = 50;
     private final int GRID_SIZE = Config.SNAP;
     private final int DOT_SIZE = Config.DOT_SIZE;
+    private boolean showLineGrid = false;
+    private boolean showDotGrid = false;
 
     public Floor() {
         setBackground(Color.WHITE); // Set background color to differentiate
@@ -52,6 +54,20 @@ public class Floor extends JPanel {
             }
         });
 
+        StateManager.getInstance().showLineGrid.addObserver(new StateManager.Observer<Boolean>() {
+            @Override
+            public void update(Boolean state) {
+                showLineGrid = state;
+                repaint(); // Repaint to show/hide the grid
+            }
+        });
+        StateManager.getInstance().showDotGrid.addObserver(new StateManager.Observer<Boolean>() {
+            @Override
+            public void update(Boolean state) {
+                showDotGrid = state;
+                repaint(); // Repaint to show/hide the grid
+            }
+        });
         // Add mouse motion listener for tracking mouse movement
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
@@ -168,8 +184,8 @@ public class Floor extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        drawLineGrid(g, true);
-        drawDotGrid(g, true);
+        drawLineGrid(g, showLineGrid);
+        drawDotGrid(g, showDotGrid);
         drawRooms(g);
         drawPreviewRoom(g);
     }
