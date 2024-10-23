@@ -1,11 +1,16 @@
 package views.ActionPanel;
 import javax.swing.*;
 
+import views.StateManager;
 import views.WrapLayout;
+import views.StateManager.State;
 
 import java.awt.*;
 
 public class ActionPanel extends JPanel {
+
+    private boolean showLineGrid = false;
+    private boolean showDotGrid = false;
 
     public ActionPanel() {
 
@@ -39,6 +44,23 @@ public class ActionPanel extends JPanel {
         add(button3);
         add(button4);
         add(button5);
+
+        JPanel checkboxPanel = new JPanel();
+        checkboxPanel.setLayout(new GridLayout(2, 1)); // 2 rows, 1 column
+        checkboxPanel.setBackground(getBackground());
+
+        JCheckBox showLineGrid = new JCheckBox("Show Line Grid");
+        JCheckBox showDotGrid = new JCheckBox("Show Dot Grid");
+
+        checkboxPanel.add(showLineGrid);
+        checkboxPanel.add(showDotGrid);
+
+        checkboxPanel.setPreferredSize(new Dimension(130, 40)); // Set height to twice the button height, width is free
+
+        add(checkboxPanel);
+
+        showLineGrid.addActionListener(e -> StateManager.getInstance().showLineGrid.setState(showLineGrid.isSelected()));
+        showDotGrid.addActionListener(e -> StateManager.getInstance().showDotGrid.setState(showDotGrid.isSelected()));
     }
     
 }
