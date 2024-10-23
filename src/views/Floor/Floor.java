@@ -1,6 +1,8 @@
 package views.Floor;
 
 import javax.swing.*;
+
+import views.Config;
 import views.StateManager;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -63,10 +65,16 @@ public class Floor extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
+                int snappedX = (e.getX() / Config.SNAP) * Config.SNAP;
+                int snappedY = (e.getY() / Config.SNAP) * Config.SNAP;
                 if (isPlacingRoom) {
                     // Add the room to the list when clicked and stop placing
-                    rooms.add(new Rectangle(e.getX() - DEFAULT_ROOM_WIDTH / 2, e.getY() - DEFAULT_ROOM_HEIGHT / 2,
-                            DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT)); // Center the room on click
+                    rooms.add(new Rectangle(
+                            snappedX - DEFAULT_ROOM_WIDTH / 2,
+                            snappedY - DEFAULT_ROOM_HEIGHT / 2,
+                            DEFAULT_ROOM_WIDTH,
+                            DEFAULT_ROOM_HEIGHT)); // Center the room on click
                     isPlacingRoom = false; // Stop placing the room
                     mousePoint = null; // Reset mouse point
                     repaint(); // Repaint to show the placed room
@@ -106,8 +114,12 @@ public class Floor extends JPanel {
 
         // If we're placing a room, draw the preview room following the mouse
         if (isPlacingRoom && mousePoint != null) {
+            // Snap the mouse point to the nearest Config.SNAPxConfig.SNAP grid
+            int snappedX = (mousePoint.x / Config.SNAP) * Config.SNAP;
+            int snappedY = (mousePoint.y / Config.SNAP) * Config.SNAP;
+            
             g.setColor(Color.RED); // Set color for the moving room
-            g.fillRect(mousePoint.x - DEFAULT_ROOM_WIDTH / 2, mousePoint.y - DEFAULT_ROOM_HEIGHT / 2,
+            g.fillRect(snappedX - DEFAULT_ROOM_WIDTH / 2, snappedY - DEFAULT_ROOM_HEIGHT / 2,
                     DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT); // Draw the 10x10 rectangle
         }
     }
