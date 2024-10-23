@@ -34,8 +34,8 @@ public class SplitPane extends JFrame {
 
         // Add key listener to the splitPane
         addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                System.out.println("Key pressed: " + evt.getKeyCode());
+            public void keyPressed(java.awt.event.KeyEvent event) {
+                StateManager.getInstance().keyCode.setState(event.getKeyCode());
             }
         });
 
