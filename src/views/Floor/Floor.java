@@ -17,8 +17,8 @@ public class Floor extends JPanel {
     private boolean isPlacingRoom = false; // To track if we're in the process of placing a room
     private List<Rectangle> rooms; // To store placed rooms
 
-    private final int DEFAULT_ROOM_WIDTH = 100;
-    private final int DEFAULT_ROOM_HEIGHT = 100;
+    private final int DEFAULT_ROOM_WIDTH = 50;
+    private final int DEFAULT_ROOM_HEIGHT = 50;
 
     public Floor() {
         setBackground(Color.WHITE); // Set background color to differentiate
@@ -79,7 +79,13 @@ public class Floor extends JPanel {
     private void addRoom() {
         System.out.println("Room added");
         isPlacingRoom = true; // Set to true when we are adding a room
+        
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation(); // Get the current mouse position
+        SwingUtilities.convertPointFromScreen(mouseLocation, this); // Convert screen coordinates to panel coordinates
+        mousePoint = mouseLocation; // Set mousePoint to the current mouse position
+        repaint(); // Request immediate repaint to show the rectangle
     }
+    
 
     private void addDoor() {
         System.out.println("Door added");
