@@ -1,5 +1,7 @@
 package views.Floor;
 
+import views.Floor.Room.RoomManager;
+
 import javax.swing.*;
 import views.StateManager;
 import java.awt.*;
@@ -15,7 +17,7 @@ public class Floor extends JPanel {
     private int keyCode;
     private Point mousePoint; // To track mouse location
     private boolean isPlacingRoom = false; // To track if we're in the process of placing a room
-    private List<Rectangle> rooms; // To store placed rooms
+    private List<Rectangle> rooms = new ArrayList<>(); // To store placed rooms
 
     private final int DEFAULT_ROOM_WIDTH = 50;
     private final int DEFAULT_ROOM_HEIGHT = 50;
@@ -25,8 +27,7 @@ public class Floor extends JPanel {
         setFocusable(true); // Needed to ensure the JPanel receives keyboard focus
         requestFocusInWindow(); // Request focus so it listens to key events
 
-        rooms = new ArrayList<>(); // Initialize the list of rooms
-
+        RoomManager roomManager = new RoomManager(this); // Create a RoomManager instance
         // Add key listener to the panel
         StateManager.getInstance().keyCode.addObserver(new StateManager.Observer<Integer>() {
             @Override
@@ -35,7 +36,7 @@ public class Floor extends JPanel {
 
                 switch (keyCode) {
                     case KeyEvent.VK_1:
-                        addRoom();
+                        roomManager.addRoom();
                         break;
                     case KeyEvent.VK_2:
                         addDoor();
@@ -76,14 +77,8 @@ public class Floor extends JPanel {
         });
     }
 
-    private void addRoom() {
-        System.out.println("Room added");
-        isPlacingRoom = true; // Set to true when we are adding a room
-        
-        Point mouseLocation = MouseInfo.getPointerInfo().getLocation(); // Get the current mouse position
-        SwingUtilities.convertPointFromScreen(mouseLocation, this); // Convert screen coordinates to panel coordinates
-        mousePoint = mouseLocation; // Set mousePoint to the current mouse position
-        repaint(); // Request immediate repaint to show the rectangle
+    public void addRoom(Rectangle room) {
+        rooms.add(room);
     }
     
 
