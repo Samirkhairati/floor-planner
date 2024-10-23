@@ -1,7 +1,5 @@
 package views.Floor;
 
-import views.Floor.Room.RoomManager;
-
 import javax.swing.*;
 import views.StateManager;
 import java.awt.*;
@@ -17,7 +15,7 @@ public class Floor extends JPanel {
     private int keyCode;
     private Point mousePoint; // To track mouse location
     private boolean isPlacingRoom = false; // To track if we're in the process of placing a room
-    private List<Rectangle> rooms = new ArrayList<>(); // To store placed rooms
+    private List<Rectangle> rooms; // To store placed rooms
 
     private final int DEFAULT_ROOM_WIDTH = 50;
     private final int DEFAULT_ROOM_HEIGHT = 50;
@@ -27,8 +25,7 @@ public class Floor extends JPanel {
         setFocusable(true); // Needed to ensure the JPanel receives keyboard focus
         requestFocusInWindow(); // Request focus so it listens to key events
 
-        RoomManager roomManager = new RoomManager(this); // Create a RoomManager instance
-        // Add key listener to the panel
+        rooms = new ArrayList<>(); // Initialize the list of rooms
         StateManager.getInstance().keyCode.addObserver(new StateManager.Observer<Integer>() {
             @Override
             public void update(Integer state) {
@@ -36,7 +33,7 @@ public class Floor extends JPanel {
 
                 switch (keyCode) {
                     case KeyEvent.VK_1:
-                        roomManager.addRoom();
+                        addRoom();
                         break;
                     case KeyEvent.VK_2:
                         addDoor();
@@ -68,7 +65,8 @@ public class Floor extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if (isPlacingRoom) {
                     // Add the room to the list when clicked and stop placing
-                    rooms.add(new Rectangle(e.getX() - DEFAULT_ROOM_WIDTH/2, e.getY() - DEFAULT_ROOM_HEIGHT/2, DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT)); // Center the room on click
+                    rooms.add(new Rectangle(e.getX() - DEFAULT_ROOM_WIDTH / 2, e.getY() - DEFAULT_ROOM_HEIGHT / 2,
+                            DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT)); // Center the room on click
                     isPlacingRoom = false; // Stop placing the room
                     mousePoint = null; // Reset mouse point
                     repaint(); // Repaint to show the placed room
@@ -77,10 +75,14 @@ public class Floor extends JPanel {
         });
     }
 
-    public void addRoom(Rectangle room) {
-        rooms.add(room);
+    private void addRoom() {
+        System.out.println("Room added");
+        isPlacingRoom = true; // Set to true when we are adding a room
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation(); // Get the current mouse position
+        SwingUtilities.convertPointFromScreen(mouseLocation, this); // Convert screen coordinates to panel coordinates
+        mousePoint = mouseLocation; // Set mousePoint to the current mouse position
+        repaint(); // Request immediate repaint to show the rectangle
     }
-    
 
     private void addDoor() {
         System.out.println("Door added");
@@ -105,7 +107,8 @@ public class Floor extends JPanel {
         // If we're placing a room, draw the preview room following the mouse
         if (isPlacingRoom && mousePoint != null) {
             g.setColor(Color.RED); // Set color for the moving room
-            g.fillRect(mousePoint.x - DEFAULT_ROOM_WIDTH/2, mousePoint.y - DEFAULT_ROOM_HEIGHT/2, DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT); // Draw the 10x10 rectangle
+            g.fillRect(mousePoint.x - DEFAULT_ROOM_WIDTH / 2, mousePoint.y - DEFAULT_ROOM_HEIGHT / 2,
+                    DEFAULT_ROOM_WIDTH, DEFAULT_ROOM_HEIGHT); // Draw the 10x10 rectangle
         }
     }
 }
