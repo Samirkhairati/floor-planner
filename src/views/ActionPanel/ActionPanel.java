@@ -1,5 +1,8 @@
 package views.ActionPanel;
 import javax.swing.*;
+
+import views.WrapLayout;
+
 import java.awt.*;
 
 public class ActionPanel extends JPanel {
@@ -8,7 +11,7 @@ public class ActionPanel extends JPanel {
 
         setBackground(Color.LIGHT_GRAY); // Set background color to differentiate
 
-        setLayout(new FlowLayout());
+        setLayout(new WrapLayout());
 
         JButton button1 = new JButton("📦");
         JButton button2 = new JButton("🚪");

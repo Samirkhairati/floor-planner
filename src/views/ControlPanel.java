@@ -8,7 +8,7 @@ import java.awt.*;
 public class ControlPanel extends JPanel {
     public ControlPanel() {
 
-        setBackground(Color.LIGHT_GRAY); // Set background color to differentiate
+        setBackground(Color.DARK_GRAY); // Set background color to differentiate
 
         setLayout(new BorderLayout());
 
@@ -16,7 +16,7 @@ public class ControlPanel extends JPanel {
         add(actionPanel, BorderLayout.NORTH);
 
         JPanel gridPanel = new JPanel();
-        gridPanel.setLayout(new GridLayout(0, 3)); // 3 columns, rows will be determined by the number of items
+        gridPanel.setLayout(new WrapLayout()); // 3 columns, rows will be determined by the number of items
         for (int i = 1; i <= 13; i++) {
             gridPanel.add(new JLabel("Item " + i));
         }

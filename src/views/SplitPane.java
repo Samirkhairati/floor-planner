@@ -1,5 +1,9 @@
 package views;
+
 import javax.swing.*;
+
+import views.Floor.Floor;
+
 import java.awt.*;
 
 public class SplitPane extends JFrame {
@@ -17,18 +21,26 @@ public class SplitPane extends JFrame {
         controlPanel.setPreferredSize(new Dimension(450, getHeight())); // 1/4th width (200px)
         controlPanel.setBackground(Color.LIGHT_GRAY);
 
-        JPanel rightPanel = new JPanel();
-        rightPanel.setBackground(Color.WHITE); // Set background color
-        rightPanel.add(new JLabel("Right Panel - 3/4th"));
+        JPanel floor = new Floor();
+        // Create a JSplitPane to hold the control panel and the floor panel
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, floor);
+        splitPane.setDividerLocation(450); // Set the initial divider location
 
-        // Use BorderLayout to position the panels
-        setLayout(new BorderLayout());
-
-        // Add the control panel on the left (WEST) and the right panel on the center (CENTER)
-        add(controlPanel, BorderLayout.WEST);
-        add(rightPanel, BorderLayout.CENTER);
+        // Add the split pane to the frame
+        getContentPane().add(splitPane);
 
         // Make the window visible
         setVisible(true);
+
+        // Add key listener to the splitPane
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                System.out.println("Key pressed: " + evt.getKeyCode());
+            }
+        });
+
+        // Make sure the splitPane is focusable to receive key events
+        setFocusable(true);
+        requestFocusInWindow();
     }
 }

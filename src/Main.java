@@ -12,9 +12,8 @@ public class Main {
     }
 
     private static void createAndShowGUI() {
-
         // Create an instance of the SplitPaneExample class
-        new SplitPane();
+        SplitPane splitPane = new SplitPane();
 
     }
 }
