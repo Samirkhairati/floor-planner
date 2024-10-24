@@ -16,6 +16,8 @@ public class FloorModel {
         this.GRID_SIZE = gridSize;
         this.DEFAULT_ROOM_WIDTH = roomWidth;
         this.DEFAULT_ROOM_HEIGHT = roomHeight;
+        this.showLineGrid = true;
+        this.showDotGrid = false;
         this.rooms = new ArrayList<>();
     }
 

@@ -47,6 +47,9 @@ public class ActionPanel extends JPanel {
         JCheckBox showLineGrid = new JCheckBox("Show Line Grid");
         JCheckBox showDotGrid = new JCheckBox("Show Dot Grid");
 
+        showLineGrid.setSelected(StateManager.getInstance().showLineGrid.getState());
+        showDotGrid.setSelected(StateManager.getInstance().showDotGrid.getState());
+
         checkboxPanel.add(showLineGrid);
         checkboxPanel.add(showDotGrid);
 
