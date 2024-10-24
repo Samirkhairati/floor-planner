@@ -10,9 +10,8 @@ import util.StateManager;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import views.ControlPanel;
+import views.Floor;
 import views.FloorView;
-import views.Floor.Floor;
 
 public class SplitPane extends JFrame {
 

@@ -1,7 +1,6 @@
-package views.ActionPanel;
+package ui;
 import javax.swing.*;
 
-import ui.WrapLayout;
 import util.StateManager;
 import util.StateManager.State;
 

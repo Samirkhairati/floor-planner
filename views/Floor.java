@@ -1,4 +1,4 @@
-package views.Floor;
+package views;
 
 import javax.swing.*;
 
