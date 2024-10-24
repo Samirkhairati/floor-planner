@@ -3,7 +3,7 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import views.Floor.Floor;
+import views.Floor.FloorView;
 
 public class SplitPane extends JFrame {
 
@@ -20,7 +20,7 @@ public class SplitPane extends JFrame {
         controlPanel.setPreferredSize(new Dimension(450, getHeight())); // 1/4th width (450px)
         controlPanel.setBackground(Color.LIGHT_GRAY);
 
-        JPanel floor = new Floor(); // Assume this is your custom Floor panel
+        JPanel floor = new FloorView(); // Assume this is your custom Floor panel
 
         // Create a JSplitPane to hold the control panel and the floor panel
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, floor);
