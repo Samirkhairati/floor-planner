@@ -1,6 +1,7 @@
 package views;
 import javax.swing.*;
 
+import ui.WrapLayout;
 import views.ActionPanel.ActionPanel;
 
 import java.awt.*;

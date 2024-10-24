@@ -1,8 +1,8 @@
 package views.ActionPanel;
 import javax.swing.*;
 
+import ui.WrapLayout;
 import views.StateManager;
-import views.WrapLayout;
 import views.StateManager.State;
 
 import java.awt.*;

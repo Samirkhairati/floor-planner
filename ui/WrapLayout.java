@@ -1,4 +1,4 @@
-package views;
+package ui;
 
 import java.awt.*;
 import javax.swing.JScrollPane;
