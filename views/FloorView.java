@@ -1,6 +1,8 @@
 package views;
 
 import models.FloorModel;
+import util.Config;
+
 import javax.swing.*;
 import java.awt.*;
 

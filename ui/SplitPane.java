@@ -4,12 +4,12 @@ import javax.swing.*;
 
 import controllers.FloorController;
 import models.FloorModel;
+import util.Config;
 import util.StateManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import views.Config;
 import views.ControlPanel;
 import views.FloorView;
 import views.Floor.Floor;

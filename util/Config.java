@@ -1,4 +1,4 @@
-package views;
+package util;
 public enum Config {
     INSTANCE;
 

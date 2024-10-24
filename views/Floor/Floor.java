@@ -2,8 +2,8 @@ package views.Floor;
 
 import javax.swing.*;
 
+import util.Config;
 import util.StateManager;
-import views.Config;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
