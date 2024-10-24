@@ -4,10 +4,10 @@ import models.FloorModel;
 import util.StateManager;
 import views.FloorView;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.SwingUtilities;
 
 public class FloorController {
 
@@ -22,7 +22,7 @@ public class FloorController {
 
         view.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if (view.isPlacingRoom()) {
                     placeRoom(e.getX(), e.getY());
                 }
@@ -30,21 +30,29 @@ public class FloorController {
         });
 
         view.addMouseMotionListener(new MouseAdapter() {
+            // For showing preview room
             @Override
             public void mouseMoved(MouseEvent e) {
                 if (view.isPlacingRoom()) {
                     view.setPlacingRoom(true, e.getPoint());
                 }
             }
-        });
-
-        view.addKeyListener(new KeyAdapter() {
+            // For the case when mouse is clicked while moving
             @Override
-            public void keyPressed(KeyEvent e) {
-                handleKeyPress(e.getKeyCode());
+            public void mouseDragged(MouseEvent e) {
+                if (view.isPlacingRoom()) {
+                    view.setPlacingRoom(true, e.getPoint());
+                    placeRoom(e.getX(), e.getY());  // Handle room placement while dragging
+                }
             }
         });
 
+        stateManager.keyCode.addObserver(new StateManager.Observer<Integer>() {
+            @Override
+            public void update(Integer keyCode) {
+                handleKeyPress(keyCode);
+            }
+        });
         stateManager.showLineGrid.addObserver(new StateManager.Observer<Boolean>() {
             @Override
             public void update(Boolean state) {
@@ -76,7 +84,9 @@ public class FloorController {
     }
 
     private void startPlacingRoom() {
-        view.setPlacingRoom(true, MouseInfo.getPointerInfo().getLocation());
+        Point locationOnScreen = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen(locationOnScreen, view);
+        view.setPlacingRoom(true, locationOnScreen);
     }
 
     private void placeRoom(int x, int y) {
