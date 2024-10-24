@@ -1,19 +1,15 @@
 package ui;
+
 import javax.swing.*;
+import java.awt.*;
 
 import util.StateManager;
-import util.StateManager.State;
-
-import java.awt.*;
 
 public class ActionPanel extends JPanel {
 
-    private boolean showLineGrid = false;
-    private boolean showDotGrid = false;
-
     public ActionPanel() {
 
-        setBackground(Color.LIGHT_GRAY); // Set background color to differentiate
+        setBackground(Color.LIGHT_GRAY);
 
         setLayout(new WrapLayout());
 
@@ -23,7 +19,7 @@ public class ActionPanel extends JPanel {
         JButton button4 = new JButton("💾");
         JButton button5 = new JButton("📁");
 
-        Font font = new Font("Arial", Font.PLAIN, 30); // Increase text size
+        Font font = new Font("Arial", Font.PLAIN, 30);
 
         button1.setFont(font);
         button2.setFont(font);
@@ -31,7 +27,7 @@ public class ActionPanel extends JPanel {
         button4.setFont(font);
         button5.setFont(font);
 
-        Dimension buttonSize = new Dimension(80, 50); // Set button size to 80x80 pixels
+        Dimension buttonSize = new Dimension(80, 50);
         button1.setPreferredSize(buttonSize);
         button2.setPreferredSize(buttonSize);
         button3.setPreferredSize(buttonSize);
@@ -45,7 +41,7 @@ public class ActionPanel extends JPanel {
         add(button5);
 
         JPanel checkboxPanel = new JPanel();
-        checkboxPanel.setLayout(new GridLayout(2, 1)); // 2 rows, 1 column
+        checkboxPanel.setLayout(new GridLayout(2, 1));
         checkboxPanel.setBackground(getBackground());
 
         JCheckBox showLineGrid = new JCheckBox("Show Line Grid");
@@ -54,7 +50,7 @@ public class ActionPanel extends JPanel {
         checkboxPanel.add(showLineGrid);
         checkboxPanel.add(showDotGrid);
 
-        checkboxPanel.setPreferredSize(new Dimension(130, 40)); // Set height to twice the button height, width is free
+        checkboxPanel.setPreferredSize(new Dimension(130, 40));
 
         add(checkboxPanel);
 

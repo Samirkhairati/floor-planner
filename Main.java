@@ -10,7 +10,7 @@ public class Main {
             }
         });
     }
-
+    @SuppressWarnings("unused")
     private static void createAndShowGUI() {
         // Create an instance of the SplitPaneExample class
         SplitPane splitPane = new SplitPane();

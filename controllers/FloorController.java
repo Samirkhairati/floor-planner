@@ -1,6 +1,7 @@
 package controllers;
 
 import models.FloorModel;
+import util.StateManager;
 import views.FloorView;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -12,10 +13,12 @@ public class FloorController {
 
     private final FloorModel model;
     private final FloorView view;
+    private StateManager stateManager;
 
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
         this.view = view;
+        this.stateManager = StateManager.getInstance();
 
         view.addMouseListener(new MouseAdapter() {
             @Override
@@ -39,6 +42,21 @@ public class FloorController {
             @Override
             public void keyPressed(KeyEvent e) {
                 handleKeyPress(e.getKeyCode());
+            }
+        });
+
+        stateManager.showLineGrid.addObserver(new StateManager.Observer<Boolean>() {
+            @Override
+            public void update(Boolean state) {
+                model.setShowLineGrid(state);
+                view.repaint();
+            }
+        });
+        stateManager.showDotGrid.addObserver(new StateManager.Observer<Boolean>() {
+            @Override
+            public void update(Boolean state) {
+                model.setShowDotGrid(state);
+                view.repaint();
             }
         });
     }
