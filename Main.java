@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-import views.SplitPane;
+import ui.SplitPane;
 
 public class Main {
     public static void main(String[] args) {

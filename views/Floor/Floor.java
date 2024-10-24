@@ -2,8 +2,9 @@ package views.Floor;
 
 import javax.swing.*;
 
+import util.StateManager;
 import views.Config;
-import views.StateManager;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -12,7 +13,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FloorView extends JPanel {
+public class Floor extends JPanel {
 
     private int keyCode;
     private Point mousePoint; // To track mouse location
@@ -26,7 +27,7 @@ public class FloorView extends JPanel {
     private boolean showLineGrid = false;
     private boolean showDotGrid = false;
 
-    public FloorView() {
+    public Floor() {
         setBackground(Color.WHITE); // Set background color to differentiate
         setFocusable(true); // Needed to ensure the JPanel receives keyboard focus
         requestFocusInWindow(); // Request focus so it listens to key events

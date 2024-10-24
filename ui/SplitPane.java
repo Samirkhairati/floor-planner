@@ -1,9 +1,18 @@
-package views;
+package ui;
 
 import javax.swing.*;
+
+import controllers.FloorController;
+import models.FloorModel;
+import util.StateManager;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import views.Floor.FloorView;
+
+import views.Config;
+import views.ControlPanel;
+import views.FloorView;
+import views.Floor.Floor;
 
 public class SplitPane extends JFrame {
 
@@ -20,10 +29,14 @@ public class SplitPane extends JFrame {
         controlPanel.setPreferredSize(new Dimension(450, getHeight())); // 1/4th width (450px)
         controlPanel.setBackground(Color.LIGHT_GRAY);
 
-        JPanel floor = new FloorView(); // Assume this is your custom Floor panel
+        JPanel floor = new Floor(); // Assume this is your custom Floor panel
 
-        // Create a JSplitPane to hold the control panel and the floor panel
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, floor);
+        FloorModel model = new FloorModel(Config.SNAP, Config.DEFAULT_ROOM_WIDTH, Config.DEFAULT_ROOM_HEIGHT); // grid size, room width, room height
+        FloorView view = new FloorView(model);
+        FloorController controller = new FloorController(model, view);
+
+        // Create a JSplitPane to hold the control panel and the floor panel1
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, view);
         splitPane.setDividerLocation(450); // Set the initial divider location
 
         // Add the split pane to the frame
