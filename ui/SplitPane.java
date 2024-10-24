@@ -19,13 +19,13 @@ public class SplitPane extends JFrame {
         setLocationRelativeTo(null); // Center the window
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Make the window full screen
 
-        JPanel controlPanel = new ControlPanel();
-        controlPanel.setPreferredSize(new Dimension(450, getHeight()));
-        controlPanel.setBackground(Color.LIGHT_GRAY);
-
         FloorModel model = new FloorModel(Config.SNAP, Config.DEFAULT_ROOM_WIDTH, Config.DEFAULT_ROOM_HEIGHT);
         FloorView view = new FloorView(model);
         FloorController controller = new FloorController(model, view);
+
+        JPanel controlPanel = new ControlPanel(controller);
+        controlPanel.setPreferredSize(new Dimension(450, getHeight()));
+        controlPanel.setBackground(Color.LIGHT_GRAY);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, view);
         splitPane.setDividerLocation(450);

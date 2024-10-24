@@ -83,7 +83,7 @@ public class FloorController {
         }
     }
 
-    private void startPlacingRoom() {
+    public void startPlacingRoom() {
         Point locationOnScreen = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(locationOnScreen, view);
         view.setPlacingRoom(true, locationOnScreen);
