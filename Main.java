@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-import views.SplitPane;
+import ui.SplitPane;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,7 +10,7 @@ public class Main {
             }
         });
     }
-
+    @SuppressWarnings("unused")
     private static void createAndShowGUI() {
         // Create an instance of the SplitPaneExample class
         SplitPane splitPane = new SplitPane();

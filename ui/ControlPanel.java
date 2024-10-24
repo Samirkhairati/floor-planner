@@ -1,7 +1,5 @@
-package views;
+package ui;
 import javax.swing.*;
-
-import views.ActionPanel.ActionPanel;
 
 import java.awt.*;
 

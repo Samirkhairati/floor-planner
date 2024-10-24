@@ -1,9 +1,9 @@
-package views;
+package util;
 public enum Config {
     INSTANCE;
 
-    public static final int DEFAULT_ROOM_WIDTH = 100;
-    public static final int DEFAULT_ROOM_HEIGHT = 100;
+    public static final int DEFAULT_ROOM_WIDTH = 50;
+    public static final int DEFAULT_ROOM_HEIGHT = 50;
 
     public static final int SNAP = 50;
     public static final int DOT_SIZE = 4;

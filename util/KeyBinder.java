@@ -1,45 +1,11 @@
-package views;
-
-import javax.swing.*;
-import java.awt.*;
+package util;
 import java.awt.event.KeyEvent;
-import views.Floor.Floor;
-
-public class SplitPane extends JFrame {
-
-    public SplitPane() {
-        // Set the title of the window
-        setTitle("Fixed UI Example");
-        setSize(800, 600); // Initial size of the window
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Center the window
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Make the window full screen
-
-        // Create the two panels with fixed sizes
-        JPanel controlPanel = new ControlPanel();
-        controlPanel.setPreferredSize(new Dimension(450, getHeight())); // 1/4th width (450px)
-        controlPanel.setBackground(Color.LIGHT_GRAY);
-
-        JPanel floor = new Floor(); // Assume this is your custom Floor panel
-
-        // Create a JSplitPane to hold the control panel and the floor panel
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, floor);
-        splitPane.setDividerLocation(450); // Set the initial divider location
-
-        // Add the split pane to the frame
-        getContentPane().add(splitPane);
-
-        // Setup key bindings
-        setupKeyBindings();
-
-        // Make the window visible
-        setVisible(true);
-    }
-
-    private void setupKeyBindings() {
+import javax.swing.*;
+public class KeyBinder {
+    public KeyBinder(JFrame frame) {
         // Get the InputMap and ActionMap from the JFrame's root pane
-        InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = getRootPane().getActionMap();
+        InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = frame.getRootPane().getActionMap();
 
         // Define the key bindings
         inputMap.put(KeyStroke.getKeyStroke("1"), "key1");
@@ -81,3 +47,4 @@ public class SplitPane extends JFrame {
         });
     }
 }
+

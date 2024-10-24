@@ -1,4 +1,4 @@
-package views;
+package util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ public class StateManager {
 
     public State<Integer> keyCode = new State<>(); // Use generic State for int type
 
-    public State<Boolean> showLineGrid = new State<>(false); // Use generic State for boolean type
+    public State<Boolean> showLineGrid = new State<>(true); // Use generic State for boolean type
     public State<Boolean> showDotGrid = new State<>(false); // Use generic State for boolean type
 
     private StateManager() {
