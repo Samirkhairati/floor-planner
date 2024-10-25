@@ -2,7 +2,7 @@ package ui;
 
 import javax.swing.*;
 
-import controllers.FloorController;
+import controller.FloorController;
 
 import java.awt.*;
 

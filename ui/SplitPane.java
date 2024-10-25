@@ -1,13 +1,15 @@
 package ui;
 
 import javax.swing.*;
+
+import controller.FloorController;
+
 import java.awt.*;
 
-import controllers.FloorController;
-import models.FloorModel;
-import views.FloorView;
+import model.FloorModel;
 import util.Config;
 import util.KeyBinder;
+import view.FloorView;
 
 public class SplitPane extends JFrame {
 

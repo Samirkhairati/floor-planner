@@ -1,15 +1,17 @@
-package controllers;
+package controller;
 
-import models.FloorModel;
-import models.RoomModel;
 import ui.AddRoomOptions;
 import util.StateManager;
-import views.FloorView;
+import view.FloorView;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
+
+import model.FloorModel;
+import model.RoomModel;
 
 public class FloorController {
 

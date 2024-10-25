@@ -1,10 +1,12 @@
-package views;
+package view;
 
-import models.FloorModel;
-import models.RoomModel;
 import util.Config;
 
 import javax.swing.*;
+
+import model.FloorModel;
+import model.RoomModel;
+
 import java.awt.*;
 
 public class FloorView extends JPanel {

@@ -2,7 +2,7 @@ package ui;
 
 import javax.swing.*;
 
-import models.FloorModel;
+import model.FloorModel;
 
 import java.awt.*;
 
