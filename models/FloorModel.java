@@ -1,11 +1,10 @@
 package models;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FloorModel {
-    private List<Rectangle> rooms;
+    private List<RoomModel> rooms;
     private boolean showLineGrid;
     private boolean showDotGrid;
     private final int GRID_SIZE;
@@ -21,11 +20,11 @@ public class FloorModel {
         this.rooms = new ArrayList<>();
     }
 
-    public void addRoom(Rectangle room) {
+    public void addRoom(RoomModel room) {
         rooms.add(room);
     }
 
-    public List<Rectangle> getRooms() {
+    public List<RoomModel> getRooms() {
         return rooms;
     }
 

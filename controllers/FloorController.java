@@ -1,6 +1,8 @@
 package controllers;
 
 import models.FloorModel;
+import models.RoomModel;
+import ui.AddRoomOptions;
 import util.StateManager;
 import views.FloorView;
 import java.awt.*;
@@ -14,6 +16,7 @@ public class FloorController {
     private final FloorModel model;
     private final FloorView view;
     private StateManager stateManager;
+    private Dimension previewRoomSize;
 
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
@@ -46,7 +49,6 @@ public class FloorController {
                 }
             }
         });
-
         stateManager.keyCode.addObserver(new StateManager.Observer<Integer>() {
             @Override
             public void update(Integer keyCode) {
@@ -84,8 +86,11 @@ public class FloorController {
     }
 
     public void startPlacingRoom() {
+        AddRoomOptions options = new AddRoomOptions(model);
         Point locationOnScreen = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(locationOnScreen, view);
+        previewRoomSize = new Dimension(options.roomWidth, options.roomHeight);
+        view.setPreviewRoomSize(previewRoomSize);
         view.setPlacingRoom(true, locationOnScreen);
     }
 
@@ -94,7 +99,8 @@ public class FloorController {
         int snappedX = (x / gridSize) * gridSize;
         int snappedY = (y / gridSize) * gridSize;
 
-        model.addRoom(new Rectangle(snappedX, snappedY, model.getDefaultRoomWidth(), model.getDefaultRoomHeight()));
+        model.addRoom(new RoomModel(snappedX, snappedY, previewRoomSize.width, previewRoomSize.height));
         view.setPlacingRoom(false, null); // stop placing room
+        view.setPreviewRoomSize(null);
     }
 }

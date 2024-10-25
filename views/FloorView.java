@@ -1,6 +1,7 @@
 package views;
 
 import models.FloorModel;
+import models.RoomModel;
 import util.Config;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ public class FloorView extends JPanel {
     private final FloorModel model;
     private Point mousePoint;
     private boolean isPlacingRoom;
+    private Dimension previewRoomSize;
 
     public FloorView(FloorModel model) {
         this.model = model;
@@ -21,6 +23,10 @@ public class FloorView extends JPanel {
 
     public boolean isPlacingRoom() {
         return isPlacingRoom;
+    }
+
+    public void setPreviewRoomSize(Dimension previewRoomSize) {
+        this.previewRoomSize = previewRoomSize;
     }
 
     public void setPlacingRoom(boolean isPlacingRoom, Point mousePoint) {
@@ -54,8 +60,8 @@ public class FloorView extends JPanel {
 
     private void drawRooms(Graphics g) {
         g.setColor(Color.BLUE);
-        for (Rectangle room : model.getRooms()) {
-            g.fillRect(room.x, room.y, room.width, room.height);
+        for (RoomModel room : model.getRooms()) {
+            g.fillRect(room.getX(), room.getY(), room.getWidth(), room.getHeight());
         }
     }
 
@@ -65,7 +71,7 @@ public class FloorView extends JPanel {
             int gridSize = model.getGridSize();
             int snappedX = (mousePoint.x / gridSize) * gridSize;
             int snappedY = (mousePoint.y / gridSize) * gridSize;
-            g.fillRect(snappedX, snappedY, model.getDefaultRoomWidth(), model.getDefaultRoomHeight());
+            g.fillRect(snappedX, snappedY, previewRoomSize.width, previewRoomSize.height);
         }
     }
 
