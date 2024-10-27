@@ -18,6 +18,7 @@ public class RoomModel {
     private Color color;
     private boolean isPlacing;
     private boolean isOverlapping;
+    private boolean isHovering;
 
     public RoomModel() {
         this.position = null; // No default position exists (don't snap back to anywhere)
@@ -61,6 +62,10 @@ public class RoomModel {
 
     public boolean isOverlapping() {
         return isOverlapping;
+    }
+
+    public boolean isHovering() {
+        return isHovering;
     }
 
     public RoomModel setPosition(Point position) {
@@ -115,6 +120,11 @@ public class RoomModel {
 
     public RoomModel setOverlapping(boolean isOverlapping) {
         this.isOverlapping = isOverlapping;
+        return this;
+    }
+
+    public RoomModel setHovering(boolean isHovering) {
+        this.isHovering = isHovering;
         return this;
     }
 

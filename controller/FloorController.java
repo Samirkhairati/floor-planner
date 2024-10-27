@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import model.FloorModel;
+import model.RoomModel;
 import types.RoomType;
 
 public class FloorController {
@@ -19,22 +20,17 @@ public class FloorController {
     private StateManager stateManager;
     private RoomController focussedRoom;
 
-
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
         this.view = view;
         this.stateManager = StateManager.getInstance();
 
-
         view.addMouseMotionListener(new MouseAdapter() {
             // For showing preview room
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (focussedRoom != null && focussedRoom.roomModel.isPlacing()) {
-                    focussedRoom.roomModel.setPreviewPosition(Tools.snap(e.getPoint()));
-                    focussedRoom.checkOverlap();
-                    view.repaint();
-                }
+                checkHover(e);
+                movePreviewRoom(e);
             }
         });
         stateManager.keyCode.addObserver(new StateManager.Observer<Integer>() {
@@ -76,6 +72,8 @@ public class FloorController {
                     if (focussedRoom.roomModel.getPosition() == null) {
                         model.removeRoomView(focussedRoom.roomView);
                     }
+                    view.remove(focussedRoom.roomView);
+                    focussedRoom = null;
                     view.repaint();
                 }
                 break;
@@ -83,11 +81,32 @@ public class FloorController {
     }
 
     public void startPlacingRoom() {
-        if (focussedRoom != null && focussedRoom.roomModel.isPlacing()) return; // to prevent multiple rooms being placed at the same time
+        if (focussedRoom != null && focussedRoom.roomModel.isPlacing())
+            return; // to prevent multiple rooms being placed at the same time
         AddRoomOptions options = new AddRoomOptions(model);
         Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
         RoomType selectedRoomType = options.selectedRoomType;
         focussedRoom = new RoomController(view, model, initialRoomSize, selectedRoomType);
         focussedRoom.startPlacingRoom();
+    }
+
+    private void movePreviewRoom(MouseEvent e) {
+        if (focussedRoom != null && focussedRoom.roomModel.isPlacing()) {
+            focussedRoom.roomModel.setPreviewPosition(Tools.snap(e.getPoint()));
+            focussedRoom.checkOverlap();
+            view.repaint();
+        }
+    }
+
+    private void checkHover(MouseEvent e) {
+        for (RoomModel room : model.getRoomModels()) {
+            System.out.println("Checking hover");
+            System.out.println(room.getPosition());
+            System.out.println(e.getPoint());
+            boolean isMouseOver = Tools.isMouseOver(e.getPoint(), room.getPosition(), room.getSize());
+            System.out.println(isMouseOver);
+            room.setHovering(isMouseOver);
+            view.repaint();
+        }
     }
 }

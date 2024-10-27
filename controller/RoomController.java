@@ -53,7 +53,9 @@ public class RoomController {
         SwingUtilities.convertPointFromScreen(locationOnScreen, floorView);
         roomModel.setPlacing(true);
         roomModel.setPreviewPosition(Tools.snap(locationOnScreen));
+        System.out.println(floorView.getComponentCount());
         floorView.add(roomView);
+        System.out.println(floorView.getComponentCount());
         floorModel.addRoomView(roomView);
         floorView.repaint();
     }
@@ -79,6 +81,4 @@ public class RoomController {
         }
         roomModel.setOverlapping(false);
     }
-
-
 }
