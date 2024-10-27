@@ -2,25 +2,22 @@ package model;
 
 import java.awt.*;
 import java.util.List;
-
-import types.RoomType;
-
 import java.util.ArrayList;
 
 public class RoomModel {
     
-    private List<Rectangle> furnitures = new ArrayList<>();
-    private Point position;
-    private Point previewPosition;
-    private Dimension size;
-    private Dimension previewSize;
-    private RoomType type;
-    private String name;
-    private Color color;
-    private boolean isPlacing;
+    private List<Rectangle> furnitures;
+    private int x;
+    private int y;
+    private int width;
+    private int height;
 
-    public RoomModel() {
-        this.position = null; // No default position exists (don't snap back to anywhere)
+    public RoomModel(int x, int y, int width, int height) {
+        this.furnitures = new ArrayList<>();
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     public void addFurniture(Rectangle furniture) {
@@ -31,76 +28,36 @@ public class RoomModel {
         return furnitures;
     }
 
-    public Point getPosition() {
-        return position;
+    public int getX() {
+        return x;
     }
 
-    public Dimension getSize() {
-        return size;
+    public int getY() {
+        return y;
     }
 
-    public Point getPreviewPosition() {
-        return previewPosition;
+    public int getWidth() {
+        return width;
     }
 
-    public Dimension getPreviewSize() {
-        return previewSize;
+    public int getHeight() {
+        return height;
     }
 
-    public RoomType getType() {
-        return type;
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public String getName() {
-        return name;
+    public void setY(int y) {
+        this.y = y;
     }
 
-    public Color getColor() {
-        return color;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public boolean isPlacing() {
-        return isPlacing;
-    }
-
-    public RoomModel setPosition(Point position) {
-        this.position = position;
-        return this;
-    }
-
-    public RoomModel setPreviewPosition(Point previewPosition) {
-        this.previewPosition = previewPosition;
-        return this;
-    }
-
-    public RoomModel setSize(Dimension size) {
-        this.size = size;
-        return this;
-    }
-
-    public RoomModel setPreviewSize(Dimension previewSize) {
-        this.previewSize = previewSize;
-        return this;
-    }
-
-    public RoomModel setType(RoomType type) {
-        this.type = type;
-        return this;
-    }
-
-    public RoomModel setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public RoomModel setColor(Color color) {
-        this.color = color;
-        return this;
-    }
-
-    public RoomModel setPlacing(boolean isPlacing) {
-        this.isPlacing = isPlacing;
-        return this;
-    }
+    public void setHeight(int height) {
+        this.height = height;
+    }    
 
 }
