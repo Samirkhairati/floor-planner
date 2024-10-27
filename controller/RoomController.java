@@ -30,7 +30,6 @@ public class RoomController {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (roomModel.isPlacing()) {
-                    System.out.println("Mouse pressed");
                     placeRoom();
                 }
             }
@@ -61,7 +60,6 @@ public class RoomController {
         roomModel.setPlacing(false);
         roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
         floorModel.addRoomModel(roomModel);
-        System.out.println("Room placed at " + roomModel.getPosition());
         floorView.repaint();
     }
 

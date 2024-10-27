@@ -20,7 +20,6 @@ public class RoomView extends JComponent {
         super.paintComponent(g);
         if (model.isPlacing()) {
             g.setColor(Color.RED);
-            System.out.println(model.getPreviewPosition());
             g.fillRect(model.getPreviewPosition().x, model.getPreviewPosition().y, model.getSize().width,
                     model.getSize().height);
         } 
