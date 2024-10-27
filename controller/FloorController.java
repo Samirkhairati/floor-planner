@@ -73,9 +73,7 @@ public class FloorController {
     }
 
     public void startPlacingRoom() {
-        if (focussedRoom != null) {
-            return;
-        }
+        if (focussedRoom != null && focussedRoom.roomModel.isPlacing()) return; // to prevent multiple rooms being placed at the same time
         AddRoomOptions options = new AddRoomOptions(model);
         Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
         RoomType selectedRoomType = options.selectedRoomType;
