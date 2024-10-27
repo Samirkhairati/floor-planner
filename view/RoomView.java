@@ -25,7 +25,7 @@ public class RoomView extends JComponent {
                     model.getSize().height);
         } 
         if (model.getPosition() != null) {
-            Color color = new Color(model.getColor().getRed(), model.getColor().getGreen(), model.getColor().getBlue(), 255); // 255 is the alpha value for 100% opacity
+            Color color = new Color(model.getColor().getRed(), model.getColor().getGreen(), model.getColor().getBlue(), 200); // 255 is the alpha value for 100% opacity
             g.setColor(color);
             g.fillRect(model.getPosition().x, model.getPosition().y, model.getSize().width, model.getSize().height);
         }
