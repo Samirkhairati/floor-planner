@@ -5,36 +5,18 @@ import util.Config;
 import javax.swing.*;
 
 import model.FloorModel;
-import model.RoomModel;
 
 import java.awt.*;
 
 public class FloorView extends JPanel {
 
     private final FloorModel model;
-    private Point mousePoint;
-    private boolean isPlacingRoom;
-    private Dimension previewRoomSize;
 
     public FloorView(FloorModel model) {
         this.model = model;
         setBackground(Color.WHITE);
         setFocusable(true);
         requestFocusInWindow();
-    }
-
-    public boolean isPlacingRoom() {
-        return isPlacingRoom;
-    }
-
-    public void setPreviewRoomSize(Dimension previewRoomSize) {
-        this.previewRoomSize = previewRoomSize;
-    }
-
-    public void setPlacingRoom(boolean isPlacingRoom, Point mousePoint) {
-        this.isPlacingRoom = isPlacingRoom;
-        this.mousePoint = mousePoint;
-        repaint();
     }
 
     private void drawLineGrid(Graphics g) {
@@ -61,19 +43,8 @@ public class FloorView extends JPanel {
     }
 
     private void drawRooms(Graphics g) {
-        g.setColor(Color.BLUE);
-        for (RoomModel room : model.getRooms()) {
-            g.fillRect(room.getX(), room.getY(), room.getWidth(), room.getHeight());
-        }
-    }
-
-    private void drawPreviewRoom(Graphics g) {
-        if (isPlacingRoom && mousePoint != null) {
-            g.setColor(Color.RED);
-            int gridSize = model.getGridSize();
-            int snappedX = (mousePoint.x / gridSize) * gridSize;
-            int snappedY = (mousePoint.y / gridSize) * gridSize;
-            g.fillRect(snappedX, snappedY, previewRoomSize.width, previewRoomSize.height);
+        for (RoomView room : model.getRoomViews()) {
+            room.draw(g);
         }
     }
 
@@ -83,6 +54,5 @@ public class FloorView extends JPanel {
         drawLineGrid(g);
         drawDotGrid(g);
         drawRooms(g);
-        drawPreviewRoom(g);
     }
 }

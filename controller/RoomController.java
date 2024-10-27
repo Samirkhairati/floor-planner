@@ -1,5 +1,69 @@
 package controller;
 
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.SwingUtilities;
+
+import model.FloorModel;
+import model.RoomModel;
+import util.Tools;
+import view.FloorView;
+import view.RoomView;
+
 public class RoomController {
-    
+
+    public final RoomModel roomModel;
+    private final RoomView roomView;
+    private final FloorView floorView;
+    private final FloorModel floorModel;
+
+    public RoomController(FloorView floorView, FloorModel floorModel, Dimension initialRoomSize) {
+        this.roomModel = new RoomModel();
+        this.roomView = new RoomView(roomModel);
+        this.floorView = floorView;
+        this.floorModel = floorModel;
+        roomModel.setSize(initialRoomSize);
+
+        floorView.addMouseListener(new MouseAdapter() {
+            // Click to place room when a new room is created
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (roomModel.isPlacing()) {
+                    System.out.println("Mouse pressed");
+                    placeRoom();
+                }
+            }
+        });
+
+        floorView.addMouseMotionListener(new MouseAdapter() {
+            // For the case when mouse is clicked while moving
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (roomModel.isPlacing()) {
+                    placeRoom();
+                }
+            }
+        });
+    }
+
+    public void startPlacingRoom() {
+        Point locationOnScreen = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen(locationOnScreen, floorView);
+        roomModel.setPlacing(true);
+        roomModel.setPreviewPosition(locationOnScreen);
+        floorView.add(roomView);
+        floorModel.addRoomView(roomView);
+        floorView.repaint();
+    }
+
+    private void placeRoom() {
+        roomModel.setPlacing(false);
+        roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
+        floorModel.addRoomModel(roomModel);
+        System.out.println("Room placed at " + roomModel.getPosition());
+        floorView.repaint();
+    }
+
+
 }
