@@ -1,6 +1,8 @@
 package util;
+
 import java.awt.event.KeyEvent;
 import javax.swing.*;
+
 public class KeyBinder {
     public KeyBinder(JFrame frame) {
         // Get the InputMap and ActionMap from the JFrame's root pane
@@ -13,6 +15,7 @@ public class KeyBinder {
         inputMap.put(KeyStroke.getKeyStroke("3"), "key3");
         inputMap.put(KeyStroke.getKeyStroke("4"), "key4");
         inputMap.put(KeyStroke.getKeyStroke("5"), "key5");
+        inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), "escape");
 
         // Define the actions for each key
         actionMap.put("key1", new AbstractAction() {
@@ -45,6 +48,11 @@ public class KeyBinder {
                 StateManager.getInstance().keyCode.setState(KeyEvent.VK_5);
             }
         });
+        actionMap.put("escape", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                StateManager.getInstance().keyCode.setState(KeyEvent.VK_ESCAPE);
+            }
+        });
     }
 }
-

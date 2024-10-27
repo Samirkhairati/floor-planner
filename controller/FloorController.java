@@ -70,6 +70,15 @@ public class FloorController {
             case KeyEvent.VK_3:
                 // addWindow logic
                 break;
+            case KeyEvent.VK_ESCAPE:
+                if (focussedRoom != null && focussedRoom.roomModel.isPlacing()) {
+                    focussedRoom.roomModel.setPlacing(false);
+                    if (focussedRoom.roomModel.getPosition() == null) {
+                        model.removeRoomView(focussedRoom.roomView);
+                    }
+                    view.repaint();
+                }
+                break;
         }
     }
 

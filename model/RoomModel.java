@@ -87,7 +87,7 @@ public class RoomModel {
         this.type = type;
         switch (type) {
             case RoomType.HALL:
-                setColor(new Color(241, 208, 137));
+                setColor(new Color(255, 177, 84, 1));
                 break;
             case RoomType.KITCHEN:
                 setColor(new Color(177, 228, 165));

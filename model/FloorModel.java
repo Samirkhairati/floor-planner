@@ -32,6 +32,14 @@ public class FloorModel {
         roomViews.add(room);
     }
 
+    public void removeRoomModel(RoomModel room) {
+        roomModels.remove(room);
+    }
+
+    public void removeRoomView(RoomView room) {
+        roomViews.remove(room);
+    }
+
     public List<RoomModel> getRoomModels() {
         return roomModels;
     }

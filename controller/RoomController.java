@@ -15,7 +15,7 @@ import view.RoomView;
 public class RoomController {
 
     public final RoomModel roomModel;
-    private final RoomView roomView;
+    public final RoomView roomView;
     private final FloorView floorView;
     private final FloorModel floorModel;
 
