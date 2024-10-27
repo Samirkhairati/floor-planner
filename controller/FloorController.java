@@ -73,6 +73,9 @@ public class FloorController {
     }
 
     public void startPlacingRoom() {
+        if (focussedRoom != null) {
+            return;
+        }
         AddRoomOptions options = new AddRoomOptions(model);
         Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
         RoomType selectedRoomType = options.selectedRoomType;
