@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import model.FloorModel;
 import model.RoomModel;
+import types.RoomType;
 import util.Tools;
 import view.FloorView;
 import view.RoomView;
@@ -18,12 +19,13 @@ public class RoomController {
     private final FloorView floorView;
     private final FloorModel floorModel;
 
-    public RoomController(FloorView floorView, FloorModel floorModel, Dimension initialRoomSize) {
+    public RoomController(FloorView floorView, FloorModel floorModel, Dimension initialRoomSize, RoomType selectedRoomType) {
         this.roomModel = new RoomModel();
         this.roomView = new RoomView(roomModel);
         this.floorView = floorView;
         this.floorModel = floorModel;
         roomModel.setSize(initialRoomSize);
+        roomModel.setType(selectedRoomType);
 
         floorView.addMouseListener(new MouseAdapter() {
             // Click to place room when a new room is created
@@ -50,7 +52,7 @@ public class RoomController {
         Point locationOnScreen = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(locationOnScreen, floorView);
         roomModel.setPlacing(true);
-        roomModel.setPreviewPosition(locationOnScreen);
+        roomModel.setPreviewPosition(Tools.snap(locationOnScreen));
         floorView.add(roomView);
         floorModel.addRoomView(roomView);
         floorView.repaint();
