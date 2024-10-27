@@ -13,7 +13,6 @@ import view.FloorView;
 
 public class SplitPane extends JFrame {
 
-    @SuppressWarnings("unused")
     public SplitPane() {
         setTitle("Fixed UI Example");
         setSize(800, 600);
@@ -33,7 +32,7 @@ public class SplitPane extends JFrame {
         splitPane.setDividerLocation(450);
         getContentPane().add(splitPane);
 
-        KeyBinder keyBinder = new KeyBinder(this);
+        new KeyBinder(this);
         setVisible(true);
     }
 }

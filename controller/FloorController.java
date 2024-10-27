@@ -2,52 +2,36 @@ package controller;
 
 import ui.AddRoomOptions;
 import util.StateManager;
+import util.Tools;
 import view.FloorView;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.SwingUtilities;
-
 import model.FloorModel;
-import model.RoomModel;
 
 public class FloorController {
 
     private final FloorModel model;
     private final FloorView view;
     private StateManager stateManager;
-    private Dimension previewRoomSize;
+    private RoomController focussedRoom;
+
 
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
         this.view = view;
         this.stateManager = StateManager.getInstance();
 
-        view.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (view.isPlacingRoom()) {
-                    placeRoom(e.getX(), e.getY());
-                }
-            }
-        });
 
         view.addMouseMotionListener(new MouseAdapter() {
             // For showing preview room
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (view.isPlacingRoom()) {
-                    view.setPlacingRoom(true, e.getPoint());
-                }
-            }
-            // For the case when mouse is clicked while moving
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (view.isPlacingRoom()) {
-                    view.setPlacingRoom(true, e.getPoint());
-                    placeRoom(e.getX(), e.getY());  // Handle room placement while dragging
+                if (focussedRoom != null && focussedRoom.roomModel.isPlacing()) {
+                    focussedRoom.roomModel.setPreviewPosition(Tools.snap(e.getPoint()));
+                    view.repaint();
                 }
             }
         });
@@ -89,20 +73,8 @@ public class FloorController {
 
     public void startPlacingRoom() {
         AddRoomOptions options = new AddRoomOptions(model);
-        Point locationOnScreen = MouseInfo.getPointerInfo().getLocation();
-        SwingUtilities.convertPointFromScreen(locationOnScreen, view);
-        previewRoomSize = new Dimension(options.roomWidth, options.roomHeight);
-        view.setPreviewRoomSize(previewRoomSize);
-        view.setPlacingRoom(true, locationOnScreen);
-    }
-
-    private void placeRoom(int x, int y) {
-        int gridSize = model.getGridSize();
-        int snappedX = (x / gridSize) * gridSize;
-        int snappedY = (y / gridSize) * gridSize;
-
-        model.addRoom(new RoomModel(snappedX, snappedY, previewRoomSize.width, previewRoomSize.height));
-        view.setPlacingRoom(false, null); // stop placing room
-        view.setPreviewRoomSize(null);
+        Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
+        focussedRoom = new RoomController(view, model, initialRoomSize);
+        focussedRoom.startPlacingRoom();
     }
 }

@@ -3,8 +3,11 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import view.RoomView;
+
 public class FloorModel {
-    private List<RoomModel> rooms;
+    private List<RoomModel> roomModels;
+    private List<RoomView> roomViews;
     private boolean showLineGrid;
     private boolean showDotGrid;
     private final int GRID_SIZE;
@@ -17,15 +20,24 @@ public class FloorModel {
         this.DEFAULT_ROOM_HEIGHT = roomHeight;
         this.showLineGrid = true;
         this.showDotGrid = false;
-        this.rooms = new ArrayList<>();
+        this.roomModels = new ArrayList<>();
+        this.roomViews = new ArrayList<>();
     }
 
-    public void addRoom(RoomModel room) {
-        rooms.add(room);
+    public void addRoomModel(RoomModel room) {
+        roomModels.add(room);
     }
 
-    public List<RoomModel> getRooms() {
-        return rooms;
+    public void addRoomView(RoomView room) {
+        roomViews.add(room);
+    }
+
+    public List<RoomModel> getRoomModels() {
+        return roomModels;
+    }
+
+    public List<RoomView> getRoomViews() {
+        return roomViews;
     }
 
     public boolean isShowLineGrid() {
