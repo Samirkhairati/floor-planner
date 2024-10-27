@@ -15,7 +15,6 @@ public class RoomModel {
     private Dimension size;
     private Dimension previewSize;
     private RoomType type;
-    private String name;
     private Color color;
     private boolean isPlacing;
 
@@ -51,10 +50,6 @@ public class RoomModel {
         return type;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public Color getColor() {
         return color;
     }
@@ -85,17 +80,27 @@ public class RoomModel {
 
     public RoomModel setType(RoomType type) {
         this.type = type;
+        switch (type) {
+            case RoomType.HALL:
+                setColor(new Color(241, 208, 137));
+                break;
+            case RoomType.KITCHEN:
+                setColor(new Color(177, 228, 165));
+                break;
+            case RoomType.BEDROOM:
+                setColor(new Color(206, 165, 228));
+                break;
+            case RoomType.BATHROOM:
+                setColor(new Color(165, 217, 228));
+                break;
+            default:
+                break;
+        }
         return this;
     }
 
-    public RoomModel setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public RoomModel setColor(Color color) {
+    private void setColor(Color color) {
         this.color = color;
-        return this;
     }
 
     public RoomModel setPlacing(boolean isPlacing) {

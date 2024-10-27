@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import model.FloorModel;
+import types.RoomType;
 
 public class FloorController {
 
@@ -74,7 +75,8 @@ public class FloorController {
     public void startPlacingRoom() {
         AddRoomOptions options = new AddRoomOptions(model);
         Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
-        focussedRoom = new RoomController(view, model, initialRoomSize);
+        RoomType selectedRoomType = options.selectedRoomType;
+        focussedRoom = new RoomController(view, model, initialRoomSize, selectedRoomType);
         focussedRoom.startPlacingRoom();
     }
 }

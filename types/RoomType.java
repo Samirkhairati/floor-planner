@@ -1,7 +1,7 @@
 package types;
 
 public enum RoomType {
-    LIVING_ROOM,
+    HALL,
     KITCHEN,
     BEDROOM,
     BATHROOM
