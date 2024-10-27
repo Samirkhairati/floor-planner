@@ -19,11 +19,14 @@ public class RoomView extends JComponent {
     public void draw(Graphics g) {
         super.paintComponent(g);
         if (model.isPlacing()) {
-            Color color = new Color(model.getColor().getRed(), model.getColor().getGreen(), model.getColor().getBlue(), 128); // 128 is the alpha value for 50% opacity
-            g.setColor(color);
+            if (model.isOverlapping()) {
+                g.setColor(new Color(255, 65, 108, 128));
+            } else {
+                g.setColor(new Color(model.getColor().getRed(), model.getColor().getGreen(), model.getColor().getBlue(), 128));
+            }
             g.fillRect(model.getPreviewPosition().x, model.getPreviewPosition().y, model.getSize().width,
                     model.getSize().height);
-        } 
+        }
         if (model.getPosition() != null) {
             Color color = new Color(model.getColor().getRed(), model.getColor().getGreen(), model.getColor().getBlue(), 200); // 255 is the alpha value for 100% opacity
             g.setColor(color);

@@ -32,6 +32,7 @@ public class FloorController {
             public void mouseMoved(MouseEvent e) {
                 if (focussedRoom != null && focussedRoom.roomModel.isPlacing()) {
                     focussedRoom.roomModel.setPreviewPosition(Tools.snap(e.getPoint()));
+                    focussedRoom.checkOverlap();
                     view.repaint();
                 }
             }

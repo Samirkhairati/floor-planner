@@ -59,10 +59,25 @@ public class RoomController {
     }
 
     private void placeRoom() {
+        if (roomModel.isOverlapping()) return;
         roomModel.setPlacing(false);
         roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
         floorModel.addRoomModel(roomModel);
         floorView.repaint();
+    }
+
+    public void checkOverlap() {
+        Rectangle previewRoom = new Rectangle(roomModel.getPreviewPosition(), roomModel.getSize());
+        for (RoomModel room : floorModel.getRoomModels()) {
+            if (room != roomModel) {
+                Rectangle existingRoom = new Rectangle(room.getPosition(), room.getSize());
+                if (previewRoom.intersects(existingRoom)) {
+                    roomModel.setOverlapping(true);
+                    return;
+                }
+            }
+        }
+        roomModel.setOverlapping(false);
     }
 
 
