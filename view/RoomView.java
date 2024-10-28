@@ -18,22 +18,35 @@ public class RoomView extends JComponent {
     public void draw(Graphics g) {
         super.paintComponent(g);
         Color color = model.getColor();
-        if (!model.isPlacing()) {
+
+        if (model.isPlaced()) {
             if (model.isHovering()) {
-                g.setColor(Tools.changeOpacity(color, 180));
-                g.fillRect(model.getPosition().x, model.getPosition().y, model.getSize().width, model.getSize().height);
-            } else if (model.getPosition() != null) {
-                g.setColor(Tools.changeOpacity(color, 160));
-                g.fillRect(model.getPosition().x, model.getPosition().y, model.getSize().width, model.getSize().height);
-            }
-        } else {
-            if (model.isOverlapping()) {
-                g.setColor(new Color(255, 65, 108, 128)); // reddish
+                g.setColor(Tools.changeOpacity(color, 140));
+                fill(g);
             } else {
-                g.setColor(Tools.changeOpacity(color, 128));
+                g.setColor(Tools.changeOpacity(color, 120));
+                fill(g);
             }
-            g.fillRect(model.getPreviewPosition().x, model.getPreviewPosition().y, model.getSize().width, model.getSize().height);
         }
+
+        if (model.isFocused() && model.isPlaced()) {
+            g.setColor(Tools.changeOpacity(color, 160));
+            fill(g);
+        }
+        
+        if (model.isPlacing()) {
+            if (model.isOverlapping()) {
+                g.setColor(new Color(255, 65, 108, 100)); // reddish
+            } else {
+                g.setColor(Tools.changeOpacity(color, 100));
+            }
+            fill(g);
+        }
+    }
+
+    private void fill(Graphics g) {
+        g.fillRect(model.getPreviewPosition().x, model.getPreviewPosition().y, model.getSize().width,
+                model.getSize().height);
     }
 
 }

@@ -36,7 +36,6 @@ public class RoomController {
                     placeRoom();
                 }
                 // Click on room to focus
-                // TODO: glow on focus
                 else if (roomModel.isHovering()) {
                     roomModel.setFocused(true);
                     floorView.repaint();
