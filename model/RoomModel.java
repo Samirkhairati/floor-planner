@@ -3,13 +3,14 @@ package model;
 import java.awt.*;
 import java.util.List;
 
+import types.Furniture;
 import types.RoomType;
 
 import java.util.ArrayList;
 
 public class RoomModel {
     
-    private List<Rectangle> furnitures = new ArrayList<>();
+    private List<Furniture> furnitures = new ArrayList<>();
     private Point position;
     private Point previewPosition;
     private Dimension size;
@@ -27,11 +28,11 @@ public class RoomModel {
         this.isPlaced = false;
     }
 
-    public void addFurniture(Rectangle furniture) {
+    public void addFurniture(Furniture furniture) {
         furnitures.add(furniture);
     }
 
-    public List<Rectangle> getFurnitures() {
+    public List<Furniture> getFurnitures() {
         return furnitures;
     }
 
