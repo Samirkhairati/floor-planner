@@ -107,7 +107,6 @@ public class RoomController {
         roomModel.setFocused(false);
         roomModel.setPlacing(false);
         roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
-        System.out.println("hi2");
         floorView.repaint();
     }
 
