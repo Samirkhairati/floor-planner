@@ -14,6 +14,7 @@ public class FloorModel {
     private final int GRID_SIZE;
     private final int DEFAULT_ROOM_WIDTH;
     private final int DEFAULT_ROOM_HEIGHT;
+    private boolean doingAction = false;
 
     public FloorModel(int gridSize, int roomWidth, int roomHeight) {
         this.GRID_SIZE = gridSize;
@@ -64,6 +65,13 @@ public class FloorModel {
         return roomControllers;
     }
 
+    public boolean isDoingAction() {
+        return doingAction;
+    }
+
+    public void setDoingAction(boolean doingAction) {
+        this.doingAction = doingAction;
+    }
 
     public boolean isShowLineGrid() {
         return showLineGrid;

@@ -83,11 +83,11 @@ public class FloorController {
         AddRoomOptions options = new AddRoomOptions(model);
         Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
         RoomType selectedRoomType = options.selectedRoomType;
-        RoomController newRoomController = new RoomController(view, model, initialRoomSize, selectedRoomType);
+        RoomController newRoomController = new RoomController(view, model, this, initialRoomSize, selectedRoomType);
         newRoomController.startPlacingRoom();
     }
 
-    private void movePreviewRoom(MouseEvent e) {
+    public void movePreviewRoom(MouseEvent e) {
         for (Room room : model.getRooms()) {
             if (room.getRoomModel().isPlacing()) {
                 room.getRoomModel().setPreviewPosition(Tools.snap(e.getPoint()));
@@ -98,6 +98,11 @@ public class FloorController {
     }
 
     private void checkHover(MouseEvent e) {
+        // dont do hover check if some room is being placed
+        for (RoomModel room : model.getRoomModels()) {
+            if (room.isPlacing()) return;
+        }
+        // otherwise do it
         for (RoomModel room : model.getRoomModels()) {
             if (room.isPlaced()) {
                 boolean isMouseOver = Tools.isMouseOver(e.getPoint(), room.getPosition(), room.getSize());
@@ -107,7 +112,7 @@ public class FloorController {
         }
     }
 
-    private void drop() {
+    public void drop() {
         for (Room room : model.getRooms()) {
             if (room.getRoomModel().isPlacing()) {
                 if (room.getRoomModel().isPlaced()) {

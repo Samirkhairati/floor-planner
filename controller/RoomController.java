@@ -19,12 +19,16 @@ public class RoomController {
     private final RoomView roomView;
     private final FloorView floorView;
     private final FloorModel floorModel;
+    private final FloorController floorController;
 
-    public RoomController(FloorView floorView, FloorModel floorModel, Dimension initialRoomSize, RoomType selectedRoomType) {
+    public RoomController(FloorView floorView, FloorModel floorModel, FloorController floorController,
+            Dimension initialRoomSize,
+            RoomType selectedRoomType) {
         this.roomModel = new RoomModel();
         this.roomView = new RoomView(roomModel);
         this.floorView = floorView;
         this.floorModel = floorModel;
+        this.floorController = floorController;
         roomModel.setSize(initialRoomSize);
         roomModel.setType(selectedRoomType);
 
@@ -35,20 +39,31 @@ public class RoomController {
                 if (roomModel.isPlacing()) {
                     placeRoom();
                 }
-                // Click on room to focus
+                // Click on room to focus or unfocus
                 else if (roomModel.isHovering()) {
-                    roomModel.setFocused(true);
-                    floorView.repaint();
+                    focus();
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // to drop the moving room
+                if (roomModel.isPlaced() && roomModel.isFocused() && roomModel.isPlacing()) {
+                    placeRoom();
                 }
             }
         });
 
         floorView.addMouseMotionListener(new MouseAdapter() {
-            // For the case when mouse is clicked while moving
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (roomModel.isPlacing()) {
+                // For the case when mouse is clicked while moving while placing a new room
+                if (roomModel.isPlacing() && !roomModel.isFocused()) {
                     placeRoom();
+                }
+                // to move room
+                if (roomModel.isPlaced() && roomModel.isHovering()) {
+                    startMovingRoom(e);
                 }
             }
         });
@@ -68,12 +83,39 @@ public class RoomController {
     }
 
     private void placeRoom() {
-        if (roomModel.isOverlapping()) return;
+
+        if (roomModel.isOverlapping()) {
+            // snap back to original position
+            if (roomModel.isPlaced()) {
+                roomModel.setPlacing(false);
+                roomModel.setFocused(false);
+                roomModel.setPreviewPosition(roomModel.getPosition());
+                floorView.repaint();
+                return;
+            }
+            // delete room if no original position (new room)
+            else {
+                roomModel.setPlacing(false);
+                roomModel.setFocused(false);
+                floorModel.removeRoomByModel(roomModel);
+                floorView.remove(roomView);
+                floorView.repaint();
+                return;
+            }
+        }
         roomModel.setPlaced(true);
         roomModel.setFocused(false);
         roomModel.setPlacing(false);
         roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
+        System.out.println("hi2");
         floorView.repaint();
+    }
+
+    private void startMovingRoom(MouseEvent e) {
+        roomModel.setFocused(true);
+        roomModel.setPlacing(true);
+        checkOverlap();
+        floorController.movePreviewRoom(e);
     }
 
     public void checkOverlap() {
@@ -88,5 +130,22 @@ public class RoomController {
             }
         }
         roomModel.setOverlapping(false);
+    }
+
+    private void focus() {
+        // if room is focused, unfocus it
+        if (roomModel.isFocused()) {
+            roomModel.setFocused(false);
+        } else {
+            // Unfocus any other focused room
+            for (RoomModel room : floorModel.getRoomModels()) {
+                if (room.isFocused()) {
+                    room.setFocused(false);
+                }
+            }
+            // Focus this room
+            roomModel.setFocused(true);
+        }
+        floorView.repaint();
     }
 }
