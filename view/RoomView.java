@@ -3,8 +3,8 @@ package view;
 import java.awt.*;
 
 import javax.swing.JComponent;
-
 import model.RoomModel;
+import util.Tools;
 
 public class RoomView extends JComponent {
 
@@ -13,25 +13,40 @@ public class RoomView extends JComponent {
     public RoomView(RoomModel model) {
         this.model = model;
         setOpaque(false);
-
     }
 
     public void draw(Graphics g) {
         super.paintComponent(g);
+        Color color = model.getColor();
+
+        if (model.isPlaced()) {
+            if (model.isHovering()) {
+                g.setColor(Tools.changeOpacity(color, 140));
+                fill(g);
+            } else {
+                g.setColor(Tools.changeOpacity(color, 120));
+                fill(g);
+            }
+        }
+
+        if (model.isFocused() && model.isPlaced()) {
+            g.setColor(Tools.changeOpacity(color, 160));
+            fill(g);
+        }
+        
         if (model.isPlacing()) {
             if (model.isOverlapping()) {
-                g.setColor(new Color(255, 65, 108, 128));
+                g.setColor(new Color(255, 65, 108, 100)); // reddish
             } else {
-                g.setColor(new Color(model.getColor().getRed(), model.getColor().getGreen(), model.getColor().getBlue(), 128));
+                g.setColor(Tools.changeOpacity(color, 100));
             }
-            g.fillRect(model.getPreviewPosition().x, model.getPreviewPosition().y, model.getSize().width,
-                    model.getSize().height);
+            fill(g);
         }
-        if (model.getPosition() != null) {
-            Color color = new Color(model.getColor().getRed(), model.getColor().getGreen(), model.getColor().getBlue(), 180); // 255 is the alpha value for 100% opacity
-            g.setColor(color);
-            g.fillRect(model.getPosition().x, model.getPosition().y, model.getSize().width, model.getSize().height);
-        }
+    }
+
+    private void fill(Graphics g) {
+        g.fillRect(model.getPreviewPosition().x, model.getPreviewPosition().y, model.getSize().width,
+                model.getSize().height);
     }
 
 }

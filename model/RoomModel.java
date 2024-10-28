@@ -16,11 +16,15 @@ public class RoomModel {
     private Dimension previewSize;
     private RoomType type;
     private Color color;
+    private boolean isPlaced;
     private boolean isPlacing;
     private boolean isOverlapping;
+    private boolean isHovering;
+    private boolean isFocused;
 
     public RoomModel() {
         this.position = null; // No default position exists (don't snap back to anywhere)
+        this.isPlaced = false;
     }
 
     public void addFurniture(Rectangle furniture) {
@@ -55,12 +59,24 @@ public class RoomModel {
         return color;
     }
 
+    public boolean isPlaced() {
+        return isPlaced;
+    }
+
     public boolean isPlacing() {
         return isPlacing;
     }
 
     public boolean isOverlapping() {
         return isOverlapping;
+    }
+
+    public boolean isHovering() {
+        return isHovering;
+    }
+
+    public boolean isFocused() {
+        return isFocused;
     }
 
     public RoomModel setPosition(Point position) {
@@ -108,6 +124,11 @@ public class RoomModel {
         this.color = color;
     }
 
+    public RoomModel setPlaced(boolean isPlaced) {
+        this.isPlaced = isPlaced;
+        return this;
+    }
+
     public RoomModel setPlacing(boolean isPlacing) {
         this.isPlacing = isPlacing;
         return this;
@@ -115,6 +136,16 @@ public class RoomModel {
 
     public RoomModel setOverlapping(boolean isOverlapping) {
         this.isOverlapping = isOverlapping;
+        return this;
+    }
+
+    public RoomModel setHovering(boolean isHovering) {
+        this.isHovering = isHovering;
+        return this;
+    }
+
+    public RoomModel setFocused(boolean isFocused) {
+        this.isFocused = isFocused;
         return this;
     }
 

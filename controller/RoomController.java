@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import model.FloorModel;
 import model.RoomModel;
+import types.Room;
 import types.RoomType;
 import util.Tools;
 import view.FloorView;
@@ -14,8 +15,8 @@ import view.RoomView;
 
 public class RoomController {
 
-    public final RoomModel roomModel;
-    public final RoomView roomView;
+    private final RoomModel roomModel;
+    private final RoomView roomView;
     private final FloorView floorView;
     private final FloorModel floorModel;
 
@@ -28,11 +29,16 @@ public class RoomController {
         roomModel.setType(selectedRoomType);
 
         floorView.addMouseListener(new MouseAdapter() {
-            // Click to place room when a new room is created
             @Override
             public void mousePressed(MouseEvent e) {
+                // Click to place room when a new room is created
                 if (roomModel.isPlacing()) {
                     placeRoom();
+                }
+                // Click on room to focus
+                else if (roomModel.isHovering()) {
+                    roomModel.setFocused(true);
+                    floorView.repaint();
                 }
             }
         });
@@ -51,18 +57,22 @@ public class RoomController {
     public void startPlacingRoom() {
         Point locationOnScreen = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(locationOnScreen, floorView);
+        roomModel.setPlaced(false);
         roomModel.setPlacing(true);
+        roomModel.setFocused(true);
         roomModel.setPreviewPosition(Tools.snap(locationOnScreen));
+
         floorView.add(roomView);
-        floorModel.addRoomView(roomView);
+        floorModel.addRoom(new Room(roomModel, roomView, this));
         floorView.repaint();
     }
 
     private void placeRoom() {
         if (roomModel.isOverlapping()) return;
+        roomModel.setPlaced(true);
+        roomModel.setFocused(false);
         roomModel.setPlacing(false);
         roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
-        floorModel.addRoomModel(roomModel);
         floorView.repaint();
     }
 
@@ -79,6 +89,4 @@ public class RoomController {
         }
         roomModel.setOverlapping(false);
     }
-
-
 }
