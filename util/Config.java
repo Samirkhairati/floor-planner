@@ -2,10 +2,7 @@ package util;
 public enum Config {
     INSTANCE;
 
-    public static final int DEFAULT_ROOM_WIDTH = 50;
-    public static final int DEFAULT_ROOM_HEIGHT = 50;
-
-    public static final int SNAP = 50;
+    public static final int SNAP = 15;
     public static final int DOT_SIZE = 4;
 
     // public static final int DEFAULT_DOOR_WIDTH = 50;

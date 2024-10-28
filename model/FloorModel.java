@@ -12,14 +12,10 @@ public class FloorModel {
     private boolean showLineGrid;
     private boolean showDotGrid;
     private final int GRID_SIZE;
-    private final int DEFAULT_ROOM_WIDTH;
-    private final int DEFAULT_ROOM_HEIGHT;
     private boolean doingAction = false;
 
-    public FloorModel(int gridSize, int roomWidth, int roomHeight) {
+    public FloorModel(int gridSize) {
         this.GRID_SIZE = gridSize;
-        this.DEFAULT_ROOM_WIDTH = roomWidth;
-        this.DEFAULT_ROOM_HEIGHT = roomHeight;
         this.showLineGrid = true;
         this.showDotGrid = false;
         this.rooms = new ArrayList<>();
@@ -91,13 +87,5 @@ public class FloorModel {
 
     public int getGridSize() {
         return GRID_SIZE;
-    }
-
-    public int getDefaultRoomWidth() {
-        return DEFAULT_ROOM_WIDTH;
-    }
-
-    public int getDefaultRoomHeight() {
-        return DEFAULT_ROOM_HEIGHT;
     }
 }

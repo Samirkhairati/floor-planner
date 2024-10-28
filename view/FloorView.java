@@ -11,6 +11,7 @@ import java.awt.*;
 public class FloorView extends JPanel {
 
     private final FloorModel model;
+    private final Color gridColor = new Color(203, 203, 203, 100);
 
     public FloorView(FloorModel model) {
         this.model = model;
@@ -21,7 +22,7 @@ public class FloorView extends JPanel {
 
     private void drawLineGrid(Graphics g) {
         if (!model.isShowLineGrid()) return;
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(gridColor);
         int gridSize = model.getGridSize();
         for (int x = 0; x < getWidth(); x += gridSize) {
             g.drawLine(x, 0, x, getHeight());
@@ -33,7 +34,7 @@ public class FloorView extends JPanel {
 
     private void drawDotGrid(Graphics g) {
         if (!model.isShowDotGrid()) return;
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(gridColor);
         int gridSize = model.getGridSize();
         for (int x = 0; x < getWidth(); x += gridSize) {
             for (int y = 0; y < getHeight(); y += gridSize) {

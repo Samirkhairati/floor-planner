@@ -20,7 +20,7 @@ public class SplitPane extends JFrame {
         setLocationRelativeTo(null); // Center the window
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Make the window full screen
 
-        FloorModel model = new FloorModel(Config.SNAP, Config.DEFAULT_ROOM_WIDTH, Config.DEFAULT_ROOM_HEIGHT);
+        FloorModel model = new FloorModel(Config.SNAP);
         FloorView view = new FloorView(model);
         FloorController controller = new FloorController(model, view);
 
