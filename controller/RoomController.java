@@ -21,6 +21,9 @@ public class RoomController {
     private final FloorModel floorModel;
     private final FloorController floorController;
 
+    private static final int DRAG_THRESHOLD = 10; // Set drag sensitivity threshold
+    private Point initialClickPoint = null; // Store the initial mouse press position
+
     public RoomController(FloorView floorView, FloorModel floorModel, FloorController floorController,
             Dimension initialRoomSize,
             RoomType selectedRoomType) {
@@ -35,6 +38,9 @@ public class RoomController {
         floorView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                // Store the initial point when mouse is pressed
+                initialClickPoint = e.getPoint();
+
                 // Click to place room when a new room is created
                 if (roomModel.isPlacing()) {
                     placeRoom();
@@ -47,6 +53,9 @@ public class RoomController {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+
+                initialClickPoint = null; // Reset initial click point when mouse is released
+
                 // to drop the moving room
                 if (roomModel.isPlaced() && roomModel.isFocused() && roomModel.isPlacing()) {
                     placeRoom();
@@ -57,13 +66,22 @@ public class RoomController {
         floorView.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                // For the case when mouse is clicked while moving while placing a new room
-                if (roomModel.isPlacing() && !roomModel.isFocused()) {
-                    placeRoom();
-                }
-                // to move room
-                if (roomModel.isPlaced() && roomModel.isHovering()) {
-                    startMovingRoom(e);
+                if (initialClickPoint != null) {
+                    // Calculate the distance moved from the initial click point
+                    int distanceX = Math.abs(e.getX() - initialClickPoint.x);
+                    int distanceY = Math.abs(e.getY() - initialClickPoint.y);
+
+                    // Check if the drag distance exceeds the threshold
+                    if (distanceX >= DRAG_THRESHOLD || distanceY >= DRAG_THRESHOLD) {
+                        // For the case when mouse is clicked while moving while placing a new room
+                        if (roomModel.isPlacing() && !roomModel.isFocused()) {
+                            placeRoom();
+                        }
+                        // to move room
+                        if (roomModel.isPlaced() && roomModel.isHovering()) {
+                            startMovingRoom(e);
+                        }
+                    }
                 }
             }
         });
