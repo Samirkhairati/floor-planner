@@ -30,6 +30,8 @@ public class SplitPane extends JFrame {
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPanel, view);
         splitPane.setDividerLocation(450);
+        splitPane.setContinuousLayout(true);
+        splitPane.setDividerSize(5);
         getContentPane().add(splitPane);
 
         new KeyBinder(this);
