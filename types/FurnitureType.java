@@ -1,10 +1,27 @@
 package types;
 
 public enum FurnitureType {
-    SOFA,
-    TABLE,
-    BED,
+    BATHTUB,
     CHAIR,
+    CIRCULAR_TABLE,
+    COUCH,
+    SIX_SEATER_DINING_TABLE,
+    DOUBLE_BED,
+    DOUBLE_BED_STAND,
+    DOUBLE_CUPBOARD,
+    DOUBLE_SOFA,
+    FOUR_SEATER_DINING_TABLE,
+    KITCHEN_COUNTER,
+    SINGLE_BED,
+    SINGLE_BED_STAND,
+    SINGLE_CUPBOARD,
+    SINGLE_SOFA,
+    SINK,
+    STOVE,
+    STUDY,
     TOILET,
-    BATHTUB
+    TRIPLE_CUPBOARD,
+    TRIPLE_SOFA,
+    TV,
+    WASH_BASIN;
 }
