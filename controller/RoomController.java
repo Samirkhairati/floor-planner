@@ -2,6 +2,7 @@ package controller;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 
 import javax.swing.SwingUtilities;
 
@@ -14,7 +15,7 @@ import util.Tools;
 import view.FloorView;
 import view.RoomView;
 
-public class RoomController {
+public class RoomController implements Serializable {
 
     private final RoomModel roomModel;
     private final RoomView roomView;
@@ -32,7 +33,21 @@ public class RoomController {
         this.floorController = floorController;
         roomModel.setSize(initialRoomSize);
         roomModel.setType(selectedRoomType);
+        listen();
+    }
 
+    public RoomController(FloorView floorView, FloorModel floorModel, FloorController floorController,
+            RoomModel roomModel, RoomView roomView) {
+        this.roomModel = roomModel;
+        this.roomView = roomView;
+        this.floorView = floorView;
+        this.floorModel = floorModel;
+        this.floorController = floorController;
+        floorView.add(roomView);
+        listen();
+    }
+
+    private void listen() {
         floorView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -68,6 +83,7 @@ public class RoomController {
                 }
             }
         });
+
     }
 
     public void startPlacingRoom() {

@@ -10,7 +10,7 @@ public class ControlPanel extends JPanel {
 
     FloorController floorController;
 
-    public ControlPanel(FloorController floorController) {
+    public ControlPanel(FloorController floorController, Screen screen) {
 
         this.floorController = floorController;
 
@@ -18,7 +18,7 @@ public class ControlPanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        JPanel actionPanel = new ActionPanel(floorController);
+        JPanel actionPanel = new ActionPanel(floorController, screen);
         add(actionPanel, BorderLayout.NORTH);
 
         FurniturePanel furniturePanel = new FurniturePanel(floorController);

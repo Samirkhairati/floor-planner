@@ -1,10 +1,12 @@
 package types;
 
+import java.io.Serializable;
+
 import controller.RoomController;
 import model.RoomModel;
 import view.RoomView;
 
-public class Room {
+public class Room implements Serializable {
     private final RoomModel roomModel;
     private final RoomView roomView;
     private final RoomController roomController;

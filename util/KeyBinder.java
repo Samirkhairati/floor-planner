@@ -1,9 +1,10 @@
 package util;
 
 import java.awt.event.KeyEvent;
+
 import javax.swing.*;
 
-public class KeyBinder {
+public class KeyBinder{
     public KeyBinder(JFrame frame) {
         // Get the InputMap and ActionMap from the JFrame's root pane
         InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);

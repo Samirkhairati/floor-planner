@@ -3,7 +3,6 @@ package util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 import model.FurnitureModel;
@@ -14,9 +13,6 @@ public class FurnitureFactory {
 
         FurnitureModel model = new FurnitureModel();
         model.setType(type);
-
-        BufferedImage image = loadImage(type);
-        model.setImage(image);
 
         switch (type) {
             case BATHTUB:

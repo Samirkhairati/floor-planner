@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
+
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
@@ -17,7 +19,7 @@ import types.FurnitureType;
 import types.Room;
 import types.RoomType;
 
-public class FloorController {
+public class FloorController implements Serializable {
 
     private final FloorModel model;
     private final FloorView view;
@@ -99,7 +101,7 @@ public class FloorController {
         for (Room room : model.getRooms()) {
             if (room.getRoomModel().isPlacing()) {
                 room.getRoomModel().setPreviewPosition(Tools.snap(e.getPoint()));
-                
+
                 for (FurnitureModel furniture : room.getRoomModel().getFurnitureModels()) {
                     furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, room.getRoomModel()));
                 }
@@ -138,7 +140,8 @@ public class FloorController {
 
                 // Check if mouse is hovering over any furniture on priority
                 for (FurnitureModel furniture : room.getFurnitureModels()) {
-                    if (Tools.isMouseOver(e.getPoint(), Tools.getAbsolutePosition(furniture, room), furniture.getSize())) {
+                    if (Tools.isMouseOver(e.getPoint(), Tools.getAbsolutePosition(furniture, room),
+                            furniture.getSize())) {
 
                         // Un-hover all other rooms: for the case when you are hovering
                         // over a room and move the mouse to a furniture
@@ -176,4 +179,12 @@ public class FloorController {
             }
         }
     }
+
+    public FloorView getView() {
+       return view;
+    }
+
+    public FloorModel getModel() {
+        return model;
+     }
 }
