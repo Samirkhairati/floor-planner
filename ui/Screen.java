@@ -10,9 +10,9 @@ import model.FloorModel;
 import util.KeyBinder;
 import view.FloorView;
 
-public class SplitPane extends JFrame {
+public class Screen extends JFrame {
 
-    public SplitPane() {
+    public Screen() {
         setTitle("Fixed UI Example");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

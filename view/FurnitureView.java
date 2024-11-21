@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
 import model.FurnitureModel;
-import model.RoomModel;
 
 public class FurnitureView extends JComponent {
 

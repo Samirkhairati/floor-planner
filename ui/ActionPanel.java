@@ -12,6 +12,7 @@ public class ActionPanel extends JPanel {
 
     private FloorController floorController;
 
+    @SuppressWarnings("unused")
     public ActionPanel(FloorController floorController) {
 
         this.floorController = floorController;
