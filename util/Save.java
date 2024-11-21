@@ -33,15 +33,20 @@ public class Save {
                 .forEach(roomModel -> roomRecords.add(new RoomRecord(roomModel, roomModel.getFurnitureModels())));
 
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Floor files", "floor"));
         if (fileChooser.showSaveDialog(floorController.getView()) == JFileChooser.APPROVE_OPTION) {
             try {
-                try (ObjectOutputStream oos = new ObjectOutputStream(
-                        new FileOutputStream(fileChooser.getSelectedFile()))) {
-                    oos.writeObject(roomRecords); // Ensure FloorModel implements Serializable
-                }
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!filePath.endsWith(".floor")) {
+                filePath += ".floor";
+            }
+            try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(filePath))) {
+                oos.writeObject(roomRecords); // Ensure FloorModel implements Serializable
+            }
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(screen, "Failed to save file!" + ex, "Error",
-                        JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(screen, "Failed to save file!" + ex, "Error",
+                JOptionPane.ERROR_MESSAGE);
             }
         }
     }
