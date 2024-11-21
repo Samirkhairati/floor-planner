@@ -83,7 +83,7 @@ public class FurnitureModel implements Serializable {
     }
 
     public FurnitureModel setSize(int width, int height) {
-        this.size = new Dimension(width * 3 * Config.SNAP, height * 3 * Config.SNAP);
+        this.size = new Dimension(width * Config.SCALE * Config.SNAP, height * Config.SCALE * Config.SNAP);
         return this;
     }
 
