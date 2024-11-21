@@ -19,6 +19,7 @@ public class FloorController {
     private final FloorModel model;
     private final FloorView view;
     private StateManager stateManager;
+    private boolean busy;
 
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
@@ -55,6 +56,14 @@ public class FloorController {
         });
     }
 
+    public boolean getBusy() {
+        return busy;
+    }
+
+    public void setBusy(boolean busy) {
+        this.busy = busy;
+    }
+
     private void handleKeyPress(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_1:
@@ -73,13 +82,8 @@ public class FloorController {
     }
 
     public void startPlacingRoom() {
-        // to prevent multiple rooms being placed at the same time
-        for (RoomModel room : model.getRoomModels()) {
-            if (room.isPlacing()) {
-                return;
-            }
-        }
-
+        System.out.println(busy);
+        if (busy) return;
         AddRoomOptions options = new AddRoomOptions(model);
         Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
         RoomType selectedRoomType = options.selectedRoomType;
@@ -95,6 +99,21 @@ public class FloorController {
                 view.repaint();
             }
         }
+    }
+
+    public void startPlacingFurniture() {
+        // to prevent multiple rooms being placed at the same time
+        for (RoomModel room : model.getRoomModels()) {
+            if (room.isPlacing()) {
+                return;
+            }
+        }
+
+        AddRoomOptions options = new AddRoomOptions(model);
+        Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
+        RoomType selectedRoomType = options.selectedRoomType;
+        RoomController newRoomController = new RoomController(view, model, this, initialRoomSize, selectedRoomType);
+        newRoomController.startPlacingRoom();
     }
 
     private void checkHover(MouseEvent e) {

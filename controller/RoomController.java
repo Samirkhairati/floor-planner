@@ -76,10 +76,10 @@ public class RoomController {
         roomModel.setPlacing(true);
         roomModel.setFocused(true);
         roomModel.setPreviewPosition(Tools.snap(locationOnScreen));
-
         floorView.add(roomView);
         floorModel.addRoom(new Room(roomModel, roomView, this));
         floorView.repaint();
+        floorController.setBusy(true);
     }
 
     private void placeRoom() {
@@ -91,6 +91,7 @@ public class RoomController {
                 roomModel.setFocused(false);
                 roomModel.setPreviewPosition(roomModel.getPosition());
                 floorView.repaint();
+                floorController.setBusy(false);
                 return;
             }
             // delete room if no original position (new room)
@@ -100,9 +101,11 @@ public class RoomController {
                 floorModel.removeRoomByModel(roomModel);
                 floorView.remove(roomView);
                 floorView.repaint();
+                floorController.setBusy(false);
                 return;
             }
         }
+        floorController.setBusy(false);
         roomModel.setPlaced(true);
         roomModel.setFocused(false);
         roomModel.setPlacing(false);
@@ -111,6 +114,7 @@ public class RoomController {
     }
 
     private void startMovingRoom(MouseEvent e) {
+        floorController.setBusy(true);
         roomModel.setFocused(true);
         roomModel.setPlacing(true);
         checkOverlap();
