@@ -95,7 +95,8 @@ public class FurnitureController {
                 furnitureModel
                         .setPlacing(false)
                         .setFocused(false)
-                        .setPreviewPosition(furnitureModel.getPosition());
+                        .setPreviewPosition(furnitureModel.getPosition())
+                        .setHovering(false);
                 floorModel.removeTemporaryFurniture();
                 floorController.setBusy(false);
                 floorView.repaint();
@@ -123,6 +124,13 @@ public class FurnitureController {
         }
         hoveringOverRoom.addFurniture(new Furniture(furnitureModel, furnitureView, this));
         floorModel.removeTemporaryFurniture();
+        for (RoomModel room : floorModel.getRoomModels()) {
+            for (Furniture furniture : room.getFurnitures()) {
+                System.out.println("Room: " + room + ", Furniture: " + furniture.getModel().getType() + ", Position: "
+                        + furniture.getModel().getPosition());
+            }
+        }
+        System.out.println();
         floorView.repaint();
     }
 
@@ -137,13 +145,28 @@ public class FurnitureController {
     public void checkValidity() {
         Rectangle temporaryFurniture = new Rectangle(furnitureModel.getPreviewPosition(), furnitureModel.getSize());
         for (RoomModel room : floorModel.getRoomModels()) {
+            // check if its being moved inside a room
             Rectangle existingRoom = new Rectangle(room.getPosition(), room.getSize());
             if (existingRoom.contains(temporaryFurniture)) {
+                // check if its overlapping with any furniture
+                for (FurnitureModel existingFurniture : room.getFurnitureModels()) {
+                    if (existingFurniture != furnitureModel) {
+                        Rectangle existingFurnitureRect = new Rectangle(existingFurniture.getPosition(),
+                                existingFurniture.getSize());
+                        if (existingFurnitureRect.intersects(temporaryFurniture)) {
+                            furnitureModel.setValidity(false);
+                            hoveringOverRoom = null;
+                            return;
+                        }
+                    }
+                }
+
                 furnitureModel.setValidity(true);
                 hoveringOverRoom = room;
                 return;
             }
         }
+        // not on any room
         furnitureModel.setValidity(false);
         hoveringOverRoom = null;
     }
