@@ -4,12 +4,9 @@ import java.awt.*;
 import java.util.List;
 
 import controller.FurnitureController;
-import controller.RoomController;
 import types.Furniture;
-import types.Room;
 import types.RoomType;
 import view.FurnitureView;
-import view.RoomView;
 
 import java.util.ArrayList;
 

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import model.FloorModel;
+import model.FurnitureModel;
 import model.RoomModel;
 import types.Furniture;
 import types.FurnitureType;
@@ -116,20 +117,40 @@ public class FloorController {
     public void moveTemporaryFurniture(MouseEvent e) {
 
         Furniture temporaryFurniture = model.getTemporaryFurniture();
+        if (temporaryFurniture == null)
+            return;
         temporaryFurniture.getModel().setPreviewPosition(Tools.snap(e.getPoint()));
         temporaryFurniture.getController().checkValidity();
         view.repaint();
     }
 
     private void checkHover(MouseEvent e) {
-        // dont do hover check if some room is being placed
-        for (RoomModel room : model.getRoomModels()) {
-            if (room.isPlacing())
-                return;
-        }
-        // otherwise do it
+        if (busy)
+            return;
+
         for (RoomModel room : model.getRoomModels()) {
             if (room.isPlaced()) {
+
+                // Check if mouse is hovering over any furniture on priority
+                for (FurnitureModel furniture : room.getFurnitureModels()) {
+                    if (Tools.isMouseOver(e.getPoint(), furniture.getPosition(), furniture.getSize())) {
+
+                        // Un-hover all other rooms: for the case when you are hovering
+                        // over a room and move the mouse to a furniture
+                        // and both of them become in the hovered state instead of un-hovering the room
+                        for (RoomModel r : model.getRoomModels()) {
+                            r.setHovering(false);
+                        }
+
+                        furniture.setHovering(true);
+                        view.repaint();
+                        return;
+                    } else {
+                        furniture.setHovering(false);
+                    }
+                }
+
+                // then check if room is being hovered
                 boolean isMouseOver = Tools.isMouseOver(e.getPoint(), room.getPosition(), room.getSize());
                 room.setHovering(isMouseOver);
                 view.repaint();

@@ -62,7 +62,7 @@ public class FurnitureController {
                 if (furnitureModel.isPlacing() && !furnitureModel.isFocused()) {
                     placeFurniture();
                 }
-                // to move room
+                // to move furniture
                 if (furnitureModel.isPlaced() && furnitureModel.isHovering()) {
                     startMovingFurniture(e);
                 }
@@ -96,6 +96,7 @@ public class FurnitureController {
                         .setPlacing(false)
                         .setFocused(false)
                         .setPreviewPosition(furnitureModel.getPosition());
+                floorModel.removeTemporaryFurniture();
                 floorController.setBusy(false);
                 floorView.repaint();
                 return;
@@ -117,6 +118,9 @@ public class FurnitureController {
                 .setFocused(false)
                 .setPlacing(false)
                 .setPosition(Tools.snap(furnitureModel.getPreviewPosition()));
+        for (RoomModel room : floorModel.getRoomModels()) {
+            room.removeFurnitureByModel(furnitureModel);
+        }
         hoveringOverRoom.addFurniture(new Furniture(furnitureModel, furnitureView, this));
         floorModel.removeTemporaryFurniture();
         floorView.repaint();
@@ -126,7 +130,8 @@ public class FurnitureController {
         floorController.setBusy(true);
         furnitureModel.setFocused(true).setPlacing(true);
         checkValidity();
-        floorController.movePreviewRoom(e);
+        floorModel.setTemporaryFurniture(new Furniture(furnitureModel, furnitureView, this));
+        floorController.moveTemporaryFurniture(e);
     }
 
     public void checkValidity() {
