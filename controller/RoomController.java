@@ -78,8 +78,8 @@ public class RoomController {
         roomModel.setPreviewPosition(Tools.snap(locationOnScreen));
         floorView.add(roomView);
         floorModel.addRoom(new Room(roomModel, roomView, this));
-        floorView.repaint();
         floorController.setBusy(true);
+        floorView.repaint();
     }
 
     private void placeRoom() {
@@ -136,6 +136,11 @@ public class RoomController {
     }
 
     private void focus() {
+
+        if (floorController.getBusy()) {
+            return;
+        }
+
         // if room is focused, unfocus it
         if (roomModel.isFocused()) {
             roomModel.setFocused(false);

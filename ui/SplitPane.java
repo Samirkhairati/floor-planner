@@ -7,7 +7,6 @@ import controller.FloorController;
 import java.awt.*;
 
 import model.FloorModel;
-import util.Config;
 import util.KeyBinder;
 import view.FloorView;
 
@@ -20,7 +19,7 @@ public class SplitPane extends JFrame {
         setLocationRelativeTo(null); // Center the window
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Make the window full screen
 
-        FloorModel model = new FloorModel(Config.SNAP);
+        FloorModel model = new FloorModel();
         FloorView view = new FloorView(model);
         FloorController controller = new FloorController(model, view);
 

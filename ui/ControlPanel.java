@@ -21,7 +21,7 @@ public class ControlPanel extends JPanel {
         JPanel actionPanel = new ActionPanel(floorController);
         add(actionPanel, BorderLayout.NORTH);
 
-        FurniturePanel furniturePanel = new FurniturePanel();
+        FurniturePanel furniturePanel = new FurniturePanel(floorController);
         add(furniturePanel, BorderLayout.CENTER);
 
     }

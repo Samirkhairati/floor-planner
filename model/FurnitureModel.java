@@ -2,12 +2,14 @@ package model;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 import types.FurnitureType;
 import types.Rotation;
+import util.Config;
 
 public class FurnitureModel {
-    // TODO: add flyweight pattern
+
     private FurnitureType type;
     private Point position;
     private Point previewPosition;
@@ -15,9 +17,10 @@ public class FurnitureModel {
     private Rotation rotation;
     private boolean isPlaced;
     private boolean isPlacing;
-    private boolean isOverlapping;
+    private boolean isValid;
     private boolean isHovering;
     private boolean isFocused;
+    private BufferedImage image;
 
     public FurnitureType getType() {
         return type;
@@ -47,8 +50,8 @@ public class FurnitureModel {
         return isPlacing;
     }
 
-    public boolean isOverlapping() {
-        return isOverlapping;
+    public boolean isValid() {
+        return isValid;
     }
 
     public boolean isHovering() {
@@ -57,6 +60,10 @@ public class FurnitureModel {
 
     public boolean isFocused() {
         return isFocused;
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 
     public FurnitureModel setType(FurnitureType type) {
@@ -72,10 +79,10 @@ public class FurnitureModel {
     public FurnitureModel setPreviewPosition(Point previewPosition) {
         this.previewPosition = previewPosition;
         return this;
-    }   
+    }
 
-    public FurnitureModel setSize(Dimension size) {
-        this.size = size;
+    public FurnitureModel setSize(int width, int height) {
+        this.size = new Dimension(width * 3 * Config.SNAP, height * 3 * Config.SNAP);
         return this;
     }
 
@@ -94,8 +101,8 @@ public class FurnitureModel {
         return this;
     }
 
-    public FurnitureModel setOverlapping(boolean isOverlapping) {
-        this.isOverlapping = isOverlapping;
+    public FurnitureModel setValidity(boolean isValid) {
+        this.isValid = isValid;
         return this;
     }
 
@@ -106,6 +113,11 @@ public class FurnitureModel {
 
     public FurnitureModel setFocused(boolean isFocused) {
         this.isFocused = isFocused;
+        return this;
+    }
+
+    public FurnitureModel setImage(BufferedImage image) {
+        this.image = image;
         return this;
     }
 }

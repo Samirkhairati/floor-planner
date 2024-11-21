@@ -11,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import model.FloorModel;
 import model.RoomModel;
+import types.Furniture;
+import types.FurnitureType;
 import types.Room;
 import types.RoomType;
 
@@ -32,6 +34,7 @@ public class FloorController {
             public void mouseMoved(MouseEvent e) {
                 checkHover(e);
                 movePreviewRoom(e);
+                moveTemporaryFurniture(e);
             }
         });
         stateManager.keyCode.addObserver(new StateManager.Observer<Integer>() {
@@ -83,7 +86,8 @@ public class FloorController {
 
     public void startPlacingRoom() {
         System.out.println(busy);
-        if (busy) return;
+        if (busy)
+            return;
         AddRoomOptions options = new AddRoomOptions(model);
         Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
         RoomType selectedRoomType = options.selectedRoomType;
@@ -101,25 +105,28 @@ public class FloorController {
         }
     }
 
-    public void startPlacingFurniture() {
-        // to prevent multiple rooms being placed at the same time
-        for (RoomModel room : model.getRoomModels()) {
-            if (room.isPlacing()) {
-                return;
-            }
-        }
+    public void startPlacingFurniture(FurnitureType selectedFurnitureType) {
 
-        AddRoomOptions options = new AddRoomOptions(model);
-        Dimension initialRoomSize = new Dimension(options.roomWidth, options.roomHeight);
-        RoomType selectedRoomType = options.selectedRoomType;
-        RoomController newRoomController = new RoomController(view, model, this, initialRoomSize, selectedRoomType);
-        newRoomController.startPlacingRoom();
+        if (busy)
+            return;
+
+        FurnitureController newFurnitureController = new FurnitureController(view, model, this, selectedFurnitureType);
+        newFurnitureController.startPlacingFurniture();
+    }
+
+    public void moveTemporaryFurniture(MouseEvent e) {
+
+        Furniture temporaryFurniture = model.getTemporaryFurniture();
+        temporaryFurniture.getModel().setPreviewPosition(Tools.snap(e.getPoint()));
+        temporaryFurniture.getController().checkValidity();
+        view.repaint();
     }
 
     private void checkHover(MouseEvent e) {
         // dont do hover check if some room is being placed
         for (RoomModel room : model.getRoomModels()) {
-            if (room.isPlacing()) return;
+            if (room.isPlacing())
+                return;
         }
         // otherwise do it
         for (RoomModel room : model.getRoomModels()) {
