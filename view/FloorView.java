@@ -55,14 +55,14 @@ public class FloorView extends JPanel {
     private void drawFurnitures(Graphics g) {
         for (Room room : model.getRooms()) {
             for (FurnitureView furniture : room.getRoomModel().getFurnitureViews()) {
-                furniture.draw(g);
+                furniture.draw(g, room.getRoomModel().getPosition());
             }
         }
     }
 
     private void drawTemporaryFurniture(Graphics g) {
         if (model.getTemporaryFurniture() != null) {
-            model.getTemporaryFurniture().getView().draw(g);
+            model.getTemporaryFurniture().getView().draw(g, null);
         }
     }
 

@@ -95,7 +95,8 @@ public class FurnitureController {
                 furnitureModel
                         .setPlacing(false)
                         .setFocused(false)
-                        .setPreviewPosition(furnitureModel.getPosition())
+                        .setPreviewPosition(Tools.getAbsolutePreviewPosition(furnitureModel,
+                                Tools.getRoomContainingFurniture(furnitureModel, floorModel)))
                         .setHovering(false);
                 floorModel.removeTemporaryFurniture();
                 floorController.setBusy(false);
@@ -114,22 +115,19 @@ public class FurnitureController {
             }
         }
         floorController.setBusy(false);
+        Point relativePosition = new Point(
+                furnitureModel.getPreviewPosition().x - hoveringOverRoom.getPosition().x,
+                furnitureModel.getPreviewPosition().y - hoveringOverRoom.getPosition().y);
         furnitureModel
                 .setPlaced(true)
                 .setFocused(false)
                 .setPlacing(false)
-                .setPosition(Tools.snap(furnitureModel.getPreviewPosition()));
+                .setPosition(Tools.snap(relativePosition));
         for (RoomModel room : floorModel.getRoomModels()) {
             room.removeFurnitureByModel(furnitureModel);
         }
         hoveringOverRoom.addFurniture(new Furniture(furnitureModel, furnitureView, this));
         floorModel.removeTemporaryFurniture();
-        for (RoomModel room : floorModel.getRoomModels()) {
-            for (Furniture furniture : room.getFurnitures()) {
-                System.out.println("Room: " + room + ", Furniture: " + furniture.getModel().getType() + ", Position: "
-                        + furniture.getModel().getPosition());
-            }
-        }
         System.out.println();
         floorView.repaint();
     }
@@ -151,7 +149,8 @@ public class FurnitureController {
                 // check if its overlapping with any furniture
                 for (FurnitureModel existingFurniture : room.getFurnitureModels()) {
                     if (existingFurniture != furnitureModel) {
-                        Rectangle existingFurnitureRect = new Rectangle(existingFurniture.getPosition(),
+                        Rectangle existingFurnitureRect = new Rectangle(
+                                Tools.getAbsolutePosition(existingFurniture, room),
                                 existingFurniture.getSize());
                         if (existingFurnitureRect.intersects(temporaryFurniture)) {
                             furnitureModel.setValidity(false);

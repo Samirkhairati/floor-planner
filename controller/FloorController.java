@@ -99,6 +99,11 @@ public class FloorController {
         for (Room room : model.getRooms()) {
             if (room.getRoomModel().isPlacing()) {
                 room.getRoomModel().setPreviewPosition(Tools.snap(e.getPoint()));
+                
+                for (FurnitureModel furniture : room.getRoomModel().getFurnitureModels()) {
+                    furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, room.getRoomModel()));
+                }
+
                 room.getRoomController().checkOverlap();
                 view.repaint();
             }
@@ -133,7 +138,7 @@ public class FloorController {
 
                 // Check if mouse is hovering over any furniture on priority
                 for (FurnitureModel furniture : room.getFurnitureModels()) {
-                    if (Tools.isMouseOver(e.getPoint(), furniture.getPosition(), furniture.getSize())) {
+                    if (Tools.isMouseOver(e.getPoint(), Tools.getAbsolutePosition(furniture, room), furniture.getSize())) {
 
                         // Un-hover all other rooms: for the case when you are hovering
                         // over a room and move the mouse to a furniture

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
 import model.FurnitureModel;
+import model.RoomModel;
 
 public class FurnitureView extends JComponent {
 
@@ -15,7 +16,7 @@ public class FurnitureView extends JComponent {
         this.model = model;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, Point roomPosition) {
         super.paintComponent(g);
         BufferedImage image = model.getImage();
 

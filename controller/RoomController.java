@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.SwingUtilities;
 
 import model.FloorModel;
+import model.FurnitureModel;
 import model.RoomModel;
 import types.Room;
 import types.RoomType;
@@ -90,6 +91,11 @@ public class RoomController {
                 roomModel.setPlacing(false);
                 roomModel.setFocused(false);
                 roomModel.setPreviewPosition(roomModel.getPosition());
+
+                for (FurnitureModel furniture : roomModel.getFurnitureModels()) {
+                    furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, roomModel));
+                }
+
                 floorView.repaint();
                 floorController.setBusy(false);
                 return;
