@@ -3,13 +3,18 @@ package model;
 import java.awt.*;
 import java.util.List;
 
+import controller.FurnitureController;
+import controller.RoomController;
 import types.Furniture;
+import types.Room;
 import types.RoomType;
+import view.FurnitureView;
+import view.RoomView;
 
 import java.util.ArrayList;
 
 public class RoomModel {
-    
+
     private List<Furniture> furnitures = new ArrayList<>();
     private Point position;
     private Point previewPosition;
@@ -34,6 +39,34 @@ public class RoomModel {
 
     public List<Furniture> getFurnitures() {
         return furnitures;
+    }
+
+    public void removeFurnitureByModel(FurnitureModel furnitureModel) {
+        furnitures.removeIf(furniture -> furniture.getModel().equals(furnitureModel));
+    }
+
+    public List<FurnitureModel> getFurnitureModels() {
+        List<FurnitureModel> furnitureModels = new ArrayList<>();
+        for (Furniture furniture : furnitures) {
+            furnitureModels.add(furniture.getModel());
+        }
+        return furnitureModels;
+    }
+
+    public List<FurnitureView> getFurnitureViews() {
+        List<FurnitureView> furnitureViews = new ArrayList<>();
+        for (Furniture furniture : furnitures) {
+            furnitureViews.add(furniture.getView());
+        }
+        return furnitureViews;
+    }
+
+    public List<FurnitureController> getFurnitureControllers() {
+        List<FurnitureController> furnitureControllers = new ArrayList<>();
+        for (Furniture furniture : furnitures) {
+            furnitureControllers.add(furniture.getController());
+        }
+        return furnitureControllers;
     }
 
     public Point getPosition() {

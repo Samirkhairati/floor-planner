@@ -5,6 +5,7 @@ import util.Config;
 import javax.swing.*;
 
 import model.FloorModel;
+import types.Room;
 
 import java.awt.*;
 
@@ -51,6 +52,14 @@ public class FloorView extends JPanel {
         }
     }
 
+    private void drawFurnitures(Graphics g) {
+        for (Room room : model.getRooms()) {
+            for (FurnitureView furniture : room.getRoomModel().getFurnitureViews()) {
+                furniture.draw(g);
+            }
+        }
+    }
+
     private void drawTemporaryFurniture(Graphics g) {
         if (model.getTemporaryFurniture() != null) {
             model.getTemporaryFurniture().getView().draw(g);
@@ -63,6 +72,7 @@ public class FloorView extends JPanel {
         drawLineGrid(g);
         drawDotGrid(g);
         drawRooms(g);
+        drawFurnitures(g);
         drawTemporaryFurniture(g);
     }
 }

@@ -22,6 +22,7 @@ public class FurnitureController {
     private final FloorView floorView;
     private final FloorModel floorModel;
     private final FloorController floorController;
+    private RoomModel hoveringOverRoom;
 
     public FurnitureController(FloorView floorView, FloorModel floorModel, FloorController floorController,
             FurnitureType selectedFurnitureType) {
@@ -82,7 +83,7 @@ public class FurnitureController {
 
         floorView.add(furnitureView);
         floorModel.setTemporaryFurniture(new Furniture(furnitureModel, furnitureView, this));
-        // floorController.setBusy(true);
+        floorController.setBusy(true);
         floorView.repaint();
     }
 
@@ -116,7 +117,8 @@ public class FurnitureController {
                 .setFocused(false)
                 .setPlacing(false)
                 .setPosition(Tools.snap(furnitureModel.getPreviewPosition()));
-
+        hoveringOverRoom.addFurniture(new Furniture(furnitureModel, furnitureView, this));
+        floorModel.removeTemporaryFurniture();
         floorView.repaint();
     }
 
@@ -133,10 +135,12 @@ public class FurnitureController {
             Rectangle existingRoom = new Rectangle(room.getPosition(), room.getSize());
             if (existingRoom.contains(temporaryFurniture)) {
                 furnitureModel.setValidity(true);
+                hoveringOverRoom = room;
                 return;
             }
         }
         furnitureModel.setValidity(false);
+        hoveringOverRoom = null;
     }
 
     private void focus() {

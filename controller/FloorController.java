@@ -85,7 +85,6 @@ public class FloorController {
     }
 
     public void startPlacingRoom() {
-        System.out.println(busy);
         if (busy)
             return;
         AddRoomOptions options = new AddRoomOptions(model);
