@@ -2,10 +2,12 @@ package controller;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serializable;
 
 import javax.swing.SwingUtilities;
 
 import model.FloorModel;
+import model.FurnitureModel;
 import model.RoomModel;
 import types.Room;
 import types.RoomType;
@@ -13,7 +15,7 @@ import util.Tools;
 import view.FloorView;
 import view.RoomView;
 
-public class RoomController {
+public class RoomController implements Serializable {
 
     private final RoomModel roomModel;
     private final RoomView roomView;
@@ -31,7 +33,21 @@ public class RoomController {
         this.floorController = floorController;
         roomModel.setSize(initialRoomSize);
         roomModel.setType(selectedRoomType);
+        listen();
+    }
 
+    public RoomController(FloorView floorView, FloorModel floorModel, FloorController floorController,
+            RoomModel roomModel, RoomView roomView) {
+        this.roomModel = roomModel;
+        this.roomView = roomView;
+        this.floorView = floorView;
+        this.floorModel = floorModel;
+        this.floorController = floorController;
+        floorView.add(roomView);
+        listen();
+    }
+
+    private void listen() {
         floorView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -67,6 +83,7 @@ public class RoomController {
                 }
             }
         });
+
     }
 
     public void startPlacingRoom() {
@@ -76,9 +93,9 @@ public class RoomController {
         roomModel.setPlacing(true);
         roomModel.setFocused(true);
         roomModel.setPreviewPosition(Tools.snap(locationOnScreen));
-
         floorView.add(roomView);
         floorModel.addRoom(new Room(roomModel, roomView, this));
+        floorController.setBusy(true);
         floorView.repaint();
     }
 
@@ -90,7 +107,13 @@ public class RoomController {
                 roomModel.setPlacing(false);
                 roomModel.setFocused(false);
                 roomModel.setPreviewPosition(roomModel.getPosition());
+
+                for (FurnitureModel furniture : roomModel.getFurnitureModels()) {
+                    furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, roomModel));
+                }
+
                 floorView.repaint();
+                floorController.setBusy(false);
                 return;
             }
             // delete room if no original position (new room)
@@ -100,9 +123,11 @@ public class RoomController {
                 floorModel.removeRoomByModel(roomModel);
                 floorView.remove(roomView);
                 floorView.repaint();
+                floorController.setBusy(false);
                 return;
             }
         }
+        floorController.setBusy(false);
         roomModel.setPlaced(true);
         roomModel.setFocused(false);
         roomModel.setPlacing(false);
@@ -111,6 +136,7 @@ public class RoomController {
     }
 
     private void startMovingRoom(MouseEvent e) {
+        floorController.setBusy(true);
         roomModel.setFocused(true);
         roomModel.setPlacing(true);
         checkOverlap();
@@ -132,6 +158,11 @@ public class RoomController {
     }
 
     private void focus() {
+
+        if (floorController.getBusy()) {
+            return;
+        }
+
         // if room is focused, unfocus it
         if (roomModel.isFocused()) {
             roomModel.setFocused(false);

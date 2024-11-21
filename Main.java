@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-import ui.SplitPane;
+import ui.Screen;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,6 +12,6 @@ public class Main {
     }
     @SuppressWarnings("unused")
     private static void createAndShowGUI() {
-        SplitPane splitPane = new SplitPane();
+        Screen splitPane = new Screen();
     }
 }

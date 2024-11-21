@@ -3,6 +3,7 @@ package ui;
 import javax.swing.*;
 import model.FloorModel;
 import types.RoomType;
+import util.Config;
 
 import java.awt.*;
 
@@ -45,8 +46,8 @@ public class AddRoomOptions extends JPanel {
                 int heightTiles = Integer.parseInt(heightField.getText());
 
                 if (widthTiles > 0 && heightTiles > 0) {
-                    this.roomWidth = widthTiles * model.getGridSize();
-                    this.roomHeight = heightTiles * model.getGridSize();
+                    this.roomWidth = widthTiles * Config.SNAP;
+                    this.roomHeight = heightTiles * Config.SNAP;
                     this.selectedRoomType = (RoomType) typeComboBox.getSelectedItem();
                 } else {
                     JOptionPane.showMessageDialog(null, "Dimensions must be positive integers!", "Error", JOptionPane.ERROR_MESSAGE);

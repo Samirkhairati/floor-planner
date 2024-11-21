@@ -5,6 +5,7 @@ import util.Config;
 import javax.swing.*;
 
 import model.FloorModel;
+import types.Room;
 
 import java.awt.*;
 
@@ -21,9 +22,10 @@ public class FloorView extends JPanel {
     }
 
     private void drawLineGrid(Graphics g) {
-        if (!model.isShowLineGrid()) return;
+        if (!model.isShowLineGrid())
+            return;
         g.setColor(gridColor);
-        int gridSize = model.getGridSize();
+        int gridSize = Config.SNAP;
         for (int x = 0; x < getWidth(); x += gridSize) {
             g.drawLine(x, 0, x, getHeight());
         }
@@ -33,9 +35,10 @@ public class FloorView extends JPanel {
     }
 
     private void drawDotGrid(Graphics g) {
-        if (!model.isShowDotGrid()) return;
+        if (!model.isShowDotGrid())
+            return;
         g.setColor(gridColor);
-        int gridSize = model.getGridSize();
+        int gridSize = Config.SNAP;
         for (int x = 0; x < getWidth(); x += gridSize) {
             for (int y = 0; y < getHeight(); y += gridSize) {
                 g.fillOval(x - Config.DOT_SIZE / 2, y - Config.DOT_SIZE / 2, Config.DOT_SIZE, Config.DOT_SIZE);
@@ -49,11 +52,27 @@ public class FloorView extends JPanel {
         }
     }
 
+    private void drawFurnitures(Graphics g) {
+        for (Room room : model.getRooms()) {
+            for (FurnitureView furniture : room.getRoomModel().getFurnitureViews()) {
+                furniture.draw(g, room.getRoomModel().getPosition());
+            }
+        }
+    }
+
+    private void drawTemporaryFurniture(Graphics g) {
+        if (model.getTemporaryFurniture() != null) {
+            model.getTemporaryFurniture().getView().draw(g, null);
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         drawLineGrid(g);
         drawDotGrid(g);
         drawRooms(g);
+        drawFurnitures(g);
+        drawTemporaryFurniture(g);
     }
 }

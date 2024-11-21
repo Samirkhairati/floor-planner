@@ -1,21 +1,22 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import controller.RoomController;
+import types.Furniture;
 import types.Room;
 import view.RoomView;
 
-public class FloorModel {
+public class FloorModel implements Serializable {
     private List<Room> rooms;
     private boolean showLineGrid;
     private boolean showDotGrid;
-    private final int GRID_SIZE;
     private boolean doingAction = false;
+    private Furniture temporaryFurniture;
 
-    public FloorModel(int gridSize) {
-        this.GRID_SIZE = gridSize;
+    public FloorModel() {
         this.showLineGrid = true;
         this.showDotGrid = false;
         this.rooms = new ArrayList<>();
@@ -27,6 +28,10 @@ public class FloorModel {
 
     public void removeRoomModel(Room room) {
         rooms.remove(room);
+    }
+
+    public void removeTemporaryFurniture() {
+        temporaryFurniture = null;
     }
 
     public List<Room> getRooms() {
@@ -85,7 +90,11 @@ public class FloorModel {
         this.showDotGrid = showDotGrid;
     }
 
-    public int getGridSize() {
-        return GRID_SIZE;
+    public Furniture getTemporaryFurniture() {
+        return temporaryFurniture;
+    }
+
+    public void setTemporaryFurniture(Furniture temporaryFurniture) {
+        this.temporaryFurniture = temporaryFurniture;
     }
 }

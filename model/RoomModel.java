@@ -1,19 +1,22 @@
 package model;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.List;
 
+import controller.FurnitureController;
+import types.Furniture;
 import types.RoomType;
+import view.FurnitureView;
 
 import java.util.ArrayList;
 
-public class RoomModel {
-    
-    private List<Rectangle> furnitures = new ArrayList<>();
+public class RoomModel implements Serializable {
+
+    private List<Furniture> furnitures = new ArrayList<>();
     private Point position;
     private Point previewPosition;
     private Dimension size;
-    private Dimension previewSize;
     private RoomType type;
     private Color color;
     private boolean isPlaced;
@@ -27,12 +30,40 @@ public class RoomModel {
         this.isPlaced = false;
     }
 
-    public void addFurniture(Rectangle furniture) {
+    public void addFurniture(Furniture furniture) {
         furnitures.add(furniture);
     }
 
-    public List<Rectangle> getFurnitures() {
+    public List<Furniture> getFurnitures() {
         return furnitures;
+    }
+
+    public void removeFurnitureByModel(FurnitureModel furnitureModel) {
+        furnitures.removeIf(furniture -> furniture.getModel().equals(furnitureModel));
+    }
+
+    public List<FurnitureModel> getFurnitureModels() {
+        List<FurnitureModel> furnitureModels = new ArrayList<>();
+        for (Furniture furniture : furnitures) {
+            furnitureModels.add(furniture.getModel());
+        }
+        return furnitureModels;
+    }
+
+    public List<FurnitureView> getFurnitureViews() {
+        List<FurnitureView> furnitureViews = new ArrayList<>();
+        for (Furniture furniture : furnitures) {
+            furnitureViews.add(furniture.getView());
+        }
+        return furnitureViews;
+    }
+
+    public List<FurnitureController> getFurnitureControllers() {
+        List<FurnitureController> furnitureControllers = new ArrayList<>();
+        for (Furniture furniture : furnitures) {
+            furnitureControllers.add(furniture.getController());
+        }
+        return furnitureControllers;
     }
 
     public Point getPosition() {
@@ -45,10 +76,6 @@ public class RoomModel {
 
     public Point getPreviewPosition() {
         return previewPosition;
-    }
-
-    public Dimension getPreviewSize() {
-        return previewSize;
     }
 
     public RoomType getType() {
@@ -91,11 +118,6 @@ public class RoomModel {
 
     public RoomModel setSize(Dimension size) {
         this.size = size;
-        return this;
-    }
-
-    public RoomModel setPreviewSize(Dimension previewSize) {
-        this.previewSize = previewSize;
         return this;
     }
 

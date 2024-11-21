@@ -1,4 +1,5 @@
 package ui;
+
 import javax.swing.*;
 
 import controller.FloorController;
@@ -9,7 +10,7 @@ public class ControlPanel extends JPanel {
 
     FloorController floorController;
 
-    public ControlPanel(FloorController floorController) {
+    public ControlPanel(FloorController floorController, Screen screen) {
 
         this.floorController = floorController;
 
@@ -17,17 +18,11 @@ public class ControlPanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        JPanel actionPanel = new ActionPanel(floorController);
+        JPanel actionPanel = new ActionPanel(floorController, screen);
         add(actionPanel, BorderLayout.NORTH);
 
-        JPanel gridPanel = new JPanel();
-        gridPanel.setLayout(new WrapLayout()); // 3 columns, rows will be determined by the number of items
-        for (int i = 1; i <= 13; i++) {
-            gridPanel.add(new JLabel("Item " + i));
-        }
-
-        JScrollPane scrollPane = new JScrollPane(gridPanel);
-        add(scrollPane, BorderLayout.CENTER);
+        FurniturePanel furniturePanel = new FurniturePanel(floorController);
+        add(furniturePanel, BorderLayout.CENTER);
 
     }
 }
