@@ -1,11 +1,13 @@
 package types;
 
 
+import java.io.Serializable;
+
 import controller.FurnitureController;
 import model.FurnitureModel;
 import view.FurnitureView;
 
-public class Furniture {
+public class Furniture implements Serializable {
     FurnitureModel model;
     FurnitureView view;
     FurnitureController controller;

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import types.Furniture;
 import types.Room;
 import view.RoomView;
 
-public class FloorModel {
+public class FloorModel implements Serializable {
     private List<Room> rooms;
     private boolean showLineGrid;
     private boolean showDotGrid;

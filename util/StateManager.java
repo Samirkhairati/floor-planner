@@ -1,10 +1,11 @@
 package util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 // Singleton StateManager
-public class StateManager {
+public class StateManager implements Serializable {
     private static StateManager instance;
 
     public State<Integer> keyCode = new State<>(); // Use generic State for int type
@@ -24,13 +25,14 @@ public class StateManager {
     }
 
     // Generic State class
-    public static class State<T> {
+    public static class State<T> implements Serializable {
         private T state;
         private List<Observer<T>> observers = new ArrayList<>();
 
         public State() {
             // Default constructor
         }
+
         public State(T state) {
             this.state = state;
         }
@@ -55,7 +57,7 @@ public class StateManager {
         }
     }
 
-    public static class Observer<T> {
+    public static class Observer<T> implements Serializable {
         public void update(T state) {
             System.out.println("State changed to: " + state);
         }

@@ -13,10 +13,11 @@ import view.FurnitureView;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import javax.swing.SwingUtilities;
 
-public class FurnitureController {
+public class FurnitureController implements Serializable {
 
     private final FurnitureModel furnitureModel;
     private final FurnitureView furnitureView;

@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 import model.FloorModel;
 import model.FurnitureModel;
@@ -18,7 +19,7 @@ import types.FurnitureType;
 import types.Room;
 import types.RoomType;
 
-public class FloorController {
+public class FloorController implements Serializable {
 
     private final FloorModel model;
     private final FloorView view;
