@@ -1,5 +1,6 @@
 package types;
 
+
 import controller.FurnitureController;
 import model.FurnitureModel;
 import view.FurnitureView;

@@ -3,12 +3,14 @@ package model;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import types.FurnitureType;
 import types.Rotation;
 import util.Config;
+import util.FurnitureFactory;
 
-public class FurnitureModel {
+public class FurnitureModel implements Serializable {
 
     private FurnitureType type;
     private Point position;
@@ -20,7 +22,6 @@ public class FurnitureModel {
     private boolean isValid;
     private boolean isHovering;
     private boolean isFocused;
-    private BufferedImage image;
 
     public FurnitureType getType() {
         return type;
@@ -63,7 +64,7 @@ public class FurnitureModel {
     }
 
     public BufferedImage getImage() {
-        return image;
+        return FurnitureFactory.loadImage(type);
     }
 
     public FurnitureModel setType(FurnitureType type) {
@@ -83,6 +84,11 @@ public class FurnitureModel {
 
     public FurnitureModel setSize(int width, int height) {
         this.size = new Dimension(width * 3 * Config.SNAP, height * 3 * Config.SNAP);
+        return this;
+    }
+
+    public FurnitureModel setSize(Dimension size) {
+        this.size = size;
         return this;
     }
 
@@ -113,11 +119,6 @@ public class FurnitureModel {
 
     public FurnitureModel setFocused(boolean isFocused) {
         this.isFocused = isFocused;
-        return this;
-    }
-
-    public FurnitureModel setImage(BufferedImage image) {
-        this.image = image;
         return this;
     }
 }

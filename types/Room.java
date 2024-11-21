@@ -4,7 +4,7 @@ import controller.RoomController;
 import model.RoomModel;
 import view.RoomView;
 
-public class Room {
+public class Room  {
     private final RoomModel roomModel;
     private final RoomView roomView;
     private final RoomController roomController;

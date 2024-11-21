@@ -6,6 +6,7 @@ import controller.FloorController;
 
 import java.awt.*;
 
+import util.Save;
 import util.StateManager;
 
 public class ActionPanel extends JPanel {
@@ -13,7 +14,7 @@ public class ActionPanel extends JPanel {
     private FloorController floorController;
 
     @SuppressWarnings("unused")
-    public ActionPanel(FloorController floorController) {
+    public ActionPanel(FloorController floorController, Screen screen) {
 
         this.floorController = floorController;
 
@@ -63,7 +64,18 @@ public class ActionPanel extends JPanel {
         showLineGrid.addActionListener(e -> StateManager.getInstance().showLineGrid.setState(showLineGrid.isSelected()));
         showDotGrid.addActionListener(e -> StateManager.getInstance().showDotGrid.setState(showDotGrid.isSelected()));
 
+        //NEW ROOM BUTTON
         button1.addActionListener(e -> this.floorController.startPlacingRoom());
+
+        //SAVE FILE BUTTON
+        button4.addActionListener(e -> {
+            Save.saveFile(floorController, screen);
+        });
+
+        //LOAD FILE BUTTON
+        button5.addActionListener(e -> {
+            Save.loadFile(floorController, screen);
+        });
     }
     
 }

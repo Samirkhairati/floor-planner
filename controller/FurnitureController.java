@@ -13,6 +13,7 @@ import view.FurnitureView;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.SwingUtilities;
 
 public class FurnitureController {
@@ -32,7 +33,21 @@ public class FurnitureController {
         this.floorModel = floorModel;
         this.floorController = floorController;
         furnitureModel.setType(selectedFurnitureType);
+        listen();
+    }
 
+    public FurnitureController(FloorView floorView, FloorModel floorModel, FloorController floorController,
+            FurnitureModel furnitureModel, FurnitureView furnitureView) {
+        this.furnitureModel = furnitureModel;
+        this.furnitureView = furnitureView;
+        this.floorView = floorView;
+        this.floorModel = floorModel;
+        this.floorController = floorController;
+        floorView.add(furnitureView);
+        listen();
+    }
+
+    private void listen() {
         floorView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

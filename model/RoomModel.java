@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.List;
 
 import controller.FurnitureController;
@@ -10,13 +11,12 @@ import view.FurnitureView;
 
 import java.util.ArrayList;
 
-public class RoomModel {
+public class RoomModel implements Serializable {
 
     private List<Furniture> furnitures = new ArrayList<>();
     private Point position;
     private Point previewPosition;
     private Dimension size;
-    private Dimension previewSize;
     private RoomType type;
     private Color color;
     private boolean isPlaced;
@@ -78,10 +78,6 @@ public class RoomModel {
         return previewPosition;
     }
 
-    public Dimension getPreviewSize() {
-        return previewSize;
-    }
-
     public RoomType getType() {
         return type;
     }
@@ -122,11 +118,6 @@ public class RoomModel {
 
     public RoomModel setSize(Dimension size) {
         this.size = size;
-        return this;
-    }
-
-    public RoomModel setPreviewSize(Dimension previewSize) {
-        this.previewSize = previewSize;
         return this;
     }
 
