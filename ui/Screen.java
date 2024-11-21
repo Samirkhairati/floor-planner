@@ -33,10 +33,9 @@ public class Screen extends JFrame {
 
     private void setup(FloorController controller, FloorView view) {
         setTitle("Fixed UI Example");
-        setSize(800, 600);
+        setSize(1920, 1080);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Center the window
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Make the window full screen
         
         JPanel controlPanel = new ControlPanel(controller, this);
         controlPanel.setPreferredSize(new Dimension(450, getHeight()));

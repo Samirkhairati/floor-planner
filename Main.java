@@ -10,8 +10,7 @@ public class Main {
             }
         });
     }
-    @SuppressWarnings("unused")
     private static void createAndShowGUI() {
-        Screen splitPane = new Screen();
+        new Screen();
     }
 }
