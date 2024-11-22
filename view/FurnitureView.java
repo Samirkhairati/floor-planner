@@ -53,7 +53,7 @@ public class FurnitureView extends JComponent {
 
         // Draw the furniture image
         g2d.drawImage(image, model.getPreviewPosition().x, model.getPreviewPosition().y, 
-                      model.getSize().width, model.getSize().height, null);
+                      model.getPreviewSize().width, model.getPreviewSize().height, null);
 
         // Reset composite for future rendering
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));

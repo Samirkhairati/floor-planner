@@ -1,19 +1,12 @@
 package view;
 
 import util.Config;
-import util.Tools;
-
 import javax.swing.*;
 
 import model.FixtureModel;
 import model.FloorModel;
 import model.RoomModel;
-import model.FixtureModel.PreviewSide;
-import types.FixtureType;
-import types.Orientation;
 import types.Room;
-import types.RoomType;
-
 import java.awt.*;
 
 public class FloorView extends JPanel {
@@ -93,8 +86,6 @@ public class FloorView extends JPanel {
             FixtureView.draw(fixture, g);
         }
     }
-
-
 
     @Override
     protected void paintComponent(Graphics g) {

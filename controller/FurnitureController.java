@@ -112,12 +112,16 @@ public class FurnitureController implements Serializable {
         if (!furnitureModel.isValid()) {
             // snap back to original position
             if (furnitureModel.isPlaced()) {
+
                 furnitureModel
                         .setPlacing(false)
                         .setFocused(false)
                         .setPreviewPosition(Tools.getAbsolutePreviewPosition(furnitureModel,
                                 Tools.getRoomContainingFurniture(furnitureModel, floorModel)))
-                        .setHovering(false);
+                        .setHovering(false)
+                        .setPreviewRotation(furnitureModel.getRotation())
+                        .setPreviewRotation(furnitureModel.getRotation())
+                        .setPreviewSize(furnitureModel.getSize());
                 floorModel.removeTemporaryFurniture();
                 floorController.setBusy(false);
                 floorView.repaint();
@@ -142,13 +146,14 @@ public class FurnitureController implements Serializable {
                 .setPlaced(true)
                 .setFocused(false)
                 .setPlacing(false)
-                .setPosition(Tools.snap(relativePosition));
+                .setPosition(Tools.snap(relativePosition))
+                .setRotation(furnitureModel.getPreviewRotation())
+                .setSize(furnitureModel.getPreviewSize());
         for (RoomModel room : floorModel.getRoomModels()) {
             room.removeFurnitureByModel(furnitureModel);
         }
         hoveringOverRoom.addFurniture(new Furniture(furnitureModel, furnitureView, this));
         floorModel.removeTemporaryFurniture();
-        System.out.println();
         floorView.repaint();
     }
 
@@ -161,7 +166,7 @@ public class FurnitureController implements Serializable {
     }
 
     public void checkValidity() {
-        Rectangle temporaryFurniture = new Rectangle(furnitureModel.getPreviewPosition(), furnitureModel.getSize());
+        Rectangle temporaryFurniture = new Rectangle(furnitureModel.getPreviewPosition(), furnitureModel.getPreviewSize());
         for (RoomModel room : floorModel.getRoomModels()) {
             // check if its being moved inside a room
             Rectangle existingRoom = new Rectangle(room.getPosition(), room.getSize());

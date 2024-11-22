@@ -16,7 +16,9 @@ public class FurnitureModel implements Serializable {
     private Point position;
     private Point previewPosition;
     private Dimension size;
-    private Rotation rotation;
+    private Dimension previewSize;
+    private Rotation rotation = Rotation.DEGREES_0;
+    private Rotation previewRotation = Rotation.DEGREES_0;
     private boolean isPlaced;
     private boolean isPlacing;
     private boolean isValid;
@@ -39,8 +41,16 @@ public class FurnitureModel implements Serializable {
         return size;
     }
 
+    public Dimension getPreviewSize() {
+        return previewSize;
+    }
+
     public Rotation getRotation() {
         return rotation;
+    }
+
+    public Rotation getPreviewRotation() {
+        return previewRotation;
     }
 
     public boolean isPlaced() {
@@ -92,8 +102,23 @@ public class FurnitureModel implements Serializable {
         return this;
     }
 
+    public FurnitureModel setPreviewSize(int width, int height) {
+        this.previewSize = new Dimension(width * Config.SCALE * Config.SNAP, height * Config.SCALE * Config.SNAP);
+        return this;
+    }
+
+    public FurnitureModel setPreviewSize(Dimension previewSize) {
+        this.previewSize = previewSize;
+        return this;
+    }
+
     public FurnitureModel setRotation(Rotation rotation) {
         this.rotation = rotation;
+        return this;
+    }
+
+    public FurnitureModel setPreviewRotation(Rotation previewRotation) {
+        this.previewRotation = previewRotation;
         return this;
     }
 
