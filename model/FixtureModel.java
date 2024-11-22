@@ -21,6 +21,11 @@ public class FixtureModel {
     private Point previewPosition;
     private Orientation orientation;
     private boolean isPlacing;
+    private PreviewSide previewSide;
+
+    public static enum PreviewSide {
+        UP, DOWN, LEFT, RIGHT
+    }
 
     public FixtureType getType() {
         return type;
@@ -70,6 +75,10 @@ public class FixtureModel {
         return isPlacing;
     }
 
+    public PreviewSide getPreviewSide() {
+        return previewSide;
+    }
+
     public FixtureModel setType(FixtureType type) {
         this.type = type;
         return this;
@@ -99,7 +108,7 @@ public class FixtureModel {
         this.upRoomModel = upRoomModel;
         return this;
     }
-    
+
     public FixtureModel setDownRoomModel(RoomModel downRoomModel) {
         this.downRoomModel = downRoomModel;
         return this;
@@ -130,4 +139,13 @@ public class FixtureModel {
         return this;
     }
 
+    public FixtureModel setPreviewSide(PreviewSide previewSide) {
+        this.previewSide = previewSide;
+        return this;
+    }
+
+}
+
+enum PreviewSide {
+    UP, DOWN, LEFT, RIGHT
 }

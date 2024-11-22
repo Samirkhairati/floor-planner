@@ -119,6 +119,9 @@ public class RoomController implements Serializable {
                 for (FurnitureModel furniture : roomModel.getFurnitureModels()) {
                     furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, roomModel));
                 }
+                for (FixtureModel fixture : floorModel.getFixtureModels()) {
+                    fixture.setPlacing(false);
+                }
 
                 floorView.repaint();
                 floorController.setBusy(false);

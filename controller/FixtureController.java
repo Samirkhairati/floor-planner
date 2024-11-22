@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import model.FixtureModel;
 import model.FloorModel;
 import model.RoomModel;
+import model.FixtureModel.PreviewSide;
 import types.Fixture;
 import types.FixtureType;
 import types.Orientation;
@@ -87,7 +88,9 @@ public class FixtureController {
 
     public static void previewFixtures(FloorModel model, MouseEvent e, Room room) {
         for (Fixture fixture : model.getFixtures()) {
+
             FixtureModel fixtureModel = fixture.getModel();
+
             if (fixtureModel.getOrientation() == Orientation.HORIZONTAL) {
                 RoomModel upRoomModel = fixtureModel.getUpRoomModel();
                 RoomModel downRoomModel = fixtureModel.getDownRoomModel();
@@ -98,6 +101,7 @@ public class FixtureController {
 
                 if (upRoomModel == null) {
                     fixtureModel
+                            .setPreviewSide(PreviewSide.DOWN)
                             .setPreviewPosition(
                                     Tools.snap(new Point(
                                             fixtureModel.getDownTilePosition().x + e.getPoint().x
@@ -106,6 +110,7 @@ public class FixtureController {
                                                     - room.getRoomModel().getPosition().y)));
                 } else if (downRoomModel == null) {
                     fixtureModel
+                            .setPreviewSide(PreviewSide.UP)
                             .setPreviewPosition(
                                     Tools.snap(new Point(
                                             fixtureModel.getUpTilePosition().x + e.getPoint().x
@@ -116,6 +121,7 @@ public class FixtureController {
 
                     if (upRoomModel == room.getRoomModel()) {
                         fixtureModel
+                                .setPreviewSide(PreviewSide.UP)
                                 .setPreviewPosition(Tools
                                         .snap(new Point(
                                                 fixtureModel.getUpTilePosition().x + e.getPoint().x
@@ -124,6 +130,7 @@ public class FixtureController {
                                                         - room.getRoomModel().getPosition().y)));
                     } else {
                         fixtureModel
+                                .setPreviewSide(PreviewSide.DOWN)
                                 .setPreviewPosition(Tools
                                         .snap(new Point(
                                                 fixtureModel.getDownTilePosition().x + e.getPoint().x
@@ -146,6 +153,7 @@ public class FixtureController {
 
                 if (leftRoomModel == null) {
                     fixtureModel
+                            .setPreviewSide(PreviewSide.RIGHT)
                             .setPreviewPosition(
                                     Tools.snap(new Point(
                                             fixtureModel.getRightTilePosition().x + e.getPoint().x
@@ -155,6 +163,7 @@ public class FixtureController {
                     ;
                 } else if (rightRoomModel == null) {
                     fixtureModel
+                            .setPreviewSide(PreviewSide.LEFT)
                             .setPreviewPosition(
                                     Tools.snap(new Point(
                                             fixtureModel.getLeftTilePosition().x + e.getPoint().x
@@ -165,6 +174,7 @@ public class FixtureController {
 
                     if (leftRoomModel == room.getRoomModel()) {
                         fixtureModel
+                                .setPreviewSide(PreviewSide.LEFT)
                                 .setPreviewPosition(Tools
                                         .snap(new Point(
                                                 fixtureModel.getLeftTilePosition().x + e.getPoint().x
@@ -173,6 +183,7 @@ public class FixtureController {
                                                         - room.getRoomModel().getPosition().y)));
                     } else {
                         fixtureModel
+                                .setPreviewSide(PreviewSide.RIGHT)
                                 .setPreviewPosition(Tools
                                         .snap(new Point(
                                                 fixtureModel.getRightTilePosition().x + e.getPoint().x
