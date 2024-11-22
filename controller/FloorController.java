@@ -216,25 +216,19 @@ public class FloorController implements Serializable {
         contextMenu = new JPopupMenu();
         contextMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 10px padding on all sides
 
-        JMenuItem addHorizontalWindow = new JMenuItem("Add Horizontal Window");
-        JMenuItem addVerticalWindow = new JMenuItem("Add Vertical Window");
-        JMenuItem addHorizontalDoor = new JMenuItem("Add Horizontal Door");
-        JMenuItem addVerticalDoor = new JMenuItem("Add Vertical Door");
+        JMenuItem addWindow = new JMenuItem("Add Window");
+        JMenuItem addDoor = new JMenuItem("Add Door");
 
-        addHorizontalWindow.addActionListener(e -> addFixture(FixtureType.WINDOW, Orientation.HORIZONTAL));
-        addVerticalWindow.addActionListener(e -> addFixture(FixtureType.WINDOW, Orientation.VERTICAL));
-        addHorizontalDoor.addActionListener(e -> addFixture(FixtureType.DOOR, Orientation.HORIZONTAL));
-        addVerticalDoor.addActionListener(e -> addFixture(FixtureType.DOOR, Orientation.VERTICAL));
+        addWindow.addActionListener(e -> addFixture(FixtureType.WINDOW));
+        addDoor.addActionListener(e -> addFixture(FixtureType.DOOR));
 
-        contextMenu.add(addHorizontalWindow);
-        contextMenu.add(addVerticalWindow);
+        contextMenu.add(addWindow);
         contextMenu.addSeparator();
-        contextMenu.add(addHorizontalDoor);
-        contextMenu.add(addVerticalDoor);
+        contextMenu.add(addDoor);
     }
 
-    public void addFixture(FixtureType fixtureType, Orientation orientation) {
-        FixtureController fixtureController = new FixtureController(view, model, this, fixtureType, orientation);
+    public void addFixture(FixtureType fixtureType) {
+        FixtureController fixtureController = new FixtureController(view, model, this, fixtureType);
         fixtureController.placeFixture(newFixtureLocation);
     }
 

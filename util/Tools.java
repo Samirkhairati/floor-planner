@@ -2,6 +2,8 @@ package util;
 
 import java.awt.*;
 
+import controller.FloorController;
+import model.FixtureModel;
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
@@ -16,56 +18,88 @@ public class Tools {
         return new Point(snappedX, snappedY);
     }
 
-    public static class EdgeSnapResult {
-        public Point primaryEdge; // Snapped position of the nearest edge
-        public Point secondaryEdge; // The second edge (for context)
+    public static void snapEdge(Point point, FloorController floorController,
+            FixtureModel fixtureModel) {
 
-        public EdgeSnapResult(Point primaryEdge, Point secondaryEdge) {
-            this.primaryEdge = primaryEdge;
-            this.secondaryEdge = secondaryEdge;
-        }
-    }
+        for (RoomModel roomModel : floorController.getModel().getRoomModels()) {
+            Rectangle upperStrip = new Rectangle(roomModel.getPosition().x + Config.SNAP,
+                    roomModel.getPosition().y, roomModel.getSize().width - 2 * Config.SNAP, Config.SNAP);
+            Rectangle lowerStrip = new Rectangle(roomModel.getPosition().x + Config.SNAP, roomModel.getPosition().y
+                    - roomModel.getSize().height - Config.SNAP, roomModel.getSize().width - 2 * Config.SNAP,
+                    Config.SNAP);
+            Rectangle leftStrip = new Rectangle(roomModel.getPosition().x, roomModel.getPosition().y + Config.SNAP,
+                    Config.SNAP,
+                    roomModel.getSize().height - 2 * Config.SNAP);
+            Rectangle rightStrip = new Rectangle(roomModel.getPosition().x + roomModel.getSize().width - Config.SNAP,
+                    roomModel.getPosition().y + Config.SNAP, Config.SNAP,
+                    roomModel.getSize().height - 2 * Config.SNAP);
 
-    public static EdgeSnapResult snapEdge(Point point, Orientation orientation) {
-        int gridSize = Config.SNAP;
+            boolean isOnUpperStrip = upperStrip.contains(point);
+            boolean isOnLowerStrip = lowerStrip.contains(point);
+            boolean isOnLeftStrip = leftStrip.contains(point);
+            boolean isOnRightStrip = rightStrip.contains(point);
 
-        // Determine the nearest grid tile's origin
-        int snappedX = (point.x / gridSize) * gridSize;
-        int snappedY = (point.y / gridSize) * gridSize;
+            if (isOnUpperStrip) {
+                RoomModel upRoomModel = roomModelContainingPoint(new Point(point.x, point.y - Config.SNAP),
+                        floorController.getModel());
+                RoomModel downRoomModel = roomModel;
 
-        if (orientation == Orientation.HORIZONTAL) {
-            // Determine which half of the tile the y-coordinate is in
-            if (point.y % gridSize >= gridSize ) {
-                // Bottom half: current tile is "top", next tile is "bottom"
-                Point topEdge = new Point(snappedX + gridSize / 2, snappedY + gridSize + gridSize / 2); // Current tile
-                                                                                                        // center
-                Point bottomEdge = new Point(snappedX + gridSize / 2, snappedY + 2 * gridSize + gridSize / 2); // Next
-                                                                                                               // tile
-                                                                                                               // center
-                return new EdgeSnapResult(topEdge, bottomEdge);
-            } else {
-                // Top half: current tile is "bottom", previous tile is "top"
-                Point bottomEdge = new Point(snappedX + gridSize / 2, snappedY + gridSize / 2); // Current tile center
-                Point topEdge = new Point(snappedX + gridSize / 2, snappedY - gridSize + gridSize / 2); // Previous tile
-                                                                                                        // center
-                return new EdgeSnapResult(topEdge, bottomEdge);
+                Point upTilePosition = snap(new Point(point.x, point.y - Config.SNAP));
+                Point downTilePosition = snap(point);
+                fixtureModel
+                        .setUpRoomModel(upRoomModel)
+                        .setDownRoomModel(downRoomModel)
+                        .setUpTilePosition(upTilePosition)
+                        .setDownTilePosition(downTilePosition)
+                        .setOrientation(Orientation.HORIZONTAL);
             }
-        } else {
-            // Determine which half of the tile the x-coordinate is in
-            if (point.x % gridSize >= gridSize) {
-                // Right half: current tile is "left", next tile is "right"
-                Point leftEdge = new Point(snappedX + gridSize + gridSize / 2, snappedY + gridSize / 2); // Current tile
-                                                                                                         // center
-                Point rightEdge = new Point(snappedX + 2 * gridSize + gridSize / 2, snappedY + gridSize / 2); // Next
-                                                                                                              // tile
-                                                                                                              // center
-                return new EdgeSnapResult(leftEdge, rightEdge);
-            } else {
-                // Left half: current tile is "right", previous tile is "left"
-                Point rightEdge = new Point(snappedX + gridSize / 2, snappedY + gridSize / 2); // Current tile center
-                Point leftEdge = new Point(snappedX - gridSize + gridSize / 2, snappedY + gridSize / 2); // Previous
-                                                                                                         // tile center
-                return new EdgeSnapResult(leftEdge, rightEdge);
+
+            else if (isOnLowerStrip) {
+                RoomModel upRoomModel = roomModel;
+                RoomModel downRoomModel = roomModelContainingPoint(new Point(point.x, point.y + Config.SNAP),
+                        floorController.getModel());
+                Point upTilePosition = snap(point);
+                Point downTilePosition = snap(new Point(point.x, point.y - Config.SNAP));
+                fixtureModel
+                        .setUpRoomModel(upRoomModel)
+                        .setDownRoomModel(downRoomModel)
+                        .setUpTilePosition(upTilePosition)
+                        .setDownTilePosition(downTilePosition)
+                        .setOrientation(Orientation.HORIZONTAL);
+            }
+
+            else if (isOnLeftStrip) {
+                RoomModel leftRoomModel = roomModelContainingPoint(new Point(point.x - Config.SNAP, point.y),
+                        floorController.getModel());
+                RoomModel rightRoomModel = roomModel;
+
+                Point leftTilePosition = snap(new Point(point.x - Config.SNAP, point.y));
+                Point rightTilePosition = snap(point);
+                fixtureModel
+                        .setLeftRoomModel(leftRoomModel)
+                        .setRightRoomModel(rightRoomModel)
+                        .setLeftTilePosition(leftTilePosition)
+                        .setRightTilePosition(rightTilePosition)
+                        .setOrientation(Orientation.VERTICAL);
+            }
+
+            else if (isOnRightStrip) {
+                RoomModel leftRoomModel = roomModel;
+                RoomModel rightRoomModel = roomModelContainingPoint(new Point(point.x + Config.SNAP, point.y),
+                        floorController.getModel());
+                Point leftTilePosition = snap(point);
+                Point rightTilePosition = snap(new Point(point.x + Config.SNAP, point.y));
+                fixtureModel
+                        .setLeftRoomModel(leftRoomModel)
+                        .setRightRoomModel(rightRoomModel)
+                        .setLeftTilePosition(leftTilePosition)
+                        .setRightTilePosition(rightTilePosition)
+                        .setOrientation(Orientation.VERTICAL);
+            }
+            // Not on the strips of any room (outside or inside of a room, but not near
+            // walls)
+            else {
+                fixtureModel.setUpRoomModel(null).setDownRoomModel(null).setOrientation(null);
             }
         }
     }
@@ -75,6 +109,16 @@ public class Tools {
             Rectangle bounds = new Rectangle(roomModel.getPosition(), roomModel.getSize());
             if (bounds.contains(point)) {
                 return roomModel.getType();
+            }
+        }
+        return null;
+    }
+
+    public static RoomModel roomModelContainingPoint(Point point, FloorModel floorModel) {
+        for (RoomModel roomModel : floorModel.getRoomModels()) {
+            Rectangle bounds = new Rectangle(roomModel.getPosition(), roomModel.getSize());
+            if (bounds.contains(point)) {
+                return roomModel;
             }
         }
         return null;

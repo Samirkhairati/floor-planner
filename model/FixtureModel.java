@@ -4,21 +4,20 @@ import java.awt.Point;
 
 import types.FixtureType;
 import types.Orientation;
-import types.RoomType;
 
 public class FixtureModel {
-    private FixtureType type;
 
     private Point upTilePosition;
     private Point downTilePosition;
     private Point leftTilePosition;
     private Point rightTilePosition;
 
-    private RoomType upRoomType;
-    private RoomType downRoomType;
-    private RoomType leftRoomType;
-    private RoomType rightRoomType;
+    private RoomModel upRoomModel;
+    private RoomModel downRoomModel;
+    private RoomModel leftRoomModel;
+    private RoomModel rightRoomModel;
 
+    private FixtureType type;
     private Point previewPosition;
     private Orientation orientation;
     private boolean isPlacing;
@@ -43,20 +42,20 @@ public class FixtureModel {
         return rightTilePosition;
     }
 
-    public RoomType getUpRoomType() {
-        return upRoomType;
+    public RoomModel getUpRoomModel() {
+        return upRoomModel;
     }
 
-    public RoomType getDownRoomType() {
-        return downRoomType;
+    public RoomModel getDownRoomModel() {
+        return downRoomModel;
     }
 
-    public RoomType getLeftRoomType() {
-        return leftRoomType;
+    public RoomModel getLeftRoomModel() {
+        return leftRoomModel;
     }
 
-    public RoomType getRightRoomType() {
-        return rightRoomType;
+    public RoomModel getRightRoomModel() {
+        return rightRoomModel;
     }
 
     public Point getPreviewPosition() {
@@ -96,23 +95,23 @@ public class FixtureModel {
         return this;
     }
 
-    public FixtureModel setUpRoomType(RoomType upRoomType) {
-        this.upRoomType = upRoomType;
+    public FixtureModel setUpRoomModel(RoomModel upRoomModel) {
+        this.upRoomModel = upRoomModel;
+        return this;
+    }
+    
+    public FixtureModel setDownRoomModel(RoomModel downRoomModel) {
+        this.downRoomModel = downRoomModel;
         return this;
     }
 
-    public FixtureModel setDownRoomType(RoomType downRoomType) {
-        this.downRoomType = downRoomType;
+    public FixtureModel setLeftRoomModel(RoomModel leftRoomModel) {
+        this.leftRoomModel = leftRoomModel;
         return this;
     }
 
-    public FixtureModel setLeftRoomType(RoomType leftRoomType) {
-        this.leftRoomType = leftRoomType;
-        return this;
-    }
-
-    public FixtureModel setRightRoomType(RoomType rightRoomType) {
-        this.rightRoomType = rightRoomType;
+    public FixtureModel setRightRoomModel(RoomModel rightRoomModel) {
+        this.rightRoomModel = rightRoomModel;
         return this;
     }
 

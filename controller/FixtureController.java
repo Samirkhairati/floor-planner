@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import model.FixtureModel;
 import model.FloorModel;
+import model.RoomModel;
 import types.Fixture;
 import types.FixtureType;
 import types.Orientation;
@@ -20,8 +21,8 @@ public class FixtureController {
     private final FloorController floorController;
 
     public FixtureController(FloorView floorView, FloorModel floorModel, FloorController floorController,
-            FixtureType selectedFixtureType, Orientation orientation) {
-        this.fixtureModel = new FixtureModel().setType(selectedFixtureType).setOrientation(orientation);
+            FixtureType selectedFixtureType) {
+        this.fixtureModel = new FixtureModel().setType(selectedFixtureType);
         this.fixtureView = new FixtureView(fixtureModel);
         this.floorView = floorView;
         this.floorModel = floorModel;
@@ -29,71 +30,52 @@ public class FixtureController {
     }
 
     public void placeFixture(Point location) {
+
+        Tools.snapEdge(location, floorController, fixtureModel);
+
+        FixtureType fixtureType = fixtureModel.getType();
+        RoomModel upRoomModel = fixtureModel.getUpRoomModel();
+        RoomModel downRoomModel = fixtureModel.getDownRoomModel();
+        RoomModel leftRoomModel = fixtureModel.getLeftRoomModel();
+        RoomModel rightRoomModel = fixtureModel.getRightRoomModel();
+        // Horizontal fixture
         if (fixtureModel.getOrientation() == Orientation.HORIZONTAL) {
 
-            Tools.EdgeSnapResult snapResult = Tools.snapEdge(location, Orientation.HORIZONTAL);
-            Point upTilePosition = snapResult.primaryEdge;
-            Point downTilePosition = snapResult.secondaryEdge;
-            RoomType upRoomType = Tools.roomContainingPoint(upTilePosition, floorModel);
-            RoomType downRoomType = Tools.roomContainingPoint(downTilePosition, floorModel);
-
-            // Case A: both sides are outside or same
-            if (upRoomType == downRoomType) {
+            // bedrooms and bathrooms shouldn't have doors to the outside
+            if (fixtureType == FixtureType.DOOR && (upRoomModel == null
+                    && (downRoomModel.getType() == RoomType.BEDROOM || downRoomModel.getType() == RoomType.BATHROOM)
+                    || ((upRoomModel.getType() == RoomType.BEDROOM || upRoomModel.getType() == RoomType.BATHROOM))
+                            && downRoomModel == null)) {
                 return;
             }
 
-            if (fixtureModel.getType() == FixtureType.DOOR) {
-                // Case B: one side is outside other side is bedroom/bathroom
-                if ((upRoomType == null && (downRoomType == RoomType.BEDROOM || downRoomType == RoomType.KITCHEN))
-                        || ((upRoomType == RoomType.BEDROOM || upRoomType == RoomType.KITCHEN)
-                                && downRoomType == null)) {
-                    return;
-                }
-            } else {
-                // Case C: window between rooms
-                if (upRoomType != null && downRoomType != null) {
-                    return;
-                }
-            }
-
-            fixtureModel
-                    .setUpRoomType(upRoomType)
-                    .setDownRoomType(downRoomType)
-                    .setUpTilePosition(upTilePosition)
-                    .setDownTilePosition(downTilePosition);
-
-        } else {
-            Tools.EdgeSnapResult snapResult = Tools.snapEdge(location, Orientation.VERTICAL);
-            Point leftTilePosition = snapResult.primaryEdge;
-            Point rightTilePosition = snapResult.secondaryEdge;
-            RoomType leftRoomType = Tools.roomContainingPoint(leftTilePosition, floorModel);
-            RoomType rightRoomType = Tools.roomContainingPoint(rightTilePosition, floorModel);
-
-            // Case A: both sides are outside
-            if (leftRoomType == rightRoomType) {
+            // windows cannot be between rooms
+            if (fixtureType == FixtureType.WINDOW && upRoomModel != null && downRoomModel != null) {
                 return;
             }
 
-            if (fixtureModel.getType() == FixtureType.DOOR) {
-                // Case B: one side is outside other side is bedroom/bathroom
-                if ((leftRoomType == null && (rightRoomType == RoomType.BEDROOM || rightRoomType == RoomType.KITCHEN))
-                        || ((leftRoomType == RoomType.BEDROOM || leftRoomType == RoomType.KITCHEN)
-                                && rightRoomType == null)) {
-                    return;
-                }
-            } else {
-                // Case C: window between rooms
-                if (leftRoomType != null && rightRoomType != null) {
-                    return;
-                }
-            }
-
-            fixtureModel
-                    .setLeftRoomType(leftRoomType)
-                    .setRightRoomType(rightRoomType)
-                    .setLeftTilePosition(leftTilePosition)
-                    .setRightTilePosition(rightTilePosition);
         }
+        // Vertical fixture
+        else if (fixtureModel.getOrientation() == Orientation.VERTICAL) {
+            // bedrooms and bathrooms shouldn't have doors to the outside
+            if (fixtureType == FixtureType.DOOR && (leftRoomModel == null
+                    && (rightRoomModel.getType() == RoomType.BEDROOM || rightRoomModel.getType() == RoomType.BATHROOM)
+                    || ((leftRoomModel.getType() == RoomType.BEDROOM || leftRoomModel.getType() == RoomType.BATHROOM))
+                            && rightRoomModel == null)) {
+                return;
+            }
+
+            // windows cannot be between rooms
+            if (fixtureType == FixtureType.WINDOW && leftRoomModel != null && rightRoomModel != null) {
+                return;
+            }
+        }
+
+        // in some invalid area
+        else {
+            return;
+        }
+
 
         floorView.add(fixtureView);
         floorModel.addFixture(new Fixture(fixtureModel, fixtureView, this));
