@@ -52,6 +52,7 @@ public class Tools {
                         .setUpTilePosition(upTilePosition)
                         .setDownTilePosition(downTilePosition)
                         .setOrientation(Orientation.HORIZONTAL);
+                return;
             }
 
             else if (isOnLowerStrip) {
@@ -66,6 +67,7 @@ public class Tools {
                         .setUpTilePosition(upTilePosition)
                         .setDownTilePosition(downTilePosition)
                         .setOrientation(Orientation.HORIZONTAL);
+                return;
             }
 
             else if (isOnLeftStrip) {
@@ -81,6 +83,7 @@ public class Tools {
                         .setLeftTilePosition(leftTilePosition)
                         .setRightTilePosition(rightTilePosition)
                         .setOrientation(Orientation.VERTICAL);
+                return;
             }
 
             else if (isOnRightStrip) {
@@ -95,11 +98,8 @@ public class Tools {
                         .setLeftTilePosition(leftTilePosition)
                         .setRightTilePosition(rightTilePosition)
                         .setOrientation(Orientation.VERTICAL);
-            }
-            // Not on the strips of any room (outside or inside of a room, but not near
-            // walls)
-            else {
-                fixtureModel.setUpRoomModel(null).setDownRoomModel(null).setOrientation(null);
+
+                return;
             }
         }
     }
