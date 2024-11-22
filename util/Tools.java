@@ -25,7 +25,7 @@ public class Tools {
             Rectangle upperStrip = new Rectangle(roomModel.getPosition().x + Config.SNAP,
                     roomModel.getPosition().y, roomModel.getSize().width - 2 * Config.SNAP, Config.SNAP);
             Rectangle lowerStrip = new Rectangle(roomModel.getPosition().x + Config.SNAP, roomModel.getPosition().y
-                    - roomModel.getSize().height - Config.SNAP, roomModel.getSize().width - 2 * Config.SNAP,
+                    + roomModel.getSize().height - Config.SNAP, roomModel.getSize().width - 2 * Config.SNAP,
                     Config.SNAP);
             Rectangle leftStrip = new Rectangle(roomModel.getPosition().x, roomModel.getPosition().y + Config.SNAP,
                     Config.SNAP,
@@ -59,7 +59,7 @@ public class Tools {
                 RoomModel downRoomModel = roomModelContainingPoint(new Point(point.x, point.y + Config.SNAP),
                         floorController.getModel());
                 Point upTilePosition = snap(point);
-                Point downTilePosition = snap(new Point(point.x, point.y - Config.SNAP));
+                Point downTilePosition = snap(new Point(point.x, point.y + Config.SNAP));
                 fixtureModel
                         .setUpRoomModel(upRoomModel)
                         .setDownRoomModel(downRoomModel)

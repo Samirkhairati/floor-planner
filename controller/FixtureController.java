@@ -44,8 +44,8 @@ public class FixtureController {
             // bedrooms and bathrooms shouldn't have doors to the outside
             if (fixtureType == FixtureType.DOOR && (upRoomModel == null
                     && (downRoomModel.getType() == RoomType.BEDROOM || downRoomModel.getType() == RoomType.BATHROOM)
-                    || ((upRoomModel.getType() == RoomType.BEDROOM || upRoomModel.getType() == RoomType.BATHROOM))
-                            && downRoomModel == null)) {
+                    || (downRoomModel == null && (upRoomModel.getType() == RoomType.BEDROOM
+                            || upRoomModel.getType() == RoomType.BATHROOM)))) {
                 return;
             }
 
@@ -58,10 +58,12 @@ public class FixtureController {
         // Vertical fixture
         else if (fixtureModel.getOrientation() == Orientation.VERTICAL) {
             // bedrooms and bathrooms shouldn't have doors to the outside
-            if (fixtureType == FixtureType.DOOR && (leftRoomModel == null
-                    && (rightRoomModel.getType() == RoomType.BEDROOM || rightRoomModel.getType() == RoomType.BATHROOM)
-                    || ((leftRoomModel.getType() == RoomType.BEDROOM || leftRoomModel.getType() == RoomType.BATHROOM))
-                            && rightRoomModel == null)) {
+            if (fixtureType == FixtureType.DOOR &&
+                    ((leftRoomModel == null
+                            && (rightRoomModel.getType() == RoomType.BEDROOM
+                                    || rightRoomModel.getType() == RoomType.BATHROOM))
+                            || (rightRoomModel == null && (leftRoomModel.getType() == RoomType.BEDROOM
+                                    || leftRoomModel.getType() == RoomType.BATHROOM)))) {
                 return;
             }
 
@@ -75,7 +77,6 @@ public class FixtureController {
         else {
             return;
         }
-
 
         floorView.add(fixtureView);
         floorModel.addFixture(new Fixture(fixtureModel, fixtureView, this));
