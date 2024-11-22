@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import javax.swing.SwingUtilities;
 
+import model.FixtureModel;
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
@@ -139,6 +140,16 @@ public class RoomController implements Serializable {
         roomModel.setFocused(false);
         roomModel.setPlacing(false);
         roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
+
+        for (FixtureModel fixture : floorModel.getFixtureModels()) {
+            if (fixture.isPlacing()) {
+                FixtureController fixtureController = new FixtureController(floorView, floorModel, floorController,
+                        fixture.getType());
+                fixtureController.placeFixture(fixture.getPreviewPosition());
+                floorModel.removeFixtureByModel(fixture);
+            }
+        }
+
         floorView.repaint();
     }
 

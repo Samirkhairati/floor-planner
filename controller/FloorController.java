@@ -16,9 +16,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
+import model.FixtureModel;
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
+import types.Fixture;
 import types.FixtureType;
 import types.Furniture;
 import types.FurnitureType;
@@ -129,10 +131,12 @@ public class FloorController implements Serializable {
                     furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, room.getRoomModel()));
                 }
 
+                FixtureController.previewFixtures(model, e, room);
                 room.getRoomController().checkOverlap();
-                view.repaint();
             }
         }
+
+        view.repaint();
     }
 
     public void startPlacingFurniture(FurnitureType selectedFurnitureType) {

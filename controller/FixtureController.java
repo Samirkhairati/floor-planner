@@ -1,6 +1,7 @@
 package controller;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 import model.FixtureModel;
 import model.FloorModel;
@@ -8,6 +9,7 @@ import model.RoomModel;
 import types.Fixture;
 import types.FixtureType;
 import types.Orientation;
+import types.Room;
 import types.RoomType;
 import util.Tools;
 import view.FixtureView;
@@ -81,5 +83,107 @@ public class FixtureController {
         floorView.add(fixtureView);
         floorModel.addFixture(new Fixture(fixtureModel, fixtureView, this));
         floorView.repaint();
+    }
+
+    public static void previewFixtures(FloorModel model, MouseEvent e, Room room) {
+        for (Fixture fixture : model.getFixtures()) {
+            FixtureModel fixtureModel = fixture.getModel();
+            if (fixtureModel.getOrientation() == Orientation.HORIZONTAL) {
+                RoomModel upRoomModel = fixtureModel.getUpRoomModel();
+                RoomModel downRoomModel = fixtureModel.getDownRoomModel();
+
+                if (upRoomModel != room.getRoomModel() && downRoomModel != room.getRoomModel()) {
+                    continue;
+                }
+
+                if (upRoomModel == null) {
+                    fixtureModel
+                            .setPreviewPosition(
+                                    Tools.snap(new Point(
+                                            fixtureModel.getDownTilePosition().x + e.getPoint().x
+                                                    - room.getRoomModel().getPosition().x,
+                                            fixtureModel.getDownTilePosition().y + e.getPoint().y
+                                                    - room.getRoomModel().getPosition().y)));
+                } else if (downRoomModel == null) {
+                    fixtureModel
+                            .setPreviewPosition(
+                                    Tools.snap(new Point(
+                                            fixtureModel.getUpTilePosition().x + e.getPoint().x
+                                                    - room.getRoomModel().getPosition().x,
+                                            fixtureModel.getUpTilePosition().y + e.getPoint().y
+                                                    - room.getRoomModel().getPosition().y)));
+                } else {
+
+                    if (upRoomModel == room.getRoomModel()) {
+                        fixtureModel
+                                .setPreviewPosition(Tools
+                                        .snap(new Point(
+                                                fixtureModel.getUpTilePosition().x + e.getPoint().x
+                                                        - room.getRoomModel().getPosition().x,
+                                                fixtureModel.getUpTilePosition().y + e.getPoint().y
+                                                        - room.getRoomModel().getPosition().y)));
+                    } else {
+                        fixtureModel
+                                .setPreviewPosition(Tools
+                                        .snap(new Point(
+                                                fixtureModel.getDownTilePosition().x + e.getPoint().x
+                                                        - room.getRoomModel().getPosition().x,
+                                                fixtureModel.getDownTilePosition().y + e.getPoint().y
+                                                        - room.getRoomModel().getPosition().y)));
+                    }
+
+                }
+
+                fixtureModel.setPlacing(true);
+
+            } else {
+                RoomModel leftRoomModel = fixtureModel.getLeftRoomModel();
+                RoomModel rightRoomModel = fixtureModel.getRightRoomModel();
+
+                if (leftRoomModel != room.getRoomModel() && rightRoomModel != room.getRoomModel()) {
+                    continue;
+                }
+
+                if (leftRoomModel == null) {
+                    fixtureModel
+                            .setPreviewPosition(
+                                    Tools.snap(new Point(
+                                            fixtureModel.getRightTilePosition().x + e.getPoint().x
+                                                    - room.getRoomModel().getPosition().x,
+                                            fixtureModel.getRightTilePosition().y + e.getPoint().y
+                                                    - room.getRoomModel().getPosition().y)));
+                    ;
+                } else if (rightRoomModel == null) {
+                    fixtureModel
+                            .setPreviewPosition(
+                                    Tools.snap(new Point(
+                                            fixtureModel.getLeftTilePosition().x + e.getPoint().x
+                                                    - room.getRoomModel().getPosition().x,
+                                            fixtureModel.getLeftTilePosition().y + e.getPoint().y
+                                                    - room.getRoomModel().getPosition().y)));
+                } else {
+
+                    if (leftRoomModel == room.getRoomModel()) {
+                        fixtureModel
+                                .setPreviewPosition(Tools
+                                        .snap(new Point(
+                                                fixtureModel.getLeftTilePosition().x + e.getPoint().x
+                                                        - room.getRoomModel().getPosition().x,
+                                                fixtureModel.getLeftTilePosition().y + e.getPoint().y
+                                                        - room.getRoomModel().getPosition().y)));
+                    } else {
+                        fixtureModel
+                                .setPreviewPosition(Tools
+                                        .snap(new Point(
+                                                fixtureModel.getRightTilePosition().x + e.getPoint().x
+                                                        - room.getRoomModel().getPosition().x,
+                                                fixtureModel.getRightTilePosition().y + e.getPoint().y
+                                                        - room.getRoomModel().getPosition().y)));
+                    }
+                }
+                fixtureModel.setPlacing(true);
+            }
+        }
+
     }
 }

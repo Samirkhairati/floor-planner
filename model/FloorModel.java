@@ -73,12 +73,20 @@ public class FloorModel implements Serializable {
         return roomControllers;
     }
 
+    public List<Fixture> getFixtures() {
+        return fixtures;
+    }
+
     public List<FixtureModel> getFixtureModels() {
         List<FixtureModel> fixtureModels = new ArrayList<>();
         for (Fixture fixture : fixtures) {
             fixtureModels.add(fixture.getModel());
         }
         return fixtureModels;
+    }
+
+    public void removeFixtureByModel(FixtureModel fixtureModel) {
+        fixtures.removeIf(fixture -> fixture.getModel().equals(fixtureModel));
     }
 
     public boolean isDoingAction() {

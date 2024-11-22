@@ -95,15 +95,30 @@ public class FloorView extends JPanel {
             // RoomModel downRoomModel = fixture.getDownRoomModel();
             // RoomModel leftRoomModel = fixture.getLeftRoomModel();
             // RoomModel rightRoomModel = fixture.getRightRoomModel();
+            if (fixture.getType() == FixtureType.WINDOW) {
+                g.setColor(Color.BLUE);
+            } else if (fixture.getType() == FixtureType.DOOR) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.BLACK);
+            }
 
-            if (fixture.getOrientation() == Orientation.HORIZONTAL) {
+            if (fixture.isPlacing()) {
                 g.setColor(Color.GRAY);
-                g.fillRect(fixture.getUpTilePosition().x, fixture.getUpTilePosition().y, Config.SNAP, Config.SNAP);
-                g.fillRect(fixture.getDownTilePosition().x, fixture.getDownTilePosition().y, Config.SNAP, Config.SNAP); 
-            } else if (fixture.getOrientation() == Orientation.VERTICAL) {
-                g.setColor(Color.GRAY);
-                g.fillRect(fixture.getLeftTilePosition().x, fixture.getLeftTilePosition().y, Config.SNAP, Config.SNAP);
-                g.fillRect(fixture.getRightTilePosition().x, fixture.getRightTilePosition().y, Config.SNAP, Config.SNAP);
+                g.fillRect(fixture.getPreviewPosition().x, fixture.getPreviewPosition().y, Config.SNAP, Config.SNAP);
+            } else {
+                if (fixture.getOrientation() == Orientation.HORIZONTAL) {
+                    // g.setColor(Color.GRAY);
+                    g.fillRect(fixture.getUpTilePosition().x, fixture.getUpTilePosition().y, Config.SNAP, Config.SNAP);
+                    g.fillRect(fixture.getDownTilePosition().x, fixture.getDownTilePosition().y, Config.SNAP,
+                            Config.SNAP);
+                } else if (fixture.getOrientation() == Orientation.VERTICAL) {
+                    // g.setColor(Color.GRAY);
+                    g.fillRect(fixture.getLeftTilePosition().x, fixture.getLeftTilePosition().y, Config.SNAP,
+                            Config.SNAP);
+                    g.fillRect(fixture.getRightTilePosition().x, fixture.getRightTilePosition().y, Config.SNAP,
+                            Config.SNAP);
+                }
             }
 
             // if (fixture.getOrientation() == Orientation.HORIZONTAL) {
