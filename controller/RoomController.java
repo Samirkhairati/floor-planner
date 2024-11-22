@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import javax.swing.SwingUtilities;
 
+import model.FixtureModel;
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
@@ -51,21 +52,26 @@ public class RoomController implements Serializable {
         floorView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // Click to place room when a new room is created
-                if (roomModel.isPlacing()) {
-                    placeRoom();
-                }
-                // Click on room to focus or unfocus
-                else if (roomModel.isHovering()) {
-                    focus();
+
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // Click to place room when a new room is created
+                    if (roomModel.isPlacing()) {
+                        placeRoom();
+                    }
+                    // Click on room to focus or unfocus
+                    else if (roomModel.isHovering()) {
+                        focus();
+                    }
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                // to drop the moving room
-                if (roomModel.isPlaced() && roomModel.isFocused() && roomModel.isPlacing()) {
-                    placeRoom();
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // to drop the moving room
+                    if (roomModel.isPlaced() && roomModel.isFocused() && roomModel.isPlacing()) {
+                        placeRoom();
+                    }
                 }
             }
         });
@@ -73,13 +79,15 @@ public class RoomController implements Serializable {
         floorView.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                // For the case when mouse is clicked while moving while placing a new room
-                if (roomModel.isPlacing() && !roomModel.isFocused()) {
-                    placeRoom();
-                }
-                // to move room
-                if (roomModel.isPlaced() && roomModel.isHovering()) {
-                    startMovingRoom(e);
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // For the case when mouse is clicked while moving while placing a new room
+                    if (roomModel.isPlacing() && !roomModel.isFocused()) {
+                        placeRoom();
+                    }
+                    // to move room
+                    if (roomModel.isPlaced() && roomModel.isHovering()) {
+                        startMovingRoom(e);
+                    }
                 }
             }
         });
@@ -111,6 +119,9 @@ public class RoomController implements Serializable {
                 for (FurnitureModel furniture : roomModel.getFurnitureModels()) {
                     furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, roomModel));
                 }
+                for (FixtureModel fixture : floorModel.getFixtureModels()) {
+                    fixture.setPlacing(false);
+                }
 
                 floorView.repaint();
                 floorController.setBusy(false);
@@ -132,6 +143,16 @@ public class RoomController implements Serializable {
         roomModel.setFocused(false);
         roomModel.setPlacing(false);
         roomModel.setPosition(Tools.snap(roomModel.getPreviewPosition()));
+
+        for (FixtureModel fixture : floorModel.getFixtureModels()) {
+            if (fixture.isPlacing()) {
+                FixtureController fixtureController = new FixtureController(floorView, floorModel, floorController,
+                        fixture.getType());
+                fixtureController.placeFixture(fixture.getPreviewPosition());
+                floorModel.removeFixtureByModel(fixture);
+            }
+        }
+
         floorView.repaint();
     }
 

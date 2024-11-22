@@ -1,11 +1,18 @@
 package view;
 
 import util.Config;
+import util.Tools;
 
 import javax.swing.*;
 
+import model.FixtureModel;
 import model.FloorModel;
+import model.RoomModel;
+import model.FixtureModel.PreviewSide;
+import types.FixtureType;
+import types.Orientation;
 import types.Room;
+import types.RoomType;
 
 import java.awt.*;
 
@@ -66,6 +73,168 @@ public class FloorView extends JPanel {
         }
     }
 
+    private void drawWalls(Graphics g) {
+        for (RoomModel room : model.getRoomModels()) {
+            if (room.isPlaced()) {
+                g.setColor(Color.BLACK);
+                Point position = room.getPreviewPosition();
+                g.drawLine(position.x, position.y, position.x + room.getSize().width, position.y);
+                g.drawLine(position.x, position.y, position.x, position.y + room.getSize().height);
+                g.drawLine(position.x + room.getSize().width, position.y, position.x + room.getSize().width,
+                        position.y + room.getSize().height);
+                g.drawLine(position.x, position.y + room.getSize().height, position.x + room.getSize().width,
+                        position.y + room.getSize().height);
+            }
+        }
+    }
+
+    private void drawFixtures(Graphics g) {
+        for (FixtureModel fixture : model.getFixtureModels()) {
+
+            // FixtureType fixtureType = fixture.getType();
+            // RoomModel upRoomModel = fixture.getUpRoomModel();
+            // RoomModel downRoomModel = fixture.getDownRoomModel();
+            // RoomModel leftRoomModel = fixture.getLeftRoomModel();
+            // RoomModel rightRoomModel = fixture.getRightRoomModel();
+            if (fixture.getType() == FixtureType.WINDOW) {
+                g.setColor(Color.BLUE);
+            } else if (fixture.getType() == FixtureType.DOOR) {
+                g.setColor(Color.RED);
+            } else {
+                g.setColor(Color.BLACK);
+            }
+
+            if (fixture.isPlacing()) {
+
+                if (fixture.getPreviewSide() == PreviewSide.UP) {
+                    drawFixtureLines(g, fixture.getType(), fixture.getUpRoomModel().getType(),
+                            new Point(fixture.getPreviewPosition().x, fixture.getPreviewPosition().y + Config.SNAP),
+                            new Point(fixture.getPreviewPosition().x + Config.SNAP,
+                                    fixture.getPreviewPosition().y + Config.SNAP));
+
+                }
+
+                if (fixture.getPreviewSide() == PreviewSide.DOWN) {
+                    drawFixtureLines(g, fixture.getType(), fixture.getDownRoomModel().getType(),
+                            new Point(fixture.getPreviewPosition().x, fixture.getPreviewPosition().y),
+                            new Point(fixture.getPreviewPosition().x + Config.SNAP,
+                                    fixture.getPreviewPosition().y));
+                }
+
+                if (fixture.getPreviewSide() == PreviewSide.LEFT) {
+                    drawFixtureLines(g, fixture.getType(), fixture.getLeftRoomModel().getType(),
+                            new Point(fixture.getPreviewPosition().x + Config.SNAP, fixture.getPreviewPosition().y),
+                            new Point(fixture.getPreviewPosition().x + Config.SNAP,
+                                    fixture.getPreviewPosition().y + Config.SNAP));
+                }
+
+                if (fixture.getPreviewSide() == PreviewSide.RIGHT) {
+                    drawFixtureLines(g, fixture.getType(), fixture.getRightRoomModel().getType(),
+                            new Point(fixture.getPreviewPosition().x, fixture.getPreviewPosition().y),
+                            new Point(fixture.getPreviewPosition().x,
+                                    fixture.getPreviewPosition().y + Config.SNAP));
+
+                }
+
+                // g.setColor(Color.GRAY);
+                // g.fillRect(fixture.getPreviewPosition().x, fixture.getPreviewPosition().y,
+                // Config.SNAP, Config.SNAP);
+            } else {
+                if (fixture.getOrientation() == Orientation.HORIZONTAL) {
+                    if (fixture.getUpRoomModel() == null) {
+                        drawFixtureLines(g, fixture.getType(), fixture.getDownRoomModel().getType(),
+                                new Point(fixture.getDownTilePosition().x, fixture.getDownTilePosition().y),
+                                new Point(fixture.getDownTilePosition().x + Config.SNAP,
+                                        fixture.getDownTilePosition().y));
+                    } else if (fixture.getDownRoomModel() == null) {
+                        drawFixtureLines(g, fixture.getType(), fixture.getUpRoomModel().getType(),
+                                new Point(fixture.getUpTilePosition().x, fixture.getUpTilePosition().y + Config.SNAP),
+                                new Point(fixture.getUpTilePosition().x + Config.SNAP,
+                                        fixture.getUpTilePosition().y + Config.SNAP));
+                    } else {
+                        drawFixtureLines(g, fixture.getType(), fixture.getDownRoomModel().getType(),
+                                new Point(fixture.getDownTilePosition().x, fixture.getDownTilePosition().y),
+                                new Point(fixture.getDownTilePosition().x + Config.SNAP,
+                                        fixture.getDownTilePosition().y));
+                        drawFixtureLines(g, fixture.getType(), fixture.getUpRoomModel().getType(),
+                                new Point(fixture.getUpTilePosition().x, fixture.getUpTilePosition().y + Config.SNAP),
+                                new Point(fixture.getUpTilePosition().x + Config.SNAP,
+                                        fixture.getUpTilePosition().y + Config.SNAP));
+                    }
+
+                } else if (fixture.getOrientation() == Orientation.VERTICAL) {
+                    if (fixture.getLeftRoomModel() == null) {
+                        drawFixtureLines(g, fixture.getType(), fixture.getRightRoomModel().getType(),
+                                new Point(fixture.getRightTilePosition().x, fixture.getRightTilePosition().y),
+                                new Point(fixture.getRightTilePosition().x,
+                                        fixture.getRightTilePosition().y + Config.SNAP));
+                    } else if (fixture.getRightRoomModel() == null) {
+                        drawFixtureLines(g, fixture.getType(), fixture.getLeftRoomModel().getType(),
+                                new Point(fixture.getLeftTilePosition().x + Config.SNAP,
+                                        fixture.getLeftTilePosition().y),
+                                new Point(fixture.getLeftTilePosition().x + Config.SNAP,
+                                        fixture.getLeftTilePosition().y + Config.SNAP));
+                    } else {
+                        drawFixtureLines(g, fixture.getType(), fixture.getRightRoomModel().getType(),
+                                new Point(fixture.getRightTilePosition().x, fixture.getRightTilePosition().y),
+                                new Point(fixture.getRightTilePosition().x,
+                                        fixture.getRightTilePosition().y + Config.SNAP));
+                    }
+                }
+            }
+
+            // if (fixture.getOrientation() == Orientation.HORIZONTAL) {
+            // if (fixture.getUpRoomType() != null && fixture.getUpTilePosition() != null) {
+            // g.setColor(Tools.typeToColor(fixture.getUpRoomType()));
+            // Point upTilePosition = fixture.getUpTilePosition();
+            // g.drawLine(upTilePosition.x - Config.SNAP / 2, upTilePosition.y + Config.SNAP
+            // / 2 + 1,
+            // upTilePosition.x + Config.SNAP / 2, upTilePosition.y + Config.SNAP / 2 + 1);
+            // }
+            // if (fixture.getDownRoomType() != null && fixture.getDownTilePosition() !=
+            // null) {
+            // g.setColor(Tools.typeToColor(fixture.getDownRoomType()));
+            // Point downTilePosition = fixture.getDownTilePosition();
+            // g.drawLine(downTilePosition.x - Config.SNAP / 2, downTilePosition.y -
+            // Config.SNAP / 2,
+            // downTilePosition.x + Config.SNAP / 2, downTilePosition.y - Config.SNAP / 2);
+            // }
+            // } else {
+            // if (fixture.getLeftRoomType() != null && fixture.getLeftTilePosition() !=
+            // null) {
+            // g.setColor(Tools.typeToColor(fixture.getLeftRoomType()));
+            // Point leftTilePosition = fixture.getLeftTilePosition();
+            // g.drawLine(leftTilePosition.x + Config.SNAP / 2, leftTilePosition.y +
+            // Config.SNAP / 2 + 1,
+            // leftTilePosition.x + Config.SNAP / 2, leftTilePosition.y - Config.SNAP / 2 +
+            // 1);
+            // }
+            // if (fixture.getRightRoomType() != null && fixture.getRightTilePosition() !=
+            // null) {
+            // g.setColor(Tools.typeToColor(fixture.getRightRoomType()));
+            // Point rightTilePosition = fixture.getRightTilePosition();
+            // g.drawLine(rightTilePosition.x - Config.SNAP / 2, rightTilePosition.y -
+            // Config.SNAP / 2,
+            // rightTilePosition.x - Config.SNAP / 2, rightTilePosition.y + Config.SNAP /
+            // 2);
+            // }
+            // }
+        }
+    }
+
+    private void drawFixtureLines(Graphics g, FixtureType fixtureType, RoomType roomType, Point from, Point to) {
+        g.setColor(Tools.typeToColor(roomType));
+        if (fixtureType == FixtureType.WINDOW) {
+            Graphics2D g2d = (Graphics2D) g;
+            float[] dashPattern = { 5, 5, 5, 5, 5, 5 };
+            g2d.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10, dashPattern, 0));
+            g2d.drawLine(from.x, from.y, to.x, to.y);
+            g2d.setStroke(new BasicStroke()); // Reset to default stroke
+        } else {
+            g.drawLine(from.x, from.y, to.x, to.y);
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -74,5 +243,7 @@ public class FloorView extends JPanel {
         drawRooms(g);
         drawFurnitures(g);
         drawTemporaryFurniture(g);
+        drawWalls(g);
+        drawFixtures(g);
     }
 }

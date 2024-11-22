@@ -11,11 +11,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
+import javax.swing.BorderFactory;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+
+import model.FixtureModel;
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
+import types.Fixture;
+import types.FixtureType;
 import types.Furniture;
 import types.FurnitureType;
+import types.Orientation;
 import types.Room;
 import types.RoomType;
 
@@ -25,11 +34,15 @@ public class FloorController implements Serializable {
     private final FloorView view;
     private StateManager stateManager;
     private boolean busy;
+    private JPopupMenu contextMenu;
+    public Point newFixtureLocation;
 
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
         this.view = view;
         this.stateManager = StateManager.getInstance();
+
+        initializeContextMenu();
 
         view.addMouseMotionListener(new MouseAdapter() {
             // For showing preview room
@@ -38,6 +51,18 @@ public class FloorController implements Serializable {
                 checkHover(e);
                 movePreviewRoom(e);
                 moveTemporaryFurniture(e);
+            }
+        });
+        // Add mouse listener for the right-click
+        view.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                handleMousePress(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                handleMousePress(e);
             }
         });
         stateManager.keyCode.addObserver(new StateManager.Observer<Integer>() {
@@ -106,10 +131,12 @@ public class FloorController implements Serializable {
                     furniture.setPreviewPosition(Tools.getAbsolutePreviewPosition(furniture, room.getRoomModel()));
                 }
 
+                FixtureController.previewFixtures(model, e, room);
                 room.getRoomController().checkOverlap();
-                view.repaint();
             }
         }
+
+        view.repaint();
     }
 
     public void startPlacingFurniture(FurnitureType selectedFurnitureType) {
@@ -181,10 +208,39 @@ public class FloorController implements Serializable {
     }
 
     public FloorView getView() {
-       return view;
+        return view;
     }
 
     public FloorModel getModel() {
         return model;
-     }
+    }
+
+    @SuppressWarnings("unused")
+    private void initializeContextMenu() {
+        contextMenu = new JPopupMenu();
+        contextMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 10px padding on all sides
+
+        JMenuItem addWindow = new JMenuItem("Add Window");
+        JMenuItem addDoor = new JMenuItem("Add Door");
+
+        addWindow.addActionListener(e -> addFixture(FixtureType.WINDOW));
+        addDoor.addActionListener(e -> addFixture(FixtureType.DOOR));
+
+        contextMenu.add(addWindow);
+        contextMenu.addSeparator();
+        contextMenu.add(addDoor);
+    }
+
+    public void addFixture(FixtureType fixtureType) {
+        FixtureController fixtureController = new FixtureController(view, model, this, fixtureType);
+        fixtureController.placeFixture(newFixtureLocation);
+    }
+
+    private void handleMousePress(MouseEvent e) {
+        // Show the context menu on right-click
+        if (SwingUtilities.isRightMouseButton(e)) {
+            newFixtureLocation = e.getPoint();
+            contextMenu.show(view, e.getX(), e.getY());
+        }
+    }
 }
