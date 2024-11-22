@@ -5,6 +5,7 @@ import util.Config;
 import javax.swing.*;
 
 import model.FloorModel;
+import model.RoomModel;
 import types.Room;
 
 import java.awt.*;
@@ -66,6 +67,21 @@ public class FloorView extends JPanel {
         }
     }
 
+    private void drawWalls(Graphics g) {
+        for (RoomModel room : model.getRoomModels()) {
+            if (room.isPlaced() && !room.isPlacing()) {
+                g.setColor(Color.BLACK);
+                Point position = room.getPreviewPosition();
+                g.drawLine(position.x, position.y, position.x + room.getSize().width, position.y);
+                g.drawLine(position.x, position.y, position.x, position.y + room.getSize().height);
+                g.drawLine(position.x + room.getSize().width, position.y, position.x + room.getSize().width,
+                        position.y + room.getSize().height);
+                g.drawLine(position.x, position.y + room.getSize().height, position.x + room.getSize().width,
+                        position.y + room.getSize().height);
+            }
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -74,5 +90,6 @@ public class FloorView extends JPanel {
         drawRooms(g);
         drawFurnitures(g);
         drawTemporaryFurniture(g);
+        drawWalls(g);
     }
 }

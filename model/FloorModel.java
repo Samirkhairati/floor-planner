@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.RoomController;
+import types.Fixture;
 import types.Furniture;
 import types.Room;
 import view.RoomView;
 
 public class FloorModel implements Serializable {
     private List<Room> rooms;
+    private List<Fixture> fixtures;
     private boolean showLineGrid;
     private boolean showDotGrid;
     private boolean doingAction = false;
