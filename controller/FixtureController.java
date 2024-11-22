@@ -63,7 +63,7 @@ public class FixtureController {
                     .setDownTilePosition(downTilePosition);
 
         } else {
-            Tools.EdgeSnapResult snapResult = Tools.snapEdge(location, Orientation.HORIZONTAL);
+            Tools.EdgeSnapResult snapResult = Tools.snapEdge(location, Orientation.VERTICAL);
             Point leftTilePosition = snapResult.primaryEdge;
             Point rightTilePosition = snapResult.secondaryEdge;
             RoomType leftRoomType = Tools.roomContainingPoint(leftTilePosition, floorModel);

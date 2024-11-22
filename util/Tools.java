@@ -35,7 +35,7 @@ public class Tools {
 
         if (orientation == Orientation.HORIZONTAL) {
             // Determine which half of the tile the y-coordinate is in
-            if (point.y % gridSize >= gridSize / 2) {
+            if (point.y % gridSize >= gridSize ) {
                 // Bottom half: current tile is "top", next tile is "bottom"
                 Point topEdge = new Point(snappedX + gridSize / 2, snappedY + gridSize + gridSize / 2); // Current tile
                                                                                                         // center
@@ -52,7 +52,7 @@ public class Tools {
             }
         } else {
             // Determine which half of the tile the x-coordinate is in
-            if (point.x % gridSize >= gridSize / 2) {
+            if (point.x % gridSize >= gridSize) {
                 // Right half: current tile is "left", next tile is "right"
                 Point leftEdge = new Point(snappedX + gridSize + gridSize / 2, snappedY + gridSize / 2); // Current tile
                                                                                                          // center
