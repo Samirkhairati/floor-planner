@@ -52,21 +52,25 @@ public class FurnitureController implements Serializable {
         floorView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // Click to place room when a new room is created
-                if (furnitureModel.isPlacing()) {
-                    placeFurniture();
-                }
-                // Click on room to focus or unfocus
-                else if (furnitureModel.isHovering()) {
-                    focus();
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // Click to place room when a new room is created
+                    if (furnitureModel.isPlacing()) {
+                        placeFurniture();
+                    }
+                    // Click on room to focus or unfocus
+                    else if (furnitureModel.isHovering()) {
+                        focus();
+                    }
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                // to drop the moving room
-                if (furnitureModel.isPlaced() && furnitureModel.isFocused() && furnitureModel.isPlacing()) {
-                    placeFurniture();
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // to drop the moving room
+                    if (furnitureModel.isPlaced() && furnitureModel.isFocused() && furnitureModel.isPlacing()) {
+                        placeFurniture();
+                    }
                 }
             }
         });

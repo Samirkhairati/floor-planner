@@ -11,11 +11,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 
+import javax.swing.BorderFactory;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
+
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
+import types.FixtureType;
 import types.Furniture;
 import types.FurnitureType;
+import types.Orientation;
 import types.Room;
 import types.RoomType;
 
@@ -25,11 +32,15 @@ public class FloorController implements Serializable {
     private final FloorView view;
     private StateManager stateManager;
     private boolean busy;
+    private JPopupMenu contextMenu;
+    public Point newFixtureLocation;
 
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
         this.view = view;
         this.stateManager = StateManager.getInstance();
+
+        initializeContextMenu();
 
         view.addMouseMotionListener(new MouseAdapter() {
             // For showing preview room
@@ -38,6 +49,18 @@ public class FloorController implements Serializable {
                 checkHover(e);
                 movePreviewRoom(e);
                 moveTemporaryFurniture(e);
+            }
+        });
+        // Add mouse listener for the right-click
+        view.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                handleMousePress(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                handleMousePress(e);
             }
         });
         stateManager.keyCode.addObserver(new StateManager.Observer<Integer>() {
@@ -181,10 +204,45 @@ public class FloorController implements Serializable {
     }
 
     public FloorView getView() {
-       return view;
+        return view;
     }
 
     public FloorModel getModel() {
         return model;
-     }
+    }
+
+    @SuppressWarnings("unused")
+    private void initializeContextMenu() {
+        contextMenu = new JPopupMenu();
+        contextMenu.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // 10px padding on all sides
+
+        JMenuItem addHorizontalWindow = new JMenuItem("Add Horizontal Window");
+        JMenuItem addVerticalWindow = new JMenuItem("Add Vertical Window");
+        JMenuItem addHorizontalDoor = new JMenuItem("Add Horizontal Door");
+        JMenuItem addVerticalDoor = new JMenuItem("Add Vertical Door");
+
+        addHorizontalWindow.addActionListener(e -> addFixture(FixtureType.WINDOW, Orientation.HORIZONTAL));
+        addVerticalWindow.addActionListener(e -> addFixture(FixtureType.WINDOW, Orientation.VERTICAL));
+        addHorizontalDoor.addActionListener(e -> addFixture(FixtureType.DOOR, Orientation.HORIZONTAL));
+        addVerticalDoor.addActionListener(e -> addFixture(FixtureType.DOOR, Orientation.VERTICAL));
+
+        contextMenu.add(addHorizontalWindow);
+        contextMenu.add(addVerticalWindow);
+        contextMenu.addSeparator();
+        contextMenu.add(addHorizontalDoor);
+        contextMenu.add(addVerticalDoor);
+    }
+
+    public void addFixture(FixtureType fixtureType, Orientation orientation) {
+        FixtureController fixtureController = new FixtureController(view, model, this, fixtureType, orientation);
+        fixtureController.placeFixture(newFixtureLocation);
+    }
+
+    private void handleMousePress(MouseEvent e) {
+        // Show the context menu on right-click
+        if (SwingUtilities.isRightMouseButton(e)) {
+            newFixtureLocation = e.getPoint();
+            contextMenu.show(view, e.getX(), e.getY());
+        }
+    }
 }

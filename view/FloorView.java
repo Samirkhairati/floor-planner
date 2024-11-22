@@ -1,12 +1,16 @@
 package view;
 
 import util.Config;
+import util.Tools;
 
 import javax.swing.*;
 
+import model.FixtureModel;
 import model.FloorModel;
 import model.RoomModel;
+import types.Orientation;
 import types.Room;
+import types.RoomType;
 
 import java.awt.*;
 
@@ -82,6 +86,35 @@ public class FloorView extends JPanel {
         }
     }
 
+    private void drawFixtures(Graphics g) {
+        for (FixtureModel fixture : model.getFixtureModels()) {
+            if (fixture.getOrientation() == Orientation.HORIZONTAL) {
+                if (fixture.getUpRoomType() != null && fixture.getUpTilePosition() != null) {
+                    g.setColor(Tools.typeToColor(fixture.getUpRoomType()));
+                    g.setColor(Color.BLACK);
+                    Point upTilePosition = fixture.getUpTilePosition();
+                    g.drawRect(upTilePosition.x - Config.SNAP / 2, upTilePosition.y + Config.SNAP, Config.SNAP, Config.SNAP);
+
+                }
+                if (fixture.getDownRoomType() != null && fixture.getDownTilePosition() != null) {
+                    g.setColor(Tools.typeToColor(RoomType.HALL));
+                    // g.setColor(Color.ORANGE);
+                    Point downTilePosition = fixture.getDownTilePosition();
+                    g.drawLine(downTilePosition.x - Config.SNAP / 2, downTilePosition.y - Config.SNAP/2, downTilePosition.x + Config.SNAP / 2, downTilePosition.y - Config.SNAP/2);
+                }
+
+                // g.drawLine(fixture.getPreviewPosition().x, fixture.getPreviewPosition().y,
+                // fixture.getPreviewPosition().x + Config.SNAP,
+                // fixture.getPreviewPosition().y);
+            } else {
+                g.setColor(Color.RED);
+                // g.drawLine(fixture.getPreviewPosition().x, fixture.getPreviewPosition().y,
+                // fixture.getPreviewPosition().x, fixture.getPreviewPosition().y +
+                // Config.SNAP);
+            }
+        }
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -91,5 +124,6 @@ public class FloorView extends JPanel {
         drawFurnitures(g);
         drawTemporaryFurniture(g);
         drawWalls(g);
+        drawFixtures(g);
     }
 }

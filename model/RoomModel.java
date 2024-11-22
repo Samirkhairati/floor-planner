@@ -7,6 +7,7 @@ import java.util.List;
 import controller.FurnitureController;
 import types.Furniture;
 import types.RoomType;
+import util.Tools;
 import view.FurnitureView;
 
 import java.util.ArrayList;
@@ -123,22 +124,7 @@ public class RoomModel implements Serializable {
 
     public RoomModel setType(RoomType type) {
         this.type = type;
-        switch (type) {
-            case RoomType.HALL:
-                setColor(new Color(255, 177, 84, 1));
-                break;
-            case RoomType.KITCHEN:
-                setColor(new Color(177, 228, 165));
-                break;
-            case RoomType.BEDROOM:
-                setColor(new Color(206, 165, 228));
-                break;
-            case RoomType.BATHROOM:
-                setColor(new Color(165, 217, 228));
-                break;
-            default:
-                break;
-        }
+        setColor(Tools.typeToColor(type));
         return this;
     }
 

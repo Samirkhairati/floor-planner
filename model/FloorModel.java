@@ -22,10 +22,15 @@ public class FloorModel implements Serializable {
         this.showLineGrid = true;
         this.showDotGrid = false;
         this.rooms = new ArrayList<>();
+        this.fixtures = new ArrayList<>();
     }
 
     public void addRoom(Room room) {
         rooms.add(room);
+    }
+
+    public void addFixture(Fixture fixture) {
+        fixtures.add(fixture);
     }
 
     public void removeRoomModel(Room room) {
@@ -66,6 +71,14 @@ public class FloorModel implements Serializable {
             roomControllers.add(room.getRoomController());
         }
         return roomControllers;
+    }
+
+    public List<FixtureModel> getFixtureModels() {
+        List<FixtureModel> fixtureModels = new ArrayList<>();
+        for (Fixture fixture : fixtures) {
+            fixtureModels.add(fixture.getModel());
+        }
+        return fixtureModels;
     }
 
     public boolean isDoingAction() {

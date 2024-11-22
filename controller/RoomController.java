@@ -51,21 +51,26 @@ public class RoomController implements Serializable {
         floorView.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // Click to place room when a new room is created
-                if (roomModel.isPlacing()) {
-                    placeRoom();
-                }
-                // Click on room to focus or unfocus
-                else if (roomModel.isHovering()) {
-                    focus();
+
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // Click to place room when a new room is created
+                    if (roomModel.isPlacing()) {
+                        placeRoom();
+                    }
+                    // Click on room to focus or unfocus
+                    else if (roomModel.isHovering()) {
+                        focus();
+                    }
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                // to drop the moving room
-                if (roomModel.isPlaced() && roomModel.isFocused() && roomModel.isPlacing()) {
-                    placeRoom();
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // to drop the moving room
+                    if (roomModel.isPlaced() && roomModel.isFocused() && roomModel.isPlacing()) {
+                        placeRoom();
+                    }
                 }
             }
         });
@@ -73,13 +78,15 @@ public class RoomController implements Serializable {
         floorView.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                // For the case when mouse is clicked while moving while placing a new room
-                if (roomModel.isPlacing() && !roomModel.isFocused()) {
-                    placeRoom();
-                }
-                // to move room
-                if (roomModel.isPlaced() && roomModel.isHovering()) {
-                    startMovingRoom(e);
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // For the case when mouse is clicked while moving while placing a new room
+                    if (roomModel.isPlacing() && !roomModel.isFocused()) {
+                        placeRoom();
+                    }
+                    // to move room
+                    if (roomModel.isPlaced() && roomModel.isHovering()) {
+                        startMovingRoom(e);
+                    }
                 }
             }
         });
