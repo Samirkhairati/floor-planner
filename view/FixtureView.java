@@ -17,11 +17,7 @@ import util.Tools;
 import java.awt.*;
 
 public class FixtureView extends JComponent {
-    private final FixtureModel fixtureModel;
 
-    public FixtureView(FixtureModel fixtureModel) {
-        this.fixtureModel = fixtureModel;
-    }
 
     public static void draw(FixtureModel fixture, Graphics g) {
 
