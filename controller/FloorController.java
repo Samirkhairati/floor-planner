@@ -166,7 +166,6 @@ public class FloorController implements Serializable {
 
         FurnitureModel furniture = temporaryFurniture.getModel();
         furniture.setPreviewSize(new Dimension(furniture.getPreviewSize().height, furniture.getPreviewSize().width));
-        System.out.println(furniture.getPreviewRotation());
         if (furniture.getPreviewRotation() == Rotation.DEGREES_0) {
             furniture.setPreviewRotation(Rotation.DEGREES_90);
         } else if (furniture.getPreviewRotation() == Rotation.DEGREES_90) {
