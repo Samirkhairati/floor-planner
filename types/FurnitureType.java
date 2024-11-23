@@ -3,8 +3,6 @@ package types;
 public enum FurnitureType {
     BATHTUB,
     CHAIR,
-    CIRCULAR_TABLE,
-    COUCH,
     SIX_SEATER_DINING_TABLE,
     DOUBLE_BED,
     DOUBLE_BED_STAND,
