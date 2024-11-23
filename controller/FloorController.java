@@ -16,17 +16,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
-import model.FixtureModel;
 import model.FloorModel;
 import model.FurnitureModel;
 import model.RoomModel;
-import types.Fixture;
 import types.FixtureType;
 import types.Furniture;
 import types.FurnitureType;
-import types.Orientation;
 import types.Room;
 import types.RoomType;
+import types.Rotation;
 
 public class FloorController implements Serializable {
 
@@ -36,6 +34,7 @@ public class FloorController implements Serializable {
     private boolean busy;
     private JPopupMenu contextMenu;
     public Point newFixtureLocation;
+    private boolean rotateFlag;
 
     public FloorController(FloorModel model, FloorView view) {
         this.model = model;
@@ -100,11 +99,8 @@ public class FloorController implements Serializable {
             case KeyEvent.VK_1:
                 startPlacingRoom();
                 break;
-            case KeyEvent.VK_2:
-                // addDoor logic
-                break;
-            case KeyEvent.VK_3:
-                // addWindow logic
+            case KeyEvent.VK_R:
+                rotateFlag = true;
                 break;
             case KeyEvent.VK_ESCAPE:
                 drop();
@@ -153,9 +149,33 @@ public class FloorController implements Serializable {
         Furniture temporaryFurniture = model.getTemporaryFurniture();
         if (temporaryFurniture == null)
             return;
+
+        if (rotateFlag)
+            rotateFurniture(temporaryFurniture);
+        rotateFlag = false;
+
         temporaryFurniture.getModel().setPreviewPosition(Tools.snap(e.getPoint()));
         temporaryFurniture.getController().checkValidity();
         view.repaint();
+    }
+
+    private void rotateFurniture(Furniture temporaryFurniture) {
+
+        if (temporaryFurniture == null)
+            return;
+
+        FurnitureModel furniture = temporaryFurniture.getModel();
+        furniture.setPreviewSize(new Dimension(furniture.getPreviewSize().height, furniture.getPreviewSize().width));
+        System.out.println(furniture.getPreviewRotation());
+        if (furniture.getPreviewRotation() == Rotation.DEGREES_0) {
+            furniture.setPreviewRotation(Rotation.DEGREES_90);
+        } else if (furniture.getPreviewRotation() == Rotation.DEGREES_90) {
+            furniture.setPreviewRotation(Rotation.DEGREES_180);
+        } else if (furniture.getPreviewRotation() == Rotation.DEGREES_180) {
+            furniture.setPreviewRotation(Rotation.DEGREES_270);
+        } else {
+            furniture.setPreviewRotation(Rotation.DEGREES_0);
+        }
     }
 
     private void checkHover(MouseEvent e) {

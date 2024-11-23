@@ -17,6 +17,7 @@ public class KeyBinder{
         inputMap.put(KeyStroke.getKeyStroke("4"), "key4");
         inputMap.put(KeyStroke.getKeyStroke("5"), "key5");
         inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), "escape");
+        inputMap.put(KeyStroke.getKeyStroke("R"), "rotate");
 
         // Define the actions for each key
         actionMap.put("key1", new AbstractAction() {
@@ -53,6 +54,13 @@ public class KeyBinder{
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 StateManager.getInstance().keyCode.setState(KeyEvent.VK_ESCAPE);
+            }
+        });
+
+        actionMap.put("rotate", new AbstractAction() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                StateManager.getInstance().keyCode.setState(KeyEvent.VK_R);
             }
         });
     }
