@@ -121,6 +121,11 @@ public class FloorController implements Serializable {
     public void movePreviewRoom(MouseEvent e) {
         for (Room room : model.getRooms()) {
             if (room.getRoomModel().isPlacing()) {
+
+                if (rotateFlag)
+                   rotateRoom(room.getRoomModel());
+                rotateFlag = false;
+
                 room.getRoomModel().setPreviewPosition(Tools.snap(e.getPoint()));
 
                 for (FurnitureModel furniture : room.getRoomModel().getFurnitureModels()) {
@@ -157,6 +162,13 @@ public class FloorController implements Serializable {
         temporaryFurniture.getModel().setPreviewPosition(Tools.snap(e.getPoint()));
         temporaryFurniture.getController().checkValidity();
         view.repaint();
+    }
+
+    private void rotateRoom(RoomModel room) {
+        room.rotate();
+        for (FurnitureModel furniture : room.getFurnitureModels()) {
+            furniture.setPreviewRelativePosition(Tools.rotateFurnitureAroundRoom(room, furniture));
+        }
     }
 
     private void rotateFurniture(Furniture temporaryFurniture) {

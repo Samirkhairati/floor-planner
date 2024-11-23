@@ -7,6 +7,7 @@ import java.util.List;
 import controller.FurnitureController;
 import types.Furniture;
 import types.RoomType;
+import types.Rotation;
 import util.Tools;
 import view.FurnitureView;
 
@@ -18,6 +19,7 @@ public class RoomModel implements Serializable {
     private Point position;
     private Point previewPosition;
     private Dimension size;
+    private Dimension previewSize = size;
     private RoomType type;
     private Color color;
     private boolean isPlaced;
@@ -25,6 +27,7 @@ public class RoomModel implements Serializable {
     private boolean isOverlapping;
     private boolean isHovering;
     private boolean isFocused;
+    private Rotation previewRotation;
 
     public RoomModel() {
         this.position = null; // No default position exists (don't snap back to anywhere)
@@ -75,6 +78,10 @@ public class RoomModel implements Serializable {
         return size;
     }
 
+    public Dimension getPreviewSize() {
+        return previewSize;
+    }
+
     public Point getPreviewPosition() {
         return previewPosition;
     }
@@ -107,6 +114,10 @@ public class RoomModel implements Serializable {
         return isFocused;
     }
 
+    public Rotation getPreviewRotation() {
+        return previewRotation;
+    }
+
     public RoomModel setPosition(Point position) {
         this.position = position;
         return this;
@@ -119,6 +130,11 @@ public class RoomModel implements Serializable {
 
     public RoomModel setSize(Dimension size) {
         this.size = size;
+        return this;
+    }
+
+    public RoomModel setPreviewSize(Dimension previewSize) {
+        this.previewSize = previewSize;
         return this;
     }
 
@@ -154,6 +170,25 @@ public class RoomModel implements Serializable {
 
     public RoomModel setFocused(boolean isFocused) {
         this.isFocused = isFocused;
+        return this;
+    }
+
+    public RoomModel setPreviewRotation(Rotation previewRotation) {
+        this.previewRotation = previewRotation;
+        return this;
+    }
+
+    public RoomModel rotate() {
+        setPreviewSize(new Dimension(previewSize.height, previewSize.width));
+        if (previewRotation == Rotation.DEGREES_0) {
+            setPreviewRotation(Rotation.DEGREES_90);
+        } else if (previewRotation == Rotation.DEGREES_90) {
+            setPreviewRotation(Rotation.DEGREES_180);
+        } else if (previewRotation == Rotation.DEGREES_180) {
+            setPreviewRotation(Rotation.DEGREES_270);
+        } else {
+            setPreviewRotation(Rotation.DEGREES_0);
+        }
         return this;
     }
 

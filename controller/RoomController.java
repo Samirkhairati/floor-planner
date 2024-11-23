@@ -165,7 +165,7 @@ public class RoomController implements Serializable {
     }
 
     public void checkOverlap() {
-        Rectangle previewRoom = new Rectangle(roomModel.getPreviewPosition(), roomModel.getSize());
+        Rectangle previewRoom = new Rectangle(roomModel.getPreviewPosition(), roomModel.getPreviewSize());
         for (RoomModel room : floorModel.getRoomModels()) {
             if (room != roomModel) {
                 Rectangle existingRoom = new Rectangle(room.getPosition(), room.getSize());

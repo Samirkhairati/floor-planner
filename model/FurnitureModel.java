@@ -15,6 +15,7 @@ public class FurnitureModel implements Serializable {
     private FurnitureType type;
     private Point position;
     private Point previewPosition;
+    private Point previewRelativePosition;
     private Dimension size;
     private Dimension previewSize;
     private Rotation rotation = Rotation.DEGREES_0;
@@ -35,6 +36,10 @@ public class FurnitureModel implements Serializable {
 
     public Point getPreviewPosition() {
         return previewPosition;
+    }
+
+    public Point getPreviewRelativePosition() {
+        return previewRelativePosition;
     }
 
     public Dimension getSize() {
@@ -89,6 +94,11 @@ public class FurnitureModel implements Serializable {
 
     public FurnitureModel setPreviewPosition(Point previewPosition) {
         this.previewPosition = previewPosition;
+        return this;
+    }
+
+    public FurnitureModel setPreviewRelativePosition(Point previewRelativePosition) {
+        this.previewRelativePosition = previewRelativePosition;
         return this;
     }
 

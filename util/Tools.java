@@ -9,6 +9,7 @@ import model.FurnitureModel;
 import model.RoomModel;
 import types.Orientation;
 import types.RoomType;
+import types.Rotation;
 
 public class Tools {
     public static Point snap(Point point) {
@@ -143,6 +144,11 @@ public class Tools {
                 roomModel.getPreviewPosition().y + furnitureModel.getPosition().y));
     }
 
+    public static Point getAbsolutePreviewPosition(RoomModel roomModel, Point transformedPosition) {
+        return new Point(new Point(roomModel.getPreviewPosition().x + transformedPosition.x,
+                roomModel.getPreviewPosition().y + transformedPosition.y));
+    }
+
     public static RoomModel getRoomContainingFurniture(FurnitureModel furnitureModel, FloorModel floorModel) {
         for (RoomModel roomModel : floorModel.getRoomModels()) {
             if (roomModel.getFurnitureModels().contains(furnitureModel)) {
@@ -164,6 +170,20 @@ public class Tools {
                 return new Color(165, 217, 228);
             default:
                 return Color.WHITE;
+        }
+    }
+
+    public static Point rotateFurnitureAroundRoom(RoomModel roomModel, FurnitureModel furnitureModel) {
+        if (roomModel.getPreviewRotation() == Rotation.DEGREES_0) {
+            return new Point(furnitureModel.getPosition().x, furnitureModel.getPosition().y);
+        } else if (roomModel.getPreviewRotation() == Rotation.DEGREES_90) {
+            return new Point(roomModel.getSize().height - furnitureModel.getPosition().y - furnitureModel.getSize().height,
+                    furnitureModel.getPosition().x);
+        } else if (roomModel.getPreviewRotation() == Rotation.DEGREES_180) {
+            return new Point(roomModel.getSize().width - furnitureModel.getPosition().x - furnitureModel.getSize().width,
+                    roomModel.getSize().height - furnitureModel.getPosition().y - furnitureModel.getSize().height);
+        } else {
+            return new Point(0, roomModel.getPreviewSize().width);
         }
     }
 }
