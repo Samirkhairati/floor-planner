@@ -1,11 +1,12 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import types.FixtureType;
 import types.Orientation;
 
-public class FixtureModel {
+public class FixtureModel implements Serializable {
 
     private Point upTilePosition;
     private Point downTilePosition;
