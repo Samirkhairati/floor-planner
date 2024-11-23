@@ -26,7 +26,7 @@ public class FixtureController {
     public FixtureController(FloorView floorView, FloorModel floorModel, FloorController floorController,
             FixtureType selectedFixtureType) {
         this.fixtureModel = new FixtureModel().setType(selectedFixtureType);
-        this.fixtureView = new FixtureView(fixtureModel);
+        this.fixtureView = new FixtureView();
         this.floorView = floorView;
         this.floorModel = floorModel;
         this.floorController = floorController;
