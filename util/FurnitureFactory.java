@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 
 import model.FurnitureModel;
 import types.FurnitureType;
+import types.Rotation;
 
 public class FurnitureFactory {
     public static FurnitureModel createModel(FurnitureType type) {
@@ -137,9 +138,10 @@ public class FurnitureFactory {
         return model;
     }
 
-    public static BufferedImage loadImage(FurnitureType type) {
+    public static BufferedImage loadImage(FurnitureType type, Rotation rotation) {
         try {
-            return ImageIO.read(new File("assets/" + type.toString().toLowerCase() + ".png"));
+            return ImageIO
+                    .read(new File("assets/" + type.toString().toLowerCase() + "/" + rotation.toString() + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
             return null; // Return null if the image fails to load

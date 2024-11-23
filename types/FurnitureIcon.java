@@ -13,7 +13,7 @@ public class FurnitureIcon {
         this.type = type;
 
         // Load the original image
-        ImageIcon originalIcon = new ImageIcon("assets/" + type.name().toLowerCase() + ".png");
+        ImageIcon originalIcon = new ImageIcon("assets/" + type.name().toLowerCase() + "/" + "DEGREES_0.png");
         Image originalImage = originalIcon.getImage();
 
         // Get original dimensions

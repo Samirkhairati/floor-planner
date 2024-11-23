@@ -74,7 +74,7 @@ public class FurnitureModel implements Serializable {
     }
 
     public BufferedImage getImage() {
-        return FurnitureFactory.loadImage(type);
+        return FurnitureFactory.loadImage(type, previewRotation);
     }
 
     public FurnitureModel setType(FurnitureType type) {
