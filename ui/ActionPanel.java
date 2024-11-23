@@ -20,10 +20,15 @@ public class ActionPanel extends JPanel {
 
         setBackground(Color.LIGHT_GRAY);
         setLayout(new WrapLayout());
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JButton button1 = new JButton("📦");
-        JButton button4 = new JButton("💾");
-        JButton button5 = new JButton("📁");
+        ImageIcon packageIcon = new ImageIcon(new ImageIcon("icons/package.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon saveIcon = new ImageIcon(new ImageIcon("icons/floppy_disk.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        ImageIcon folderIcon = new ImageIcon(new ImageIcon("icons/open_file_folder.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+        
+        JButton button1 = new JButton(packageIcon);
+        JButton button4 = new JButton(saveIcon);
+        JButton button5 = new JButton(folderIcon);
         Font font = new Font("Arial", Font.PLAIN, 30);
         button1.setFont(font);
         button4.setFont(font);
