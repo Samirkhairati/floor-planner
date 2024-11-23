@@ -51,6 +51,27 @@ public class FixtureController implements Serializable {
                 RoomModel downRoomModel = fixtureModel.getDownRoomModel();
                 RoomModel leftRoomModel = fixtureModel.getLeftRoomModel();
                 RoomModel rightRoomModel = fixtureModel.getRightRoomModel();
+
+                // check for overlap of fixtures
+                for (FixtureModel fixture : floorModel.getFixtureModels()) {
+                        if (fixture.getOrientation() == Orientation.HORIZONTAL) {
+                                if (fixture.getUpRoomModel() == upRoomModel && fixture.getDownRoomModel() == downRoomModel) {
+                                        if (fixture.getUpTilePosition().equals(fixtureModel.getUpTilePosition())
+                                                        || fixture.getDownTilePosition()
+                                                                        .equals(fixtureModel.getDownTilePosition())) {
+                                                return;
+                                        }
+                                }
+                        } else {
+                                if (fixture.getLeftRoomModel() == leftRoomModel && fixture.getRightRoomModel() == rightRoomModel) {
+                                        if (fixture.getLeftTilePosition().equals(fixtureModel.getLeftTilePosition())
+                                                        || fixture.getRightTilePosition()
+                                                                        .equals(fixtureModel.getRightTilePosition())) {
+                                                return;
+                                        }
+                                }
+                        }
+                }
                 // Horizontal fixture
                 if (fixtureModel.getOrientation() == Orientation.HORIZONTAL) {
 
