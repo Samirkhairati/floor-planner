@@ -15,3 +15,9 @@ Create Interior design plans with this interactive java desktop applicaton.
 7. Move the rooms around and it will automatically bring along furniture, doors, and windows
 8. Click on the 💾 save button to save a .floor file
 9. Load 📂 a `.floor` file (like `example.floor` in the repo) to open a previously made file
+
+### Usage
+
+```bash
+java Main.java
+```
